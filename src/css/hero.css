@@ -1,0 +1,110 @@
+.hero {
+  position: relative;
+  text-align: center;
+  color: white;
+
+  /* Hintergrundbild */
+  background-image: url('/img/hero-orbiter.png'); /* Pfad prüfen! */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* volle Höhe des Viewports */
+
+  display: flex;
+  align-items: center;    /* vertikal zentrieren */
+  justify-content: center; /* horizontal zentrieren */
+  flex-direction: column;  /* Text und Buttons untereinander */
+}
+
+/* Overlay für bessere Lesbarkeit */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* halbtransparentes Schwarz */
+  z-index: 0;
+}
+
+.heroOverlay {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;   /* Textblock-Breite begrenzen */
+  padding: 0 20px;    /* Abstand bei schmalen Screens */
+}
+
+/* Textgrößen und Abstand */
+.heroOverlay h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.heroOverlay p {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.heroOverlay span {
+  font-size: 1rem;
+  color: #aaa;
+  display: block;
+  margin-bottom: 40px;
+}
+
+/* Buttons direkt unter dem Text zentrieren */
+.heroButtons {
+  display: flex;
+  justify-content: center;  /* Buttons zentrieren */
+  gap: 20px;                /* Abstand zwischen den Buttons */
+  flex-wrap: wrap;          /* bei kleinen Bildschirmen umbrechen */
+  margin-top: 40px;         /* Abstand nach unten vom Text */
+}
+
+.navButton {
+  display: inline-block;
+  padding: 15px 30px;
+  background: rgba(30, 64, 175, 0.7); /* dunkles Blau, leicht transparent */
+  color: #ffffff;                       /* weißer Text */
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid #1E40AF;           /* gleiche Akzentfarbe */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.navButton:hover {
+  background: rgba(59, 130, 246, 0.9); /* helleres Blau beim Hover */
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.35);
+}
+
+.exploreButtonContainer {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.aboutButton {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #1E3A8A; /* dunkles Blau passend zu dunklem Hintergrund */
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.aboutButton:hover {
+  background: #3B82F6; /* helleres Blau beim Hover */
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.35);
+}
+
+
+
+

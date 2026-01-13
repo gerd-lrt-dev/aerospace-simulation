@@ -1,0 +1,19 @@
+.underConstruction {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+  color: #fff;
+}
+
+.underConstruction h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.underConstruction p {
+  font-size: 1.25rem;
+  color: #ccc;
+}

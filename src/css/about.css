@@ -1,0 +1,29 @@
+.aboutContainer {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.aboutContainer h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.aboutContainer h2 {
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #3B82F6; /* Akzentfarbe dunkles Blau */
+}
+
+.aboutContainer p, .aboutContainer li {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.aboutContainer ul {
+  padding-left: 20px;
+}
