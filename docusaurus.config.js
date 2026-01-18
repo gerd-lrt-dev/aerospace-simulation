@@ -58,18 +58,41 @@ const config = {
       respectPrefersColorScheme: false,
     },
 
-    navbar: {
-      title: 'Aerospace Simulation',
-      items: [
-        {to: '/docs/intro', label: 'Docs', position: 'left'},
-        {to: '/about', label: 'About', position: 'left'},
-        {
-          href: 'https://github.com/gerd-lrt-dev/aerospace-simulation',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
+navbar: {
+  title: 'Moonlander',
+  items: [
+    {
+      to: '/about',
+      label: 'Explore Project Details',
+      position: 'left',
     },
+    {
+      to: '/simulation',
+      label: 'Simulation',
+      position: 'left',
+    },
+    {
+      to: '/docs',
+      label: 'Mathematics',
+      position: 'left',
+    },
+    {
+      to: '/team',
+      label: 'Team',
+      position: 'left',
+    },
+    {
+      to: '/recruiting',
+      label: 'Recruiting',
+      position: 'left',
+    },
+    {
+      href: 'https://github.com/gerd-lrt-dev/moonlander',
+      label: 'GitHub',
+      position: 'right',
+    },
+  ],
+},
 
     footer: {
       style: 'dark',

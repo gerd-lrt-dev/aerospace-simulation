@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import Topbar from '../components/Topbar'; // Pfad ggf. anpassen
 import '../css/hero.css';
 
 export default function Home() {
@@ -7,6 +8,9 @@ export default function Home() {
     <Layout
       title="Moonlander – Lunar Lander Simulation"
       description="Educational C++ lunar landing simulation with modular backend and Qt frontend">
+
+      {/* Topbar */}
+      <Topbar />
 
       <main className="hero">
         <div className="heroOverlay">
@@ -17,20 +21,12 @@ export default function Home() {
           </p>
           <span>Simulation · Physics · Control</span>
 
-          {/* Navigation Buttons */}
-          <div className="heroButtons">
-            <a className="navButton" href="/team">Team</a>
-            <a className="navButton" href="/docs">Mathematics</a>
-            <a className="navButton" href="/simulation">Simulation</a>
-          </div>
-
           {/* Explore / About Button */}
           <div className="exploreButtonContainer">
             <a className="aboutButton" href="/about">Explore Project Details</a>
           </div>
         </div>
       </main>
-
     </Layout>
   );
 }
