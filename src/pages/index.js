@@ -8,10 +8,7 @@ export default function Home() {
     <Layout
       title="Moonlander – Lunar Lander Simulation"
       description="Educational C++ lunar landing simulation with modular backend and Qt frontend">
-
-      {/* Topbar */}
-      <Topbar />
-
+        
       <main className="hero">
         <div className="heroOverlay">
           <h1>Moonlander</h1>
