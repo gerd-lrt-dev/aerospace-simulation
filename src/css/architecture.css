@@ -1,0 +1,17 @@
+.architectureContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.diagramSection {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.archDiagram {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+}
