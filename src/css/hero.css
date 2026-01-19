@@ -62,6 +62,18 @@
   margin-top: 40px;         /* Abstand nach unten vom Text */
 }
 
+.heroAiCredit {
+  position: absolute;   /* absolut relativ zum Hero-Container */
+  bottom: 1rem;         /* Abstand vom unteren Rand */
+  right: 1rem;          /* Abstand vom rechten Rand */
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.3); /* leichter Hintergrund für Lesbarkeit */
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  z-index: 2;            /* sicherstellen, dass es über dem Overlay liegt */
+}
+
 .navButton {
   display: inline-block;
   padding: 15px 30px;

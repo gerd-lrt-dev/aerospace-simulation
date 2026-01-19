@@ -1,0 +1,220 @@
+/* =========================
+   Team Page – Container
+   ========================= */
+
+.teamContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  color: #eaeaea;
+}
+
+/* =========================
+   Intro Section
+   ========================= */
+
+.teamIntro {
+  margin-bottom: 3.5rem;
+}
+
+.teamIntro h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.teamIntro p {
+  max-width: 700px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #cfcfcf;
+}
+
+/* =========================
+   Team Grid
+   ========================= */
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4.5rem;
+}
+
+/* =========================
+   Team Card
+   ========================= */
+
+.teamCard {
+  display: block;
+  padding: 2rem 1.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.teamCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================
+   Profile Image
+   ========================= */
+
+.teamCard img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* =========================
+   Card Text Content
+   ========================= */
+
+.teamCard h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.25rem;
+  color: #ffffff;
+}
+
+.teamCard .alias {
+  display: block;
+  font-size: 0.85rem;
+  color: #9aa0a6;
+  margin-bottom: 0.5rem;
+}
+
+.teamCard .degree {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: #bdbdbd;
+}
+
+/* =========================
+   Role
+   ========================= */
+
+.teamCard .role {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* =========================
+   Competency List
+   ========================= */
+
+.teamCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.teamCard li {
+  font-size: 0.9rem;
+  padding-left: 1rem;
+  margin-bottom: 0.45rem;
+  position: relative;
+  color: #d8d8d8;
+}
+
+.teamCard li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #5da9ff;
+}
+
+/* =========================
+   Contact Information
+   ========================= */
+
+.teamCard .contact {
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: #bdbdbd;
+}
+
+.teamCard .contact span {
+  margin-right: 0.4rem;
+  color: #9aa0a6;
+}
+
+.teamCard .contact a {
+  color: #5da9ff;
+  text-decoration: none;
+}
+
+.teamCard .contact a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   Recruiting Section
+   ========================= */
+
+.teamRecruiting {
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.teamRecruiting h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+}
+
+.teamRecruiting p {
+  max-width: 600px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #cfcfcf;
+  margin-bottom: 1.6rem;
+}
+
+/* =========================
+   Recruiting Button
+   ========================= */
+
+.recruitButton {
+  display: inline-block;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.recruitButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* =========================
+   Responsive Tweaks
+   ========================= */
+
+@media (max-width: 600px) {
+  .teamContainer {
+    padding: 3rem 1.2rem 4rem;
+  }
+
+  .teamIntro h1 {
+    font-size: 2.2rem;
+  }
+
+  .teamCard {
+    padding: 1.6rem;
+  }
+}

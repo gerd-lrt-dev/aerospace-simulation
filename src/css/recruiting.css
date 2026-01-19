@@ -1,0 +1,169 @@
+/* =========================
+   Recruiting Page Container
+   ========================= */
+
+.recruitingContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  color: #eaeaea;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =========================
+   Section Styling
+   ========================= */
+
+.recruitSection {
+  margin-bottom: 3rem;
+}
+
+.recruitSection h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+}
+
+.recruitSection p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #cfcfcf;
+  margin-bottom: 1rem;
+}
+
+.recruitSection ul {
+  list-style: none;
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.recruitSection li {
+  position: relative;
+  font-size: 0.95rem;
+  margin-bottom: 0.45rem;
+  color: #d8d8d8;
+}
+
+.recruitSection li::before {
+  content: "•";
+  position: absolute;
+  left: -1.2rem;
+  color: #5da9ff;
+}
+
+/* =========================
+   Contact Section
+   ========================= */
+
+.recruitContact {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.recruitContact h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+}
+
+.recruitContact p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cfcfcf;
+  margin-bottom: 1.6rem;
+}
+
+.contactButton {
+  display: inline-block;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.contactButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* =========================
+   Responsive Adjustments
+   ========================= */
+
+@media (max-width: 600px) {
+  .recruitingContainer {
+    padding: 3rem 1.2rem 4rem;
+  }
+
+  .recruitSection h2 {
+    font-size: 1.4rem;
+  }
+
+  .contactButton {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.4rem;
+  }
+}
+
+/* =========================
+   Intro Section: Text + Image
+   ========================= */
+
+.recruitIntro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.recruitIntroText {
+  flex: 1;
+  color: #cfcfcf;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.recruitIntroImage {
+  flex-shrink: 0;
+  width: 350px; /* kleineres Bild */
+}
+
+.recruitIntroImage img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transition: transform 0.25s ease;
+}
+
+.imageCredit {
+  font-size: 0.75rem;
+  color: #a0a0a0;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.recruitIntroImage img:hover {
+  transform: scale(1.03);
+}
+
+/* =========================
+   Responsive Anpassung
+   ========================= */
+
+@media (max-width: 700px) {
+  .recruitIntro {
+    flex-direction: column;
+    text-align: center;
+  }
+  .recruitIntroImage {
+    width: 70%;
+    margin-top: 1.5rem;
+  }
+}
+

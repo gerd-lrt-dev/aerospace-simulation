@@ -23,7 +23,13 @@ export default function Home() {
             <a className="aboutButton" href="/about">Explore Project Details</a>
           </div>
         </div>
+
+        {/* AI-Hinweis direkt im Hero-Container */}
+        <span className="heroAiCredit">AI-generated image</span>
       </main>
+
     </Layout>
   );
 }
+
+
