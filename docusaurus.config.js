@@ -45,9 +45,16 @@ const config = {
     ],
   ],
 
-  stylesheets: [
-    '/css/hero.css',
-  ],
+stylesheets: [
+  '/css/hero.css',
+  {
+    href: 'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css',
+    type: 'text/css',
+    integrity: 'sha384-vZTG9CkD7F8F4s1Ttq2dXZkZ3YB+6+2B6z+Jk6bXIpwM1KgiEkfK1pSvi8aF6F0B',
+    crossorigin: 'anonymous',
+  },
+],
+
 
   themeConfig: {
     image: 'img/social-card.jpg',
