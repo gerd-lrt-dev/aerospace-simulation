@@ -1,6 +1,8 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import '../../css/mathematics.css';
+import { BlockMath, InlineMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 export default function PhysicsModel() {
   return (
@@ -28,27 +30,40 @@ export default function PhysicsModel() {
           <p>
             The gravitational acceleration is modeled as a radial force pointing toward
             the center of the Moon. Its magnitude decreases with the square of the distance
-            from the lunar center.
+            from the lunar center.<br/>
+            From orbital mechanics follows:
           </p>
 
-          <pre>
-{`r = R_moon + ||p||
-
-g_vec = - (p̂) * (μ_moon / r²)`}
-          </pre>
+          <BlockMath math={`\\vec{a}_{grav} = - \\frac{\\mu}{||\\vec{r}||³} \\vec{r}`} />
+          Or rather:
+          <BlockMath math={`\\vec{a}_{grav} = - \\frac{\\mu}{||\\vec{r}||2}`} />
 
           <p>
             Where:
-            <br />• <strong>p</strong> is the spacecraft position vector
-            <br />• <strong>p̂</strong> is the normalized position vector
-            <br />• <strong>R_moon</strong> is the lunar radius
-            <br />• <strong>μ_moon</strong> is the lunar gravitational constant
+            <br />• <strong><InlineMath math={'\\vec{r}'} /></strong> is the spacecraft position vector
+            <br />• <strong><InlineMath math={'||\\vec{r}||'} /></strong>distance from the lunar center
+            <br />• <strong><InlineMath math={'\\mu'} /></strong> is the lunar gravitational constant
           </p>
         </section>
 
         {/* ============================
             Acceleration Model
         ============================ */}
+          <section className="mathSection">
+          <h2>Thrust Acceleration</h2>
+          <p>
+          The acceleration produced by the spacecraft's engines is calculated by dividing the 
+          thrust force by the spacecraft mass and applying it along the thrust direction:
+          </p>
+          <BlockMath math={`\\vec{a}_{thrust} = \\vec{d} \\cdot \\frac{F_{T}}{m}`} />
+          <p>
+            Where:
+            <br />• <strong><InlineMath math={'\\vec{a}_{thrust}'} /></strong> is the thrust acceleration vector [m/s²]
+            <br />• <strong><InlineMath math={'\\vec{d}'} /></strong> is the unit vector in the direction of the thrust force
+            <br />• <strong><InlineMath math={'F_{T}'} /></strong> is the thrust magnitude produced by the engine [N]
+            <br />• <strong><InlineMath math={'m'} /></strong> is the current spacecraft mass [kg]
+          </p>
+          </section>
         <section className="mathSection">
           <h2>Total Acceleration</h2>
 
@@ -57,18 +72,8 @@ g_vec = - (p̂) * (μ_moon / r²)`}
             thrust-induced acceleration and gravitational acceleration.
           </p>
 
-          <pre>
-{`F_thrust = T * d_thrust
-
-a_total = (F_thrust / m) + g_vec`}
-          </pre>
-
-          <p>
-            Where:
-            <br />• <strong>T</strong> is the current thrust magnitude
-            <br />• <strong>d_thrust</strong> is the unit thrust direction vector
-            <br />• <strong>m</strong> is the total spacecraft mass
-          </p>
+          <BlockMath math={`\\vec{a} = \\vec{a}_{grav} + \\vec{a}_{thrust}`} />
+          <BlockMath math={`\\vec{a} = \\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}`} />
         </section>
 
         {/* ============================
@@ -79,14 +84,16 @@ a_total = (F_thrust / m) + g_vec`}
 
           <p>
             Position and velocity are updated using constant-acceleration kinematic equations
-            over a discrete time step <code>Δt</code>.
+            over a discrete time step <InlineMath math={'\\Delta t'} />.
           </p>
 
-          <pre>
-{`v(t + Δt) = v(t) + a * Δt
-
-p(t + Δt) = p(t) + v(t) * Δt + 0.5 * a * Δt²`}
-          </pre>
+          <BlockMath math={`\\vec{v}(t + \\Delta t) = \\vec{v}(t) + \\vec{a} \\cdot \\Delta t`} />
+          Or rather: 
+          <BlockMath math={`\\vec{v}(t + \\Delta t) = \\vec{v}(t) + (\\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}) \\cdot \\Delta t`} />
+          As well as position:
+          <BlockMath math={`\\vec{p}(t + \\Delta t) = \\vec{p}(t) + \\vec{v}(t) \\cdot \\Delta t + \\frac{1}{2} \\vec{a} \\cdot \\Delta t^2`} />
+          Or rather:
+          <BlockMath math={`\\vec{p}(t + \\Delta t) = \\vec{p}(t) + \\vec{v}(t) \\cdot \\Delta t + \\frac{1}{2} (\\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}) \\cdot \\Delta t^2`} />
 
           <p>
             This approach provides a stable and computationally efficient integration scheme
@@ -105,14 +112,11 @@ p(t + Δt) = p(t) + v(t) * Δt + 0.5 * a * Δt²`}
             gravitational acceleration.
           </p>
 
-          <pre>
-{`a_proper = a_total - g_vec
-
-g_load = ||a_proper|| / g₀`}
-          </pre>
+          <BlockMath math={`a_{proper} = a_{total} - \\vec{g}`} />
+          <BlockMath math={`g_{load} = \\frac{\\|a_{proper}\\|}{g_0}`} />
 
           <p>
-            Where <strong>g₀ = 9.80665 m/s²</strong> is standard Earth gravity.
+            Where <strong>g_0 = 9.80665 m/s^2</strong> is standard Earth gravity.
             This value represents the acceleration actually felt by the spacecraft structure
             and crew.
           </p>
