@@ -27,6 +27,7 @@ export default function Mathematics() {
             <a className="mathButton" href="/mathematics/thrust">Thrust Model</a>
             <a className="mathButton" href="/mathematics/physics">Motion Calculations</a>
             <a className="mathButton" href="/mathematics/impact">Impact & Structural Integrity</a>
+            <a className="mathButton" href="/mathematics/adaptiveDescentController">Adaptive Descent Controller</a>
           </div>
 
           <p className="note">
