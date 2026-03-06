@@ -11,6 +11,18 @@ export default function About() {
       <main className="aboutContainer">
         <h1>About Moonlander</h1>
 
+        {/* Recent Updates */}
+        <section>
+          <h2>Recent Updates</h2>
+          <ul>
+            <li>Implemented an <strong>Adaptive Descent Controller</strong> for automated landing</li>
+            <li>Controller uses an <strong>energy-based guidance law</strong> to compute safe descent trajectories</li>
+            <li>Introduced <strong>brake ratio based descent mode switching</strong> for adaptive control behavior</li>
+            <li>Added <strong>PD velocity control with gravity compensation and thrust saturation handling</strong></li>
+            <li>Implemented <strong>phase-based descent logic</strong> enabling stable landing across multiple descent regimes</li>
+          </ul>
+        </section>
+
         {/* Overview Section */}
         <section>
           <h2>Project Overview</h2>
@@ -18,8 +30,7 @@ export default function About() {
             Moonlander is an educational and research-oriented C++ project simulating lunar
             landings. Inspired by classical "Lunar Landing" examples, it combines rigorous
             physics-based simulation with an interactive Qt-based frontend. The simulation
-            environment is designed to allow exploration of one-dimensional vertical descent
-            as well as future multi-dimensional extensions.
+            environment allows exploration of one-dimensional vertical descent as well as future multi-dimensional extensions.
           </p>
           <p>
             The project emphasizes modularity: the backend handles physics calculations,
@@ -37,10 +48,11 @@ export default function About() {
             decoupled from the UI, providing a robust foundation for automated testing, optimization,
             and interactive operation.
           </p>
-          <p>
-            Key backend components include:
-          </p>
+          <p>Key backend components include:</p>
           <ul>
+            <li><strong>Automation:</strong> IAutopilot, AdaptiveDescentController (energy-based landing with brake ratio guidance)</li>
+            <li><strong>Control:</strong> InputArbiter (decides whether manual or autopilot control is active)</li>
+            <li><strong>Controller:</strong> IController, PD_Controller (supports autopilot)</li>
             <li><strong>Integrators:</strong> IIntegrator, EulerIntegrator, Dynamics</li>
             <li><strong>Physics Models:</strong> IPhysicsModel, BasicMoonGravity, Physics (orchestrator)</li>
             <li><strong>Sensors & Perception:</strong> ISensor, SensorModel</li>
@@ -67,16 +79,34 @@ export default function About() {
             <li>Configurable parameters via JSON for physics, control, and UI settings</li>
             <li>Interactive user controls with slider-based thrust adjustment and simulation management</li>
             <li>Experimental 1D thrust optimization using NLopt to minimize fuel while ensuring safe landing</li>
+            <li>Adaptive Descent Controller for automated, phase-based landing guidance</li>
             <li>Support for future multi-dimensional dynamics and orbital maneuvers</li>
+          </ul>
+        </section>
+
+        {/* Adaptive Descent Controller Section */}
+        <section>
+          <h2>Adaptive Descent Controller</h2>
+          <p>
+            The Adaptive Descent Controller is a modular system that guides the spacecraft safely during the final descent.
+            It evaluates the current state of the spacecraft and dynamically adjusts thrust commands to ensure a smooth and safe landing.
+          </p>
+
+          <h3>Core Concepts</h3>
+          <ul>
+            <li><strong>Brake Ratio:</strong> Compares the remaining altitude to the distance needed to safely decelerate. Determines how aggressively the spacecraft must slow down.</li>
+            <li><strong>Descent Phases:</strong> The controller switches between multiple phases depending on the brake ratio:
+                MODE_A (Energy Dissipation), MODE_B (Controlled Descent), MODE_C (Terminal Approach), MODE_D (Critical Braking).
+            </li>
+            <li><strong>Guidance and Control:</strong> The controller uses a combination of predictive and feedback control to follow a safe descent trajectory. It adjusts velocity targets and thrust levels adaptively based on the current phase.</li>
+            <li><strong>Characteristics:</strong> Adaptive gain scheduling, gravity compensation, thrust limits handling, and stable landing behavior across all descent phases.</li>
           </ul>
         </section>
 
         {/* Optimizer Section */}
         <section>
           <h2>Thrust Optimization (Experimental)</h2>
-          <p>
-            Moonlander now includes a backend module for 1D thrust optimization:
-          </p>
+          <p>Moonlander now includes a backend module for 1D thrust optimization:</p>
           <ul>
             <li>Goal: Minimize fuel consumption while achieving target altitude and safe landing velocity</li>
             <li>Forward simulation uses EulerIntegrator to propagate spacecraft state under candidate thrust profiles</li>
