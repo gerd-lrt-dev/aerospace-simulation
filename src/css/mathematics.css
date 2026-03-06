@@ -1,8 +1,8 @@
 .mathContainer {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
-  color: #fff; /* Darkmode-kompatibel */
+  color: #fff;
 }
 
 .mathIntro {
@@ -10,34 +10,74 @@
   line-height: 1.6;
 }
 
+/* ----------------------------- */
+/* Button Grid Layout */
+/* ----------------------------- */
+
 .mathLinks {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
+/* ----------------------------- */
+/* Buttons */
+/* ----------------------------- */
+
 .mathButton {
-  padding: 1rem 2rem;
-  background-color: #1E3A8A;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 1.4rem 1.6rem;
+
+  background: linear-gradient(135deg,#1E3A8A,#2563EB);
+
   color: #fff;
   text-decoration: none;
-  border-radius: 6px;
+
+  border-radius: 10px;
+
   font-weight: 600;
-  transition: all 0.3s ease;
+
+  transition: all 0.25s ease;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 .mathButton:hover {
-  background-color: #3B82F6;
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
 }
+
+/* optional title + description */
+
+.mathTitle {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.mathDesc {
+  font-size: 14px;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ----------------------------- */
+/* Notes */
+/* ----------------------------- */
 
 .note {
   font-size: 0.9rem;
   color: #aaa;
   margin-top: 1rem;
 }
+
+/* ----------------------------- */
+/* Sections */
+/* ----------------------------- */
 
 .mathSection {
   margin-top: 2.5rem;
@@ -48,8 +88,12 @@
   margin-bottom: 1rem;
 }
 
+/* ----------------------------- */
+/* Code blocks */
+/* ----------------------------- */
+
 .mathSection pre {
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.35);
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
@@ -57,9 +101,15 @@
   margin-bottom: 1rem;
 }
 
+/* ----------------------------- */
+/* Images */
+/* ----------------------------- */
+
 .mathSection img.mathImage {
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-top: 1rem;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
