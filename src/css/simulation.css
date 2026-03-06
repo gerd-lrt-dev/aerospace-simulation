@@ -105,6 +105,25 @@
   background: rgba(0, 0, 0, 0.15);
 }
 
+.simCard {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.simVideo {
+  width: 100%;        /* max Breite = Containerbreite */
+  max-width: 800px;   /* optional: feste Maximalbreite für Desktop */
+  height: auto;       /* Höhe proportional zur Breite */
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.simCaption {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 0.5rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .simulationPage {

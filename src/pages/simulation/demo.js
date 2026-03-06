@@ -13,22 +13,27 @@ export default function SimulationDemo() {
         <section className="simIntro">
           <h1>Simulation Demonstration</h1>
           <p>
-            The following screenshot shows the primary cockpit interface of the Moonlander
+            The following videos shows the primary cockpit interface of the Moonlander
             simulation during a representative descent run. All quantities are expressed
             in SI units and updated in real time based on the underlying C++ physics model.
           </p>
         </section>
 
+        {/* Video Section */}
         <section className="simSection">
           <div className="simCard">
-            <img
-              src="/img/simulation/Simulation_Beispiel.png"
-              alt="Moonlander simulation cockpit view"
-              className="simImage"
-            />
+            <video
+              src="/img/simulation/3PhasenRegler.mp4"
+              controls
+              className="simVideo"
+              poster="/img/simulation/Simulation_Beispiel.png"
+            >
+              Your browser does not support the video tag.
+            </video>
             <p className="simCaption">
-              <strong>Figure 1 — Simulation cockpit view.</strong> Navigation data, fuel state,
-              propulsion parameters and system status during a controlled descent.
+              <strong>Figure 0 — 1500m Descent Landing Demonstration.</strong> A complete descent
+              from 1500 meters, showing the lander's response to the Adaptive Descent Controller
+              and thrust adjustments in real time.
             </p>
           </div>
         </section>
@@ -56,7 +61,7 @@ export default function SimulationDemo() {
             <h3>LANDING VIEW — Descent Visualization</h3>
             <p>
               Provides a visual representation of the lander during descent. Below 1000 meters
-              above ground level, the lander visibly approaches the surface. Thrust can be
+              above ground level, the lander visibly approaches the surface. The autopilot can be activated by clicking on the autopilot button. Thrust can be
               controlled via a continuous slider (0–100%), and the simulation can be started,
               paused or stopped at any time.
             </p>
@@ -74,8 +79,9 @@ export default function SimulationDemo() {
           <div className="interfaceBlock">
             <h3>STATUS — System State</h3>
             <p>
-              Reports discrete system states such as <em>OPERATIONAL</em>, <em>LANDED</em> or
+              Reports discrete system states such as <em>OPERATIONAL</em>&nbsp;, <em>LANDED</em>&nbsp; or&nbsp;
               <em>DESTROYED</em>, providing an explicit overview of the simulation state machine.
+              It also reports in wheter the autopilot is activated or not plus the current information provided by autopilot such as the activated mode.
             </p>
           </div>
         </section>
