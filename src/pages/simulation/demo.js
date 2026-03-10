@@ -10,8 +10,60 @@ export default function SimulationDemo() {
     >
       <main className="simulationPage">
 
+        {/* Spacecraft Selection Section */}
+        <section className="simSection">
+        <h1>Select Spacecraft Page</h1>
+    
+        <p className="simIntroText">
+          On this page, you can explore the key features of the Moonlander simulation.
+          First, users can select a spacecraft configuration from the available mission profiles.
+          Then, the cockpit interface provides a live demonstration of the lander's descent,
+          showing real-time telemetry, propulsion, and system status. All values are computed
+          by the underlying physics engine and updated continuously.
+        </p>
+          <div className="simCard">
+
+            <img
+              src="/img/simulation/Screenshot_Spacecraft_Selected.png"
+              className="simImage"
+              alt="Spacecraft selection interface"
+            />
+
+            <p className="simCaption">
+              <strong>Figure 0 — Spacecraft Selection Interface.</strong>
+              Before entering the simulation cockpit, users can select a spacecraft
+              configuration from the available mission profiles.
+              Each spacecraft is defined by a JSON configuration that specifies
+              mass properties, propulsion parameters, and initial mission conditions.
+            </p>
+          </div>
+              <p className="simDescription">
+              The selection interface presents all available spacecraft defined
+              in the configuration file. The list on the left displays the available
+              spacecraft names, while the panel on the right shows the detailed
+              configuration parameters of the currently highlighted spacecraft.
+              These parameters include mass distribution, thrust limits, specific
+              impulse, initial position and velocity, and structural limits.
+            </p>
+
+            <p className="simDescription">
+              If the user does not explicitly select a spacecraft, the system automatically
+              chooses the first spacecraft defined in the JSON configuration as the default.
+              This ensures that the simulation backend always receives a valid spacecraft
+              configuration, even if no selection is made in the UI.
+            </p>
+
+            <p className="simDescription">
+              Once a spacecraft is selected (or the default is applied), its configuration
+              is transmitted to the simulation backend, where it initializes the physical
+              model of the lander. This design separates configuration management from
+              the simulation engine, allowing new spacecraft variants to be introduced
+              simply by updating the configuration file without modifying simulation code.
+            </p>
+        </section>
+
+        <h1>Simulation demonstration</h1>
         <section className="simIntro">
-          <h1>Simulation Demonstration</h1>
           <p>
             The following videos shows the primary cockpit interface of the Moonlander
             simulation during a representative descent run. All quantities are expressed
@@ -31,7 +83,7 @@ export default function SimulationDemo() {
               Your browser does not support the video tag.
             </video>
             <p className="simCaption">
-              <strong>Figure 0 — 1500m Descent Landing Demonstration.</strong> A complete descent
+              <strong>Figure 1 — 1500m Descent Landing Demonstration.</strong> A complete descent
               from 1500 meters, showing the lander's response to the Adaptive Descent Controller
               and thrust adjustments in real time.
             </p>
