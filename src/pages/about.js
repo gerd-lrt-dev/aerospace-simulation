@@ -20,6 +20,9 @@ export default function About() {
             <li>Introduced <strong>brake ratio based descent mode switching</strong> for adaptive control behavior</li>
             <li>Added <strong>PD velocity control with gravity compensation and thrust saturation handling</strong></li>
             <li>Implemented <strong>phase-based descent logic</strong> enabling stable landing across multiple descent regimes</li>
+            <li>Added a <strong>Spacecraft Selection interface</strong> allowing users to choose between multiple spacecraft configurations before starting the simulation</li>
+            <li>Introduced a <strong>JSON-based spacecraft configuration system</strong> enabling easy definition of spacecraft parameters without recompiling the simulation</li>
+            <li>Implemented a centralized <strong>ConfigManager</strong> responsible for loading and distributing configuration data across the UI</li>
           </ul>
         </section>
 
@@ -30,12 +33,18 @@ export default function About() {
             Moonlander is an educational and research-oriented C++ project simulating lunar
             landings. Inspired by classical "Lunar Landing" examples, it combines rigorous
             physics-based simulation with an interactive Qt-based frontend. The simulation
-            environment allows exploration of one-dimensional vertical descent as well as future multi-dimensional extensions.
+            environment allows exploration of one-dimensional vertical descent as well as
+            future multi-dimensional extensions.
           </p>
           <p>
             The project emphasizes modularity: the backend handles physics calculations,
             state propagation, and control logic, while the frontend provides real-time
-            telemetry, cockpit visualization, and interactive user control.
+            telemetry, cockpit visualization, spacecraft configuration, and interactive
+            user control.
+          </p>
+          <p>
+            Spacecraft configurations are defined externally via JSON files, enabling
+            new spacecraft variants to be added without modifying the simulation code.
           </p>
         </section>
 
@@ -45,10 +54,12 @@ export default function About() {
           <p>
             The backend implements the lander's dynamics, numerical integration, sensors,
             optimization, and control loop in a thread-safe C++ simulation engine. It is fully
-            decoupled from the UI, providing a robust foundation for automated testing, optimization,
-            and interactive operation.
+            decoupled from the UI, providing a robust foundation for automated testing,
+            optimization, and interactive operation.
           </p>
+
           <p>Key backend components include:</p>
+
           <ul>
             <li><strong>Automation:</strong> IAutopilot, AdaptiveDescentController (energy-based landing with brake ratio guidance)</li>
             <li><strong>Control:</strong> InputArbiter (decides whether manual or autopilot control is active)</li>
@@ -58,13 +69,23 @@ export default function About() {
             <li><strong>Sensors & Perception:</strong> ISensor, SensorModel</li>
             <li><strong>Optimization:</strong> OptimizationModelParams, OptimizationStruct, ThrustOptimizationProblem, ThrustOptimizer</li>
             <li><strong>Thrust & Spacecraft:</strong> Thrust, CustomSpacecraftStruct, Spacecraft, SpacecraftStateStruct, StateVectorStruct, Quaternion, Vector3</li>
-            <li><strong>Environment & Utilities:</strong> EnvironmentConfig, JsonConfigReader, SimDataStruct, SimControl, Logger, Spacemath (deprecated), Output (deprecated)</li>
+            <li><strong>Configuration:</strong> ConfigManager responsible for loading spacecraft definitions from JSON configuration files</li>
+            <li><strong>Simulation Control:</strong> SimControl coordinating simulation steps and data flow</li>
+            <li><strong>Environment & Utilities:</strong> EnvironmentConfig, JsonConfigReader, SimDataStruct, Logger, Spacemath (deprecated), Output (deprecated)</li>
           </ul>
+
           <p>
             The frontend, built with Qt, visualizes the lander state in real time, including
             altitude, velocity, thrust, fuel, and proper g-load. Users can interact with the
-            simulation through the cockpit interface, adjusting thrust via sliders and managing
-            the simulation without impacting backend stability.
+            simulation through the cockpit interface and select spacecraft configurations
+            before entering the simulation.
+          </p>
+
+          <p>
+            The <strong>SpacecraftSelectionPage</strong> allows users to choose between different
+            spacecraft profiles defined in the JSON configuration. The selected spacecraft
+            configuration is then forwarded to the simulation backend to initialize the
+            spacecraft model.
           </p>
         </section>
 
@@ -76,7 +97,9 @@ export default function About() {
             <li>Real-time telemetry and cockpit visualization of altitude, velocity, thrust, fuel, and g-load</li>
             <li>Thread-safe simulation loop with precise timing and Qt signal-slot integration</li>
             <li>Integrated logging system capturing backend debug output independently from the UI</li>
-            <li>Configurable parameters via JSON for physics, control, and UI settings</li>
+            <li>Configurable parameters via JSON for spacecraft and simulation settings</li>
+            <li>Multiple spacecraft configurations selectable through JSON configuration files</li>
+            <li>ConfigManager providing centralized access to spacecraft configuration data</li>
             <li>Interactive user controls with slider-based thrust adjustment and simulation management</li>
             <li>Experimental 1D thrust optimization using NLopt to minimize fuel while ensuring safe landing</li>
             <li>Adaptive Descent Controller for automated, phase-based landing guidance</li>
@@ -88,18 +111,17 @@ export default function About() {
         <section>
           <h2>Adaptive Descent Controller</h2>
           <p>
-            The Adaptive Descent Controller is a modular system that guides the spacecraft safely during the final descent.
-            It evaluates the current state of the spacecraft and dynamically adjusts thrust commands to ensure a smooth and safe landing.
+            The Adaptive Descent Controller is a modular system that guides the spacecraft safely
+            during the final descent. It evaluates the current spacecraft state and dynamically
+            adjusts thrust commands to ensure a smooth and stable landing trajectory.
           </p>
 
           <h3>Core Concepts</h3>
           <ul>
-            <li><strong>Brake Ratio:</strong> Compares the remaining altitude to the distance needed to safely decelerate. Determines how aggressively the spacecraft must slow down.</li>
-            <li><strong>Descent Phases:</strong> The controller switches between multiple phases depending on the brake ratio:
-                MODE_A (Energy Dissipation), MODE_B (Controlled Descent), MODE_C (Terminal Approach), MODE_D (Critical Braking).
-            </li>
-            <li><strong>Guidance and Control:</strong> The controller uses a combination of predictive and feedback control to follow a safe descent trajectory. It adjusts velocity targets and thrust levels adaptively based on the current phase.</li>
-            <li><strong>Characteristics:</strong> Adaptive gain scheduling, gravity compensation, thrust limits handling, and stable landing behavior across all descent phases.</li>
+            <li><strong>Brake Ratio:</strong> Compares the remaining altitude to the distance needed to safely decelerate.</li>
+            <li><strong>Descent Phases:</strong> The controller switches between multiple phases depending on the brake ratio: MODE_A (Energy Dissipation), MODE_B (Controlled Descent), MODE_C (Terminal Approach), MODE_D (Critical Braking).</li>
+            <li><strong>Guidance and Control:</strong> Uses predictive guidance combined with feedback control to maintain safe velocity targets.</li>
+            <li><strong>Characteristics:</strong> Adaptive gain scheduling, gravity compensation, thrust limits handling, and robust landing behavior.</li>
           </ul>
         </section>
 
@@ -121,8 +143,9 @@ export default function About() {
           <h2>Goals & Future Vision</h2>
           <p>
             Moonlander aims to provide a robust, extensible platform for learning and experimentation
-            in aerospace physics, spacecraft control systems, and optimization. Future directions include:
+            in aerospace physics, spacecraft control systems, and optimization.
           </p>
+
           <ul>
             <li>Extension to multi-dimensional dynamics and orbital maneuvers</li>
             <li>Advanced control experiments, including closed-loop guidance and fuel-optimal automated landing</li>
@@ -131,6 +154,7 @@ export default function About() {
             <li>Integration with additional telemetry outputs for data analysis and validation</li>
             <li>Replay and record simulation sessions for research and teaching purposes</li>
           </ul>
+
           <p>
             The overarching goal is to create a platform that is educational, research-ready,
             and supports modular UI development, accurate physics simulation, and meaningful
