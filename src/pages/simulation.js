@@ -11,10 +11,11 @@ export default function Simulation() {
         <section className="simIntro">
           <h1>Simulation</h1>
           <p>
-            The Moonlander simulation models the vertical descent of a lunar lander using
-            a modular C++ backend and a real-time Qt-based visualization frontend.
-            The current implementation demonstrates stable and reproducible
-            one-dimensional landing dynamics.
+            The Moonlander simulation began as a vertical landing model and is now evolving
+            into a modular spacecraft simulation with multi-engine propulsion, vectorized
+            thrust, and a 3D-ready backend architecture. The current implementation
+            provides a stable point-mass flight model combined with a real-time Qt-based
+            cockpit visualization frontend.
           </p>
         </section>
 
@@ -22,7 +23,8 @@ export default function Simulation() {
           <h2>Demonstration</h2>
           <p>
             The following excerpt illustrates a representative simulation run,
-            including altitude, velocity and thrust response over time.
+            including spacecraft motion, cockpit telemetry, and propulsion system
+            response over time.
           </p>
             <div className="simCard">
               <img
@@ -43,9 +45,10 @@ export default function Simulation() {
             visualization layer through a well-defined interface.
           </p>
           <ul>
-            <li>C++ physics core (state propagation and control)</li>
-            <li>Interface layer for telemetry exchange</li>
-            <li>Qt frontend for real-time visualization</li>
+            <li>C++ simulation core for spacecraft dynamics and control</li>
+            <li>Modular propulsion system with multi-engine thrust orchestration</li>
+            <li>Telemetry interface between backend worker thread and Qt frontend</li>
+            <li>Qt cockpit for real-time visualization and operator interaction</li>
           </ul>
           <a className="simButton secondary" href="/simulation/architecture">
             Explore Architecture
@@ -55,10 +58,12 @@ export default function Simulation() {
         <section className="simSection">
           <h2>Model Scope & Assumptions</h2>
           <ul>
-            <li>One-dimensional vertical motion</li>
-            <li>Constant lunar gravity</li>
-            <li>Discrete-time integration</li>
-            <li>Deterministic control input</li>
+            <li>Point-mass spacecraft model</li>
+            <li>Central lunar gravity model</li>
+            <li>Discrete-time numerical integration</li>
+            <li>Vectorized thrust and multi-engine propulsion</li>
+            <li>No rotational dynamics yet</li>
+            <li>No full 6DOF rigid-body simulation yet</li>
           </ul>
           <p>
             A detailed mathematical formulation is provided in the Mathematics section.

@@ -111,6 +111,102 @@ export default function Architecture() {
             independently, supporting a robust and flexible simulation framework.
           </p>
         </section>
+
+        <hr />
+        <section>
+          <h2>Propulsion Architecture</h2>
+          <p>
+            The propulsion subsystem has been refactored into a modular <strong>Thrust orchestrator</strong>&nbsp;
+            architecture. Instead of modeling thrust as a single scalar engine output, the system now supports
+            <strong> multiple engines</strong>, <strong>multiple tanks</strong>, and a fully
+            <strong> vectorized thrust representation</strong> suitable for future 3D spacecraft dynamics.
+          </p>
+
+          <section className="diagramSection">
+            <img
+              src={useBaseUrl('/img/architecture/thrustStructure.drawio.svg')}
+              alt="Moonlander Thrust Architecture Diagram"
+              className="archDiagram"
+            />
+          </section>
+
+          <h3>Key Components and Relationships</h3>
+          <ul>
+            <li>
+              <strong>Thrust Orchestrator:</strong> Central propulsion manager of the spacecraft. It does not
+              implement engine physics itself, but coordinates all registered engine models, updates their state,
+              aggregates their thrust vectors, and manages fuel usage across the available tanks.
+            </li>
+            <li>
+              <strong>EngineConfig:</strong> Static configuration data for a single engine. It defines the engine’s
+              identity and physical properties such as <strong>max thrust</strong>, <strong>specific impulse</strong>,
+              <strong>response dynamics</strong>, <strong>direction</strong>, and <strong>position</strong> in the
+              spacecraft body frame. Multiple <code>EngineConfig</code> instances can exist for one spacecraft.
+            </li>
+            <li>
+              <strong>ThrustState:</strong> Dynamic runtime state of an engine or propulsion element. It stores
+              values such as current thrust and target thrust, which evolve over time during the simulation.
+            </li>
+            <li>
+              <strong>FuelState:</strong> Dynamic runtime fuel data. It tracks current fuel mass, tank-related
+              values, and fuel consumption during simulation. This allows the propulsion system to support
+              multiple tanks and future engine-to-tank assignment logic.
+            </li>
+            <li>
+              <strong>iThrustModel:</strong> Abstract interface for all engine models. It defines the common
+              behavior expected by the Thrust orchestrator, such as updating thrust over time, handling target
+              commands, computing fuel consumption, and exposing the resulting thrust output.
+            </li>
+            <li>
+              <strong>BasicMainEngineModel:</strong> Concrete implementation of <code>iThrustModel</code>. It
+              currently represents the default main engine behavior and models thrust buildup, target tracking,
+              and fuel reduction using the configured engine parameters.
+            </li>
+            <li>
+              <strong>Future Engine Models:</strong> The interface-based design allows additional propulsion
+              models to be introduced later, such as attitude control thrusters, vernier engines, translation
+              thrusters, or more specialized propulsion concepts.
+            </li>
+          </ul>
+
+          <h3>Flow Summary</h3>
+          <ul>
+            <li>
+              The spacecraft configuration provides a list of <strong>EngineConfig</strong> objects and fuel tank
+              definitions.
+            </li>
+            <li>
+              The <strong>Thrust orchestrator</strong> initializes one engine model per engine configuration and
+              registers the available tanks.
+            </li>
+            <li>
+              During each simulation step, control logic or autopilot modules send target thrust commands to
+              specific engines through the orchestrator.
+            </li>
+            <li>
+              The orchestrator forwards these commands to the corresponding <strong>iThrustModel</strong>
+              implementations.
+            </li>
+            <li>
+              Each concrete engine model updates its internal <strong>ThrustState</strong> according to its
+              response model and computes the resulting thrust output.
+            </li>
+            <li>
+              Fuel consumption is computed from the engine model and applied to the corresponding
+              <strong>FuelState</strong> / tank data.
+            </li>
+            <li>
+              The orchestrator then combines all individual engine outputs into a single resulting
+              <strong> thrust vector</strong> that is passed to the spacecraft dynamics and physics layer.
+            </li>
+          </ul>
+
+          <p>
+            This propulsion architecture separates <strong>configuration</strong>, <strong>dynamic state</strong>,
+            and <strong>behavioral models</strong>. As a result, the engine system becomes significantly more
+            extensible, testable, and maintainable than a single-engine or scalar-thrust implementation.
+          </p>
+        </section>
       </main>
     </Layout>
   );

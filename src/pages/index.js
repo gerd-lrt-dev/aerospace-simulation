@@ -6,15 +6,18 @@ import '../css/hero.css';
 export default function Home() {
   return (
     <Layout
-      title="Moonlander – Lunar Lander Simulation"
-      description="Educational C++ lunar landing simulation with modular backend and Qt frontend">
+      title="Moonlander – Lunar Research Simulation Platform"
+      description="Modular C++ research platform for lunar spacecraft simulation, propulsion, guidance, and future 3D flight dynamics">
         
       <main className="hero">
         <div className="heroOverlay">
           <h1>Moonlander</h1>
           <p>
-            Educational C++ project simulating lunar landings with modular backend physics
-            and a Qt-based frontend for real-time telemetry and visualization.
+            <p>
+            Modular C++ simulation platform evolving toward a research-oriented
+            environment for lunar spacecraft dynamics, propulsion, guidance, and
+            real-time telemetry with a Qt-based cockpit frontend.
+          </p>
           </p>
           <span>Simulation · Physics · Control</span>
 
