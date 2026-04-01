@@ -74,8 +74,10 @@ export default function Simulation() {
           <h2>Stability & Validation</h2>
           <p>
             The simulation exhibits stable numerical behavior across multiple runs
-            and serves as a foundation for future extensions toward multi-dimensional
-            dynamics and closed-loop control.
+            and already incorporates a modular propulsion architecture with
+            vectorized thrust and multiple engines. It serves as the current baseline
+            for the ongoing transition toward full 3D spacecraft dynamics,
+            enhanced control systems, and extended cockpit functionality.
           </p>
         </section>
 

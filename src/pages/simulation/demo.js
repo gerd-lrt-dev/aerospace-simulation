@@ -78,7 +78,7 @@ export default function SimulationDemo() {
               src="/img/simulation/3PhasenRegler.mp4"
               controls
               className="simVideo"
-              poster="/img/simulation/Simulation_Beispiel.png"
+              poster="/img/simulation/Simulation_Beispiel2.png"
             >
               Your browser does not support the video tag.
             </video>
