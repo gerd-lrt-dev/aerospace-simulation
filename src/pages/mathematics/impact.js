@@ -1,186 +1,229 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import '../../css/mathematics.css';
+import { BlockMath, InlineMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 export default function ImpactModel() {
   return (
     <Layout
       title="Impact & Structural Integrity"
-      description="Energy-based impact model and spacecraft state transitions">
+      description="Energy-based impact and structural integrity model used in the Moonlander simulation">
 
       <main className="mathContainer">
 
         <h1>Impact & Structural Integrity Model</h1>
 
-        {/* ===========================
-            INTRODUCTION
-        ============================ */}
         <section className="mathSection">
           <p>
-            This page describes how landing impacts are evaluated in the Moonlander simulation.
-            The model connects physical impact energy with structural integrity and derives
-            discrete spacecraft states from this continuous damage representation.
+            This section describes the simplified impact and structural integrity model
+            used in the Moonlander simulation. The model evaluates touchdown events by
+            relating the vertical impact energy to a predefined safe landing reference.
           </p>
           <p>
-            The approach is intentionally simplified, focusing on clarity, robustness, and
-            extensibility rather than material-specific crash mechanics.
+            The approach is intentionally low-order and deterministic. It does not attempt
+            to model material deformation, landing gear mechanics, or detailed crash
+            dynamics. Instead, it provides a robust and extensible abstraction for
+            simulation state transitions.
           </p>
         </section>
 
         {/* ===========================
-            LEVEL 1 – ENERGY MODEL
+            Impact Energy Model
         ============================ */}
         <section className="mathSection">
-          <h2>Level 1 — Energy Model</h2>
+          <h2>Impact Energy Model</h2>
 
           <p>
-            Landing damage is evaluated using the kinetic energy of the spacecraft at the
-            moment of ground contact.
+            At touchdown, the impact severity is estimated from the kinetic energy
+            associated with the vertical impact velocity.
           </p>
 
-          <div className="mathFormula">
-            E = 1 / 2 · m · v²
-          </div>
-
-          <ul>
-            <li><strong>m</strong> — total spacecraft mass</li>
-            <li><strong>v</strong> — vertical impact velocity</li>
-          </ul>
+          <BlockMath math={`E_{impact} = \\frac{1}{2} m v_{impact}^{2}`} />
 
           <p>
-            This formulation ensures that both velocity and mass naturally influence the
-            resulting structural load.
+            Where:
+            <br />• <strong><InlineMath math={'E_{impact}'} /></strong> is the impact kinetic energy [J]
+            <br />• <strong><InlineMath math={'m'} /></strong> is the current spacecraft mass [kg]
+            <br />• <strong><InlineMath math={'v_{impact}'} /></strong> is the vertical impact velocity [m/s]
+          </p>
+
+          <p>
+            This formulation ensures that both spacecraft mass and touchdown velocity
+            contribute to the resulting impact load.
           </p>
         </section>
 
         {/* ===========================
-            REFERENCE ENERGY
+            Reference Energy
         ============================ */}
         <section className="mathSection">
-          <h3>Reference Energy (Safe Landing)</h3>
+          <h2>Reference Energy</h2>
 
           <p>
-            A reference energy is computed using a predefined maximum safe landing velocity.
-            This value represents the highest impact energy the structure can absorb without damage.
+            A reference energy is computed using the maximum safe landing velocity.
+            It represents the impact energy that the spacecraft is assumed to tolerate
+            without structural damage.
           </p>
 
-          <div className="mathFormula">
-            E<sub>ref</sub> = 1 / 2 · m · v<sub>safe</sub>²
-          </div>
+          <BlockMath math={`E_{ref} = \\frac{1}{2} m v_{safe}^{2}`} />
+
+          <p>
+            Where:
+            <br />• <strong><InlineMath math={'E_{ref}'} /></strong> is the safe reference impact energy [J]
+            <br />• <strong><InlineMath math={'v_{safe}'} /></strong> is the maximum safe vertical landing velocity [m/s]
+          </p>
         </section>
 
         {/* ===========================
-            IMPACT ENERGY
+            Damage Ratio
         ============================ */}
         <section className="mathSection">
-          <h3>Impact Energy</h3>
+          <h2>Damage Ratio</h2>
 
           <p>
-            The actual energy at touchdown is calculated from the measured impact velocity:
+            Structural loading is represented by a normalized damage ratio. This ratio
+            compares the actual impact energy to the safe reference energy.
           </p>
 
-          <div className="mathFormula">
-            E<sub>impact</sub> = 1 / 2 · m · v<sub>impact</sub>²
-          </div>
+          <BlockMath math={`D = \\frac{E_{impact}}{E_{ref}}`} />
+
+          <p>
+            Where:
+            <br />• <strong><InlineMath math={'D'} /></strong> is the normalized damage ratio [-]
+          </p>
+
+          <p>
+            A value of <InlineMath math={'D = 1'} /> corresponds to an impact at the
+            predefined safe landing limit. Values greater than one indicate that the
+            impact energy exceeds the nominal safe reference.
+          </p>
         </section>
 
         {/* ===========================
-            LEVEL 2 – INTEGRITY MODEL
+            Integrity Update
         ============================ */}
         <section className="mathSection">
-          <h2>Level 2 — Integrity Model</h2>
+          <h2>Structural Integrity Update</h2>
 
           <p>
-            Structural damage is expressed as a normalized ratio between impact energy and
-            reference energy:
+            The spacecraft structural integrity is modeled as a normalized state variable
+            in the interval <InlineMath math={'[0, 1]'} />.
           </p>
 
-          <div className="mathFormula">
-            D = E<sub>impact</sub> / E<sub>ref</sub>
-          </div>
+          <BlockMath math={`I \\in [0, 1]`} />
 
           <p>
-            The spacecraft integrity is reduced proportionally to this damage value:
+            The updated integrity value is computed by subtracting the damage ratio from
+            the previous integrity value:
           </p>
 
-          <div className="mathFormula">
-            I<sub>new</sub> = I<sub>old</sub> − D
-          </div>
+          <BlockMath math={`I_{new} = I_{old} - D`} />
 
           <p>
-            To maintain numerical stability, integrity is clamped to a physically meaningful range:
+            To avoid invalid numerical states, the resulting value is clamped to the
+            physically meaningful interval:
           </p>
 
-          <div className="mathFormula">
-            I ∈ [0, 1]
-          </div>
+          <BlockMath math={`I_{new} = \\max\\left(0,\\min\\left(1, I_{old} - D\\right)\\right)`} />
 
-          <ul>
-            <li><strong>I = 1.0</strong> — fully intact</li>
-            <li><strong>I = 0.0</strong> — complete structural failure</li>
-          </ul>
+          <p>
+            Where:
+            <br />• <strong><InlineMath math={'I = 1'} /></strong> represents a fully intact spacecraft
+            <br />• <strong><InlineMath math={'I = 0'} /></strong> represents complete structural failure
+          </p>
         </section>
 
         {/* ===========================
-            LEVEL 3 – STATE MACHINE
+            State Classification
         ============================ */}
         <section className="mathSection">
-          <h2>Level 3 — Spacecraft State Machine</h2>
+          <h2>Spacecraft State Classification</h2>
 
           <p>
-            The spacecraft state is derived deterministically from the current integrity
-            value and the vertical position of the lander.
+            The continuous integrity value is mapped to discrete spacecraft states.
+            This allows the simulation to derive operational consequences from the
+            damage model.
           </p>
 
-          <h3>Destroyed (Terminal)</h3>
-          <div className="mathFormula">
-            I ≤ 0
-          </div>
+          <h3>Destroyed</h3>
+          <BlockMath math={`I \\leq 0`} />
           <p>
-            The spacecraft is completely destroyed. This is a terminal state and the simulation ends.
+            The spacecraft has lost all structural integrity. This is treated as a
+            terminal failure state.
           </p>
 
-          <h3>Crashed (Terminal but Stable)</h3>
-          <div className="mathFormula">
-            0 &lt; I &lt; I<sub>structural</sub>
-          </div>
+          <h3>Crashed</h3>
+          <BlockMath math={`0 < I < I_{structural}`} />
           <p>
-            Structural failure occurred, but the spacecraft remains physically stable.
-            Mission continuation is no longer possible.
+            The spacecraft is not completely destroyed, but its structural integrity is
+            below the minimum required threshold. Mission continuation is no longer
+            possible.
           </p>
 
-          <h3>Landed (Successful Touchdown)</h3>
-          <div className="mathFormula">
-            z ≤ 0 ∧ I ≥ I<sub>structural</sub>
-          </div>
+          <h3>Landed</h3>
+          <BlockMath math={`z \\leq 0 \\; \\land \\; I \\geq I_{structural}`} />
           <p>
-            The spacecraft touched down successfully within structural limits.
+            The spacecraft has reached the ground while remaining above the structural
+            integrity threshold.
           </p>
 
           <h3>Operational</h3>
-          <div className="mathFormula">
-            z &gt; 0 ∧ I &gt; I<sub>structural</sub>
-          </div>
+          <BlockMath math={`z > 0 \\; \\land \\; I > I_{structural}`} />
           <p>
-            The spacecraft remains controllable. If <strong>I &lt; 1</strong>, the system is
-            considered operational but damaged.
+            The spacecraft remains above the surface and retains sufficient structural
+            integrity for continued operation.
           </p>
         </section>
 
         {/* ===========================
-            DESIGN RATIONALE
+            Model Assumptions
+        ============================ */}
+        <section className="mathSection">
+          <h2>Model Assumptions</h2>
+
+          <ul>
+            <li>Only the vertical impact velocity is considered.</li>
+            <li>The spacecraft is treated as a lumped mass during impact evaluation.</li>
+            <li>Landing gear deformation and material-specific crash mechanics are neglected.</li>
+            <li>The safe landing velocity defines the reference energy threshold.</li>
+            <li>Integrity is represented as a normalized scalar state.</li>
+          </ul>
+        </section>
+
+        {/* ===========================
+            Design Rationale
         ============================ */}
         <section className="mathSection">
           <h2>Design Rationale</h2>
+
           <p>
-            This three-layer model cleanly separates physical impact energy, structural damage,
-            and discrete system behavior. It avoids arbitrary thresholds while remaining intuitive,
-            testable, and extensible.
+            The model separates impact physics, structural degradation, and discrete
+            spacecraft state transitions. This keeps the implementation transparent and
+            suitable for real-time simulation while preserving a physically interpretable
+            relationship between touchdown velocity and vehicle damage.
           </p>
+
           <p>
-            The structure is well suited for future extensions such as multi-axis impacts,
-            component-based damage models, or material-specific absorption limits.
+            The formulation can later be extended toward multi-axis impact evaluation,
+            component-level damage, landing gear absorption models, or probabilistic
+            structural failure criteria.
           </p>
+        </section>
+
+        {/* ===========================
+            Summary
+        ============================ */}
+        <section className="mathSection">
+          <h2>Summary</h2>
+
+          <ul>
+            <li>Impact severity is estimated using vertical kinetic energy.</li>
+            <li>A safe reference energy is derived from the maximum allowed landing velocity.</li>
+            <li>Structural damage is represented by a normalized energy ratio.</li>
+            <li>Spacecraft integrity is clamped to the interval <InlineMath math={'[0,1]'} />.</li>
+            <li>Discrete spacecraft states are derived from integrity and altitude.</li>
+          </ul>
         </section>
 
       </main>

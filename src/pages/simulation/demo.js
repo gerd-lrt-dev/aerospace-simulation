@@ -6,23 +6,22 @@ export default function SimulationDemo() {
   return (
     <Layout
       title="Simulation Demonstration"
-      description="Representative cockpit view of the Moonlander simulation"
+      description="Research-oriented cockpit and telemetry interface of the Moonlander simulation"
     >
       <main className="simulationPage">
 
-        {/* Spacecraft Selection Section */}
         <section className="simSection">
-        <h1>Select Spacecraft Page</h1>
-    
-        <p className="simIntroText">
-          On this page, you can explore the key features of the Moonlander simulation.
-          First, users can select a spacecraft configuration from the available mission profiles.
-          Then, the cockpit interface provides a live demonstration of the lander's descent,
-          showing real-time telemetry, propulsion, and system status. All values are computed
-          by the underlying physics engine and updated continuously.
-        </p>
-          <div className="simCard">
+          <h1>Spacecraft Configuration</h1>
 
+          <p className="simIntroText">
+            The Moonlander simulator is designed as a research-oriented testbed for
+            descent guidance, control algorithms and propulsion system evaluation.
+            Before starting a simulation run, users select a spacecraft configuration
+            from a set of JSON-defined mission profiles. Each configuration defines
+            the physical and propulsion-related parameters used by the C++ simulation backend.
+          </p>
+
+          <div className="simCard">
             <img
               src="/img/simulation/Screenshot_Spacecraft_Selected.png"
               className="simImage"
@@ -30,112 +29,156 @@ export default function SimulationDemo() {
             />
 
             <p className="simCaption">
-              <strong>Figure 0 — Spacecraft Selection Interface.</strong>
-              Before entering the simulation cockpit, users can select a spacecraft
-              configuration from the available mission profiles.
-              Each spacecraft is defined by a JSON configuration that specifies
-              mass properties, propulsion parameters, and initial mission conditions.
+              <strong>Figure 0 — Spacecraft Selection Interface.</strong> &nbsp;
+              Spacecraft configurations are selected before entering the cockpit.
+              Each lander profile is defined externally and contains mass properties,
+              propulsion data, tank definitions, controller-relevant limits and initial
+              mission conditions.
             </p>
           </div>
-              <p className="simDescription">
-              The selection interface presents all available spacecraft defined
-              in the configuration file. The list on the left displays the available
-              spacecraft names, while the panel on the right shows the detailed
-              configuration parameters of the currently highlighted spacecraft.
-              These parameters include mass distribution, thrust limits, specific
-              impulse, initial position and velocity, and structural limits.
-            </p>
 
-            <p className="simDescription">
-              If the user does not explicitly select a spacecraft, the system automatically
-              chooses the first spacecraft defined in the JSON configuration as the default.
-              This ensures that the simulation backend always receives a valid spacecraft
-              configuration, even if no selection is made in the UI.
-            </p>
+          <p className="simDescription">
+            The selection interface separates configuration management from the simulation
+            engine. This allows new spacecraft variants, propulsion layouts or fuel tank
+            architectures to be introduced without modifying the core simulation code.
+          </p>
 
-            <p className="simDescription">
-              Once a spacecraft is selected (or the default is applied), its configuration
-              is transmitted to the simulation backend, where it initializes the physical
-              model of the lander. This design separates configuration management from
-              the simulation engine, allowing new spacecraft variants to be introduced
-              simply by updating the configuration file without modifying simulation code.
-            </p>
-        </section>
-
-        <h1>Simulation demonstration</h1>
-        <section className="simIntro">
-          <p>
-            The following videos shows the primary cockpit interface of the Moonlander
-            simulation during a representative descent run. All quantities are expressed
-            in SI units and updated in real time based on the underlying C++ physics model.
+          <p className="simDescription">
+            If no spacecraft is selected explicitly, the first configuration defined in the
+            JSON file is used as the default. This guarantees that the backend always receives
+            a valid and reproducible initialization state.
           </p>
         </section>
 
-        {/* Video Section */}
+        <section className="simIntro">
+          <h1>Simulation Demonstration</h1>
+          <p>
+            The following demonstration shows the cockpit interface during a representative
+            descent run. The interface is intended not only as a visual cockpit, but also as
+            an engineering and analysis tool for evaluating landing controllers, propulsion
+            behavior and vehicle state evolution. All displayed quantities are computed by
+            the underlying C++ physics model and updated in real time.
+          </p>
+        </section>
+
         <section className="simSection">
           <div className="simCard">
             <video
-              src="/img/simulation/3PhasenRegler.mp4"
+              src="/img/simulation/3DDemo.mp4"
               controls
               className="simVideo"
-              poster="/img/simulation/Simulation_Beispiel2.png"
+              poster="/img/simulation/Simulation_Beispiel3.png"
             >
               Your browser does not support the video tag.
             </video>
+
             <p className="simCaption">
-              <strong>Figure 1 — 1500m Descent Landing Demonstration.</strong> A complete descent
-              from 1500 meters, showing the lander's response to the Adaptive Descent Controller
-              and thrust adjustments in real time.
+              <strong>Figure 1 — 1500 m Descent Demonstration.</strong>
+              Representative descent from 1500 meters using an adaptive descent controller.
+              The cockpit displays navigation state, fuel consumption, propulsion activity,
+              controller output and spacecraft status in real time.
             </p>
           </div>
         </section>
 
         <section className="simSection">
-          <h2>Interface Overview</h2>
+          <h2>Research-Oriented Cockpit Interface</h2>
+
+          <p className="simDescription">
+            The cockpit interface has been restructured to support a more scientific workflow.
+            Instead of only presenting a simplified landing animation, the interface now exposes
+            the vehicle state, propulsion state and controller-relevant telemetry in a way that
+            supports debugging, controller comparison and future data export.
+          </p>
 
           <div className="interfaceBlock">
-            <h3>NAV — Navigation</h3>
+            <h3>NAV — Navigation State</h3>
             <p>
-              Displays the primary kinematic state of the lander, including simulation time,
-              altitude above ground level, vertical velocity and horizontal velocity.
+              The navigation section displays the lander's current kinematic state in the
+              local navigation frame. The interface is prepared around the ENU convention:
+              East, North and Up. This makes the displayed state directly usable for landing
+              analysis, lateral drift evaluation and controller debugging.
             </p>
           </div>
 
           <div className="interfaceBlock">
-            <h3>FUEL — Propellant State</h3>
+            <h3>FUEL — Propellant and Tank State</h3>
             <p>
-              Shows the remaining propellant mass and the current mass flow rate.
-              Fuel consumption directly influences thrust availability and mission outcome.
+              The fuel section has been extended from a single global fuel display to a
+              dynamic tank-based representation. Each configured fuel tank can be displayed
+              individually with its name, role, remaining propellant mass and fill ratio.
+              A visual fill bar shows the remaining propellant relative to the tank capacity.
+            </p>
+            <p>
+              This supports spacecraft configurations with multiple tanks, such as separate
+              main engine and RCS propellant reservoirs, and makes fuel usage easier to analyze
+              during controller tests.
             </p>
           </div>
 
           <div className="interfaceBlock">
-            <h3>LANDING VIEW — Descent Visualization</h3>
+            <h3>LANDING VIEW — 2.5D Situational Visualization</h3>
             <p>
-              Provides a visual representation of the lander during descent. Below 1000 meters
-              above ground level, the lander visibly approaches the surface. The autopilot can be activated by clicking on the autopilot button. Thrust can be
-              controlled via a continuous slider (0–100%), and the simulation can be started,
-              paused or stopped at any time.
+              The landing visualization has been upgraded from a simple one-dimensional
+              altitude display to a lightweight 2.5D situational view. It shows the lander
+              in a local ENU frame using a side view for vertical motion and a top view for
+              horizontal drift and target-relative motion.
+            </p>
+            <p>
+              The view includes trajectory history, velocity vectors, target reference and
+              yaw indication. This provides a clearer interpretation of how the vehicle moves
+              through space without requiring full 3D rendering.
             </p>
           </div>
 
           <div className="interfaceBlock">
-            <h3>ENGINE — Propulsion & Loads</h3>
+            <h3>ENGINE — Propulsion and Loads</h3>
             <p>
-              Displays the current thrust output and the user-defined target thrust, both
-              expressed in Newton. The resulting acceleration and g-load acting on the lander
-              are computed internally and updated in real time.
+              The propulsion section displays thrust-related telemetry and vehicle loads.
+              The interface is being prepared for more complex propulsion systems where
+              multiple thrusters or tank connections may contribute to the resulting force
+              and torque acting on the lander.
             </p>
           </div>
 
           <div className="interfaceBlock">
-            <h3>STATUS — System State</h3>
+            <h3>CONTROL — Autopilot and Controller Output</h3>
             <p>
-              Reports discrete system states such as <em>OPERATIONAL</em>&nbsp;, <em>LANDED</em>&nbsp; or&nbsp;
-              <em>DESTROYED</em>, providing an explicit overview of the simulation state machine.
-              It also reports in wheter the autopilot is activated or not plus the current information provided by autopilot such as the activated mode.
+              The cockpit reports whether the autopilot is active and displays controller
+              output such as active mode information. This is especially relevant for testing
+              different descent controllers and comparing their behavior under identical
+              simulation conditions.
             </p>
           </div>
+
+          <div className="interfaceBlock">
+            <h3>STATUS — Spacecraft State Machine</h3>
+            <p>
+              The status section reports discrete spacecraft states such as
+              <em> OPERATIONAL</em>, <em> LANDED</em>, <em> CRASHED</em> or
+              <em> DESTROYED</em>. These states provide a clear interpretation of the
+              simulation outcome and can be used later for automated evaluation of landing
+              performance.
+            </p>
+          </div>
+        </section>
+
+        <section className="simSection">
+          <h2>Scientific Use Case</h2>
+
+          <p className="simDescription">
+            The simulator is intended to support the development and evaluation of lunar
+            landing control strategies. The cockpit interface therefore focuses on telemetry
+            visibility, reproducibility and system observability rather than visual realism
+            alone.
+          </p>
+
+          <p className="simDescription">
+            Planned extensions include structured simulation data export, controller comparison
+            workflows and plotting tools for post-run analysis. Relevant quantities include
+            altitude, vertical velocity, lateral drift, fuel consumption, thrust commands,
+            tank usage and final touchdown conditions.
+          </p>
         </section>
 
       </main>
