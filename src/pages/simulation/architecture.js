@@ -15,17 +15,19 @@ export default function Architecture() {
         <section>
           <h2>System Overview</h2>
           <p>
-            Moonlander is structured as a modular spacecraft simulation platform with
-            clearly separated frontend, backend, configuration, control, physics,
-            propulsion, and telemetry layers. The architecture is designed to support
-            ongoing development from the current three-dimensional translational
-            simulation toward future 6-DOF spacecraft dynamics.
+            Moonlander is structured as a modular spacecraft simulation platform
+            with separated frontend, backend, configuration, control, physics,
+            propulsion, and telemetry layers. The current implementation supports
+            three-dimensional translational spacecraft motion and is being
+            developed toward a research-capable simulation framework for future
+            6-DOF dynamics.
           </p>
           <p>
-            The system separates user interaction, command generation, propulsion
-            modeling, numerical state propagation, and telemetry output. This allows
-            individual components to be extended or replaced without restructuring the
-            complete simulation framework.
+            The architecture separates user interaction, command generation,
+            propulsion modeling, numerical state propagation, telemetry
+            generation, and visualization. This enables individual subsystems to
+            be extended, validated, or replaced without restructuring the entire
+            simulation.
           </p>
         </section>
 
@@ -41,63 +43,62 @@ export default function Architecture() {
           <h2>Component Descriptions</h2>
           <ul>
             <li>
-              <strong>Frontend / Cockpit:</strong> Qt-based user interface for telemetry
-              display, spacecraft selection, cockpit visualization, and manual operator
-              interaction.
+              <strong>Frontend / Cockpit:</strong> Qt-based user interface for
+              telemetry display, spacecraft selection, cockpit visualization,
+              manual operator input, and presentation-oriented simulation
+              feedback.
             </li>
             <li>
-              <strong>InputMapper:</strong> Frontend-side input processing component that
-              maps keyboard input, and later controller input, into structured flight
-              commands for main engine and RCS control.
+              <strong>InputMapper:</strong> Frontend-side input processing class
+              that maps keyboard input, and later controller input, into a
+              structured <code>FlightCommand</code>.
             </li>
             <li>
-              <strong>SimulationWorker:</strong> Dedicated worker-thread component that
-              executes simulation steps outside the UI thread and provides safe data
-              exchange between frontend and backend.
+              <strong>FlightCommand:</strong> Frontend command structure used as
+              a high-level input contract between input devices and the
+              simulation command path. It collects main engine, translational
+              RCS, rotational RCS, stabilization, and assisted-control commands.
             </li>
             <li>
-              <strong>SimControl:</strong> Central simulation coordinator responsible for
-              simulation flow, command forwarding, parameter validation, and interaction
-              with the spacecraft object.
+              <strong>SimulationWorker:</strong> Worker-thread component that
+              executes simulation steps outside the UI thread and exchanges data
+              between frontend and backend through the current Qt signal-slot
+              interface.
             </li>
             <li>
-              <strong>Backend / Simulation Core:</strong> C++ simulation layer for physics,
-              propulsion, control, state propagation, telemetry generation, and future
-              research-oriented model extensions.
+              <strong>SimControl:</strong> Central simulation coordinator
+              responsible for simulation flow, command forwarding, parameter
+              validation, and interaction with the spacecraft instance.
             </li>
             <li>
-              <strong>Spacecraft:</strong> Owns the physical spacecraft state, including
-              position, velocity, mass properties, propulsion state, and dynamic quantities
-              required for force-based simulation.
+              <strong>Backend / Simulation Core:</strong> C++ simulation layer
+              containing spacecraft state propagation, physics models,
+              propulsion models, control logic, sensor models, optimization
+              components, and telemetry generation.
             </li>
             <li>
-              <strong>Physics and Integrators:</strong> Modular interfaces and
-              implementations for force modeling and numerical propagation, including
-              IPhysicsModel, BasicMoonGravity, Physics, IIntegrator, and EulerIntegrator.
+              <strong>Spacecraft:</strong> Owns the physical spacecraft state,
+              including position, velocity, mass properties, propulsion state,
+              integrity state, and dynamic quantities required for force-based
+              simulation.
             </li>
             <li>
-              <strong>Control and Automation:</strong> Includes manual command arbitration,
-              controller interfaces, PD-based velocity control, and the Adaptive Descent
-              Controller for automated landing guidance.
+              <strong>Configuration / JSON:</strong> External configuration
+              layer for spacecraft mass properties, initial conditions, fuel
+              tanks, main engines, RCS engines, directions, positions, and
+              engine-to-tank assignment.
             </li>
             <li>
-              <strong>Propulsion:</strong> Multi-engine propulsion architecture based on a
-              central Thrust Orchestrator, engine-specific models, thrust states, fuel tanks,
-              and vectorized thrust aggregation.
+              <strong>Frontend Telemetry DTOs:</strong> Frontend-side telemetry
+              structures such as <code>RCSCockpitTelemetry</code> represent
+              reduced cockpit data independently from backend domain structs.
+              This is the first step toward replacing direct frontend usage of
+              backend structs.
             </li>
             <li>
-              <strong>Configuration / JSON:</strong> External spacecraft and simulation
-              configuration layer for mass properties, tanks, engines, initial states, and
-              simulation parameters.
-            </li>
-            <li>
-              <strong>Backend Structs:</strong> Standardized data containers for state
-              vectors, spacecraft state, simulation output, engine states, fuel tanks, and
-              environment configuration.
-            </li>
-            <li>
-              <strong>Logger:</strong> Backend logging component that captures diagnostic
-              output independently of the user interface.
+              <strong>Future Interface Wrapper:</strong> Issue D19 introduces the
+              required wrapper layer to translate backend domain data into
+              frontend-facing DTOs and later ROS messages.
             </li>
           </ul>
         </section>
@@ -107,15 +108,11 @@ export default function Architecture() {
         <section>
           <h2>Physics Architecture</h2>
           <p>
-            The physics architecture is centered around a modular Physics orchestrator.
-            This component coordinates physics models, integrators, controller outputs,
-            autopilot logic, and sensor feedback without embedding all physical models
-            directly into a single monolithic class.
-          </p>
-          <p>
-            The current model scope focuses on three-dimensional translational spacecraft
-            dynamics. Rotational dynamics and full rigid-body 6-DOF propagation are planned
-            future extensions.
+            The physics architecture is centered around modular force models,
+            numerical integration, sensor feedback, and control components. The
+            current scope focuses on three-dimensional translational dynamics.
+            Rotational dynamics and full rigid-body 6-DOF propagation are
+            planned future extensions.
           </p>
 
           <section className="diagramSection">
@@ -129,72 +126,63 @@ export default function Architecture() {
           <h3>Key Components and Relationships</h3>
           <ul>
             <li>
-              <strong>Physics Orchestrator:</strong> Central coordination layer for
-              physics-related simulation tasks. It delegates computations to the active
-              physics model, integrator, control modules, and sensor components.
+              <strong>IPhysicsModel:</strong> Abstract interface for physical
+              force or acceleration models.
             </li>
             <li>
-              <strong>IPhysicsModel:</strong> Abstract interface for physical force models.
-              Concrete implementations can be exchanged to represent different
-              environmental or force-model assumptions.
+              <strong>BasicMoonGravity:</strong> Current lunar central-body
+              gravity model used to compute gravitational acceleration.
             </li>
             <li>
-              <strong>BasicMoonGravity:</strong> Current lunar gravity model used to compute
-              gravitational acceleration acting on the spacecraft.
+              <strong>IIntegrator:</strong> Abstract numerical integration
+              interface used to propagate spacecraft states.
             </li>
             <li>
-              <strong>IIntegrator:</strong> Abstract numerical integration interface used to
-              propagate the spacecraft state over time.
+              <strong>EulerIntegrator:</strong> Current discrete-time
+              integration implementation.
             </li>
             <li>
-              <strong>EulerIntegrator:</strong> Current integration implementation for
-              discrete-time propagation of the translational spacecraft state.
+              <strong>Dynamics:</strong> Dynamics component used to combine
+              forces, accelerations, and state propagation.
             </li>
             <li>
-              <strong>IController:</strong> Interface for feedback control modules that
-              compute control commands from the current spacecraft state.
+              <strong>IController:</strong> Interface for feedback control
+              modules.
             </li>
             <li>
-              <strong>PD Controller:</strong> Velocity-control component used to track
-              target velocities with gravity compensation and thrust-limit handling.
+              <strong>PD Controller:</strong> Velocity-control component used
+              for descent control and target tracking.
             </li>
             <li>
-              <strong>IAutopilot:</strong> Interface for automated guidance and control
-              logic.
+              <strong>IAutopilot:</strong> Interface for automated guidance and
+              control logic.
             </li>
             <li>
-              <strong>Adaptive Descent Controller:</strong> Energy-based landing controller
-              using brake-ratio-guided mode switching for phase-dependent descent behavior.
+              <strong>Adaptive Descent Controller:</strong> Energy-based landing
+              controller using brake-ratio-guided mode switching and adaptive
+              gain scheduling.
             </li>
             <li>
-              <strong>BasicRCSControlModel:</strong> Planned RCS control model responsible
-              for translating RCS-related flight commands into suitable thruster commands.
-              This component is currently under construction and will provide the control
-              connection between commanded translational inputs and RCS engine behavior.
+              <strong>InputArbiter:</strong> Control arbitration component that
+              separates or prioritizes manual input and automated control
+              commands.
             </li>
             <li>
-              <strong>ISensor / SensorModel:</strong> Sensor abstraction and implementation
-              used to compute telemetry quantities such as g-load and provide feedback to
-              higher-level control logic.
+              <strong>ISensor / SensorModel:</strong> Sensor abstraction and
+              implementation used to compute telemetry quantities such as
+              g-load and provide feedback for control and visualization.
             </li>
           </ul>
 
           <h3>Flow Summary</h3>
           <ul>
-            <li>The Physics orchestrator receives the current spacecraft state and active commands.</li>
-            <li>Physics models compute environmental forces such as lunar gravity.</li>
-            <li>Controllers and automation modules compute guidance or control commands.</li>
-            <li>The BasicRCSControlModel will map RCS commands to thruster-level behavior once completed.</li>
-            <li>The propulsion layer provides thrust forces to the dynamics model.</li>
-            <li>The integrator advances the spacecraft state in discrete simulation steps.</li>
-            <li>Sensors compute feedback and telemetry for control and visualization.</li>
+            <li>The spacecraft provides the current physical state.</li>
+            <li>Physics models compute environmental acceleration such as lunar gravity.</li>
+            <li>Control and automation modules compute guidance or command outputs.</li>
+            <li>The propulsion layer computes thrust forces from engine states.</li>
+            <li>The dynamics and integrator components propagate the spacecraft state.</li>
+            <li>Sensor models generate telemetry for feedback and frontend visualization.</li>
           </ul>
-
-          <p>
-            This structure supports systematic model development by separating physical
-            assumptions, numerical propagation, control logic, and sensor feedback into
-            independent components.
-          </p>
         </section>
 
         <hr />
@@ -202,14 +190,15 @@ export default function Architecture() {
         <section>
           <h2>Propulsion Architecture</h2>
           <p>
-            The propulsion subsystem has been refactored into a modular Thrust Orchestrator
-            architecture. Instead of treating propulsion as a single scalar output, the
-            system now supports multiple engines, multiple tanks, engine-specific state
-            handling, and vectorized thrust representation.
+            The propulsion subsystem is built around a central Thrust
+            Orchestrator. Instead of treating propulsion as a single scalar
+            output, the system supports multiple engines, multiple tanks,
+            engine-specific runtime states, RCS allocation, and vectorized thrust
+            aggregation.
           </p>
           <p>
-            This design allows the main engine and RCS thrusters to be modeled separately,
-            while still exposing a unified thrust interface to the spacecraft dynamics.
+            The main engine and RCS thrusters are modeled separately, but expose
+            a common interface through <code>IThrustModel</code>.
           </p>
 
           <section className="diagramSection">
@@ -223,75 +212,77 @@ export default function Architecture() {
           <h3>Key Components and Relationships</h3>
           <ul>
             <li>
-              <strong>Thrust Orchestrator:</strong> Central propulsion manager of the
-              spacecraft. It coordinates registered engine models, forwards commands,
-              updates engine states, manages fuel usage, and aggregates individual engine
-              outputs into a resulting thrust vector.
+              <strong>Thrust Orchestrator:</strong> Central propulsion manager.
+              It registers engine models, forwards commands, updates engine
+              states, computes fuel usage, and aggregates individual engine
+              thrust into resulting force vectors.
             </li>
             <li>
-              <strong>IThrustModel:</strong> Abstract interface for propulsion models. It
-              defines common behavior such as command handling, thrust-state update,
-              fuel-consumption calculation, and thrust-output access.
+              <strong>IThrustModel:</strong> Abstract propulsion interface for
+              main engines and RCS thrusters. It defines common access to engine
+              identity, command input, thrust output, direction, fuel
+              consumption, and tank assignment.
             </li>
             <li>
-              <strong>BasicMainEngineModel:</strong> Concrete main engine implementation.
-              It models scalar thrust magnitude, target tracking, response dynamics, and
-              fuel consumption based on the configured engine parameters.
+              <strong>BasicMainEngineModel:</strong> Implemented main engine
+              model. It represents the main engine as scalar thrust magnitude
+              with response dynamics, target tracking, direction handling, and
+              propellant consumption.
             </li>
             <li>
-              <strong>BasicRCSModel:</strong> Planned RCS thruster model for discrete,
-              vector-based translational control. The model will represent RCS behavior
-              separately from the main engine and is intended to support future extensions
-              toward attitude and 6-DOF modeling.
+              <strong>BasicRCSModel:</strong> Implemented low-order model of one
+              individual RCS thruster. It represents a binary valve-controlled
+              actuator with command delay, first-order rise and decay dynamics,
+              scalar thrust output, and propellant consumption.
             </li>
             <li>
-              <strong>EngineConfig:</strong> Static configuration data for each engine,
-              including identifier, name, type, controlled axis, tank assignment, maximum
-              thrust, specific impulse, response parameters, thrust direction, and mounting
-              position.
+              <strong>RCSControlAllocator:</strong> Allocation helper that maps
+              axis-based RCS vector commands to individual thruster commands.
+              The vector command determines which thruster direction is required;
+              the individual thruster receives its local command.
             </li>
             <li>
-              <strong>EngineType:</strong> Type-safe selector used to query either the total
-              propulsion output or a specific subsystem such as the main engine or RCS.
+              <strong>EngineConfig:</strong> Static configuration for main
+              engines, including identity, tank assignment, thrust parameters,
+              response parameters, direction, and mounting position.
             </li>
             <li>
-              <strong>ME_ThrustState:</strong> Dynamic main engine state. The primary thrust
-              quantity is represented as a scalar magnitude, while the engine direction is
-              handled separately to derive a physical thrust vector.
+              <strong>RCSEngineConfig:</strong> Static configuration for RCS
+              thrusters, including identity, axis assignment, tank assignment,
+              nominal thrust, command delay, rise and decay time constants,
+              direction, and mounting position.
             </li>
             <li>
-              <strong>RCS_ThrustState:</strong> Dynamic RCS state. RCS commands and thrust
-              quantities are represented as Vector3 values because translational RCS control
-              acts along multiple axes.
+              <strong>ME_ThrustState:</strong> Runtime state of the main engine.
+              The main thrust value is represented as a scalar magnitude, with
+              direction stored separately for vector force construction.
             </li>
             <li>
-              <strong>FuelTank:</strong> Static and dynamic tank representation used to
-              assign fuel resources to propulsion models and track remaining fuel mass.
+              <strong>RCS_ThrustState:</strong> Runtime state of one individual
+              RCS thruster. It contains metadata, scalar current thrust, scalar
+              target thrust, normalized target command, actuator state, and
+              thrust direction.
             </li>
             <li>
-              <strong>FuelState:</strong> Runtime fuel data used to calculate and apply
-              engine-specific mass flow during simulation.
+              <strong>FuelTank:</strong> Tank representation used to assign and
+              track fuel resources.
+            </li>
+            <li>
+              <strong>FuelState:</strong> Runtime fuel state used by engine
+              models to compute and apply mass flow.
             </li>
           </ul>
 
           <h3>Flow Summary</h3>
           <ul>
-            <li>The JSON spacecraft configuration defines engines, tanks, directions, positions, and engine-to-tank assignments.</li>
-            <li>The Thrust Orchestrator initializes propulsion models from the provided EngineConfig objects.</li>
-            <li>Main engine and RCS commands are received through separate command paths.</li>
-            <li>The main engine model updates scalar thrust magnitude using its response model.</li>
-            <li>The RCS model receives vector-based commands for translational control.</li>
-            <li>Each engine model computes thrust output and fuel consumption according to its own state and configuration.</li>
-            <li>The Thrust Orchestrator aggregates individual thrust contributions into a total thrust vector.</li>
-            <li>The resulting propulsion force is passed to the spacecraft dynamics model.</li>
+            <li>The JSON spacecraft configuration defines tanks, main engines, and RCS engines.</li>
+            <li>The Thrust Orchestrator initializes one engine model per configured engine.</li>
+            <li>Main engine commands are forwarded to the main engine model.</li>
+            <li>RCS vector commands are mapped by the RCSControlAllocator to individual RCS thruster commands.</li>
+            <li>Each engine model updates its own actuator state and fuel consumption.</li>
+            <li>The Thrust Orchestrator combines scalar engine outputs with engine directions.</li>
+            <li>The aggregated thrust vector is passed to the spacecraft dynamics model.</li>
           </ul>
-
-          <p>
-            The propulsion layer explicitly separates configuration, command input,
-            dynamic state, actuator behavior, and physical thrust output. This makes the
-            subsystem extensible, testable, and suitable for future research-oriented
-            propulsion and control experiments.
-          </p>
         </section>
 
         <hr />
@@ -299,41 +290,87 @@ export default function Architecture() {
         <section>
           <h2>Command and Input Flow</h2>
           <p>
-            Manual control input is processed separately from the physical propulsion
-            models. The frontend InputMapper converts operator input into structured
-            flight commands, while backend components decide how those commands affect
-            engine states and spacecraft dynamics.
+            Manual control input is processed separately from physical engine
+            behavior. The frontend does not directly apply forces. Instead,
+            operator input is converted into a command object, routed through the
+            simulation control path, mapped to engine commands, and only then
+            translated into physical thrust by propulsion models.
           </p>
 
           <h3>Current Command Path</h3>
           <ul>
+            <li>Keyboard input is captured by the cockpit frontend.</li>
+            <li>The InputMapper converts key states into a FlightCommand.</li>
+            <li>The command is forwarded through the current Qt signal-slot interface.</li>
+            <li>SimControl and Spacecraft forward propulsion-relevant commands to the Thrust Orchestrator.</li>
+            <li>The Thrust Orchestrator separates main engine and RCS commands.</li>
+            <li>RCS commands are allocated to individual thrusters by the RCSControlAllocator.</li>
+            <li>Engine models update actuator state, thrust output, and fuel consumption.</li>
+            <li>The resulting thrust vector is used by the dynamics layer in the next simulation step.</li>
+          </ul>
+        </section>
+
+        <hr />
+
+        <section>
+          <h2>Telemetry and Frontend Data Boundary</h2>
+          <p>
+            The current implementation still uses some backend structs in the
+            frontend, for example fuel tank and simulation data containers. This
+            is recognized as an intermediate state and will be refactored.
+          </p>
+          <p>
+            The target architecture introduces a strict boundary between backend
+            domain models and frontend telemetry models. Backend structs describe
+            simulation-internal state, while frontend DTOs describe only the data
+            required for visualization and interaction.
+          </p>
+
+          <h3>Current Transition State</h3>
+          <ul>
             <li>
-              Keyboard input is captured in the cockpit frontend.
+              <strong>Backend domain structs:</strong> Used internally for
+              spacecraft state, thrust state, fuel state, configuration, and
+              simulation data.
             </li>
             <li>
-              The InputMapper converts key states into main engine or RCS flight commands.
+              <strong>Frontend datastructs:</strong> Used for cockpit-specific
+              telemetry such as <code>RCSCockpitTelemetry</code>.
             </li>
             <li>
-              Commands are forwarded through the Qt signal-slot interface to the simulation backend.
-            </li>
-            <li>
-              SimControl and the spacecraft backend forward propulsion-related commands to the Thrust Orchestrator.
-            </li>
-            <li>
-              The Thrust Orchestrator updates the corresponding engine model or thrust state.
-            </li>
-            <li>
-              The resulting thrust vector is used by the dynamics layer during the next simulation step.
+              <strong>Issue D19 Wrapper:</strong> Planned wrapper layer that will
+              translate backend structs into frontend DTOs and later ROS message
+              contracts.
             </li>
           </ul>
 
+          <h3>Target Direction</h3>
+          <ul>
+            <li>The frontend shall not depend on backend domain structs.</li>
+            <li>The backend shall not depend on Qt frontend classes.</li>
+            <li>Telemetry shall be transferred through explicit DTOs or ROS messages.</li>
+            <li>The cockpit frontend shall be replaceable by another frontend without changing backend simulation logic.</li>
+            <li>ROS will become the long-term communication interface between simulation backend and external consumers.</li>
+          </ul>
+        </section>
+
+        <hr />
+
+        <section>
+          <h2>Optimization Components</h2>
           <p>
-            This separation is important because user input does not directly modify
-            physical forces. Instead, input is transformed into commands, commands update
-            actuator states, and actuator states generate physical thrust. This distinction
-            supports realistic modeling and future extension to controller input,
-            autopilot commands, and actuator dynamics.
+            The backend contains experimental optimization components based on
+            NLopt. These components are currently used for thrust optimization
+            experiments and are separated from the real-time control and
+            propulsion path.
           </p>
+
+          <ul>
+            <li><strong>OptimizationModelParams:</strong> Parameter container for optimization runs.</li>
+            <li><strong>OptimizationStruct:</strong> Data structure for optimization state and results.</li>
+            <li><strong>ThrustOptimizationProblem:</strong> Problem formulation for thrust optimization.</li>
+            <li><strong>ThrustOptimizer:</strong> Optimization driver using NLopt.</li>
+          </ul>
         </section>
 
         <hr />
@@ -342,27 +379,39 @@ export default function Architecture() {
           <h2>Architectural Design Principles</h2>
           <ul>
             <li>
-              <strong>Separation of Concerns:</strong> User input, command processing,
-              propulsion modeling, physics propagation, and visualization are handled by
-              distinct components.
+              <strong>Separation of Concerns:</strong> Input handling, command
+              routing, control, propulsion, physics, telemetry, and visualization
+              are separated into distinct components.
             </li>
             <li>
-              <strong>Explicit State Representation:</strong> Runtime states such as
-              ME_ThrustState and RCS_ThrustState distinguish commanded values from actual
-              actuator output.
+              <strong>Interface-Based Extensibility:</strong> Physics, sensors,
+              controllers, autopilots, integrators, and thrust models are exposed
+              through interfaces where appropriate.
             </li>
             <li>
-              <strong>Vector-Based Dynamics:</strong> Forces are represented as Vector3
-              quantities, enabling three-dimensional translational dynamics and future
-              6-DOF extensions.
+              <strong>Configuration-Driven Setup:</strong> Spacecraft engines,
+              tanks, mass properties, and initial conditions are loaded from
+              external configuration.
             </li>
             <li>
-              <strong>Configuration-Driven Setup:</strong> Spacecraft engines, tanks, and
-              initial properties are loaded from external JSON definitions.
+              <strong>Explicit Runtime State:</strong> Engine states,
+              spacecraft states, telemetry states, and fuel states are modeled
+              explicitly.
             </li>
             <li>
-              <strong>Interface-Based Extensibility:</strong> Physics, control, sensor,
-              and propulsion models are accessed through abstract interfaces where possible.
+              <strong>Vector-Based Dynamics:</strong> Propulsion output and
+              motion propagation use vector quantities to support
+              three-dimensional dynamics and future 6-DOF extension.
+            </li>
+            <li>
+              <strong>Frontend/Backend Decoupling:</strong> Direct dependency of
+              the frontend on backend domain structs is temporary and will be
+              replaced by DTO and ROS-based communication layers.
+            </li>
+            <li>
+              <strong>Research Orientation:</strong> The system is designed for
+              reproducible simulation runs, telemetry export, model validation,
+              and future autonomous landing research campaigns.
             </li>
           </ul>
         </section>

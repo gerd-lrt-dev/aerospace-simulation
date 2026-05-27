@@ -11,127 +11,450 @@ export default function PhysicsModel() {
       description="Mathematical and physical motion model used in the Moonlander simulation">
 
       <main className="mathContainer">
+
         <h1>Physics & Motion Model</h1>
 
         <section className="mathSection">
           <p>
-            This section describes the physical motion model used in the Moonlander simulation.
-            It covers gravitational modeling, thrust-induced acceleration, numerical integration
-            of motion, and the computation of experienced g-loads.
+            This section describes the translational motion model used in the
+            Moonlander simulation framework. The implemented model combines
+            Newtonian gravitation, thrust-induced acceleration, and discrete-time
+            numerical integration to propagate spacecraft motion.
+          </p>
+
+          <p>
+            The current implementation focuses on computational efficiency,
+            numerical robustness, and deterministic reproducibility for
+            real-time simulation and autonomous landing research.
           </p>
         </section>
 
-        {/* ============================
-            Gravitational Model
-        ============================ */}
+        <hr />
+
+        {/* ========================================================= */}
+        {/* GRAVITY DERIVATION */}
+        {/* ========================================================= */}
+
+        <section className="mathSection">
+          <h2>Origin of the Lunar Gravity Model</h2>
+
+          <p>
+            The gravitational acceleration model is derived from Newton's law
+            of universal gravitation combined with Newton's second law of motion.
+          </p>
+
+          <p>
+            Newton's law of gravitation states that two masses attract each
+            other with the force:
+          </p>
+
+          <BlockMath
+            math={`
+              F_G
+              =
+              G
+              \\frac{m_1m_2}{r^2}
+            `}
+          />
+
+          <p>
+            Where:
+            <br />
+            • <strong><InlineMath math={'F_G'} /></strong> is the gravitational force [N]
+            <br />
+            • <strong><InlineMath math={'G'} /></strong> is the universal gravitational constant
+            <br />
+            • <strong><InlineMath math={'m_1,m_2'} /></strong> are the interacting masses [kg]
+            <br />
+            • <strong><InlineMath math={'r'} /></strong> is the distance between both masses [m]
+          </p>
+
+          <p>
+            Using Newton's second law:
+          </p>
+
+          <BlockMath math={`F=ma`} />
+
+          <p>
+            and solving for acceleration yields:
+          </p>
+
+          <BlockMath
+            math={`
+              a
+              =
+              G
+              \\frac{M}{r^2}
+            `}
+          />
+
+          <p>
+            Since celestial mechanics frequently uses the combined quantity:
+          </p>
+
+          <BlockMath math={`\\mu = GM`} />
+
+          <p>
+            the gravitational acceleration becomes:
+          </p>
+
+          <BlockMath
+            math={`
+              a
+              =
+              \\frac{\\mu}{r^2}
+            `}
+          />
+
+          <p>
+            This expression describes only the scalar magnitude of the
+            gravitational acceleration.
+          </p>
+
+          <p>
+            To obtain the full vector acceleration directed toward the lunar
+            center, the normalized position vector is introduced:
+          </p>
+
+          <BlockMath
+            math={`
+              \\hat{\\mathbf{r}}
+              =
+              \\frac{\\mathbf{r}}{||\\mathbf{r}||}
+            `}
+          />
+
+          <p>
+            The resulting vector formulation becomes:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{a}_{grav}
+              =
+              -
+              \\frac{\\mu}{||\\mathbf{r}||^3}
+              \\mathbf{r}
+            `}
+          />
+
+          <p>
+            The negative sign indicates that the gravitational acceleration
+            always points toward the center of the Moon.
+          </p>
+        </section>
+
+        <hr />
+
+        {/* ========================================================= */}
+        {/* LUNAR GRAVITY */}
+        {/* ========================================================= */}
+
         <section className="mathSection">
           <h2>Lunar Gravity Model</h2>
 
           <p>
-            The gravitational acceleration is modeled as a radial force pointing toward
-            the center of the Moon. Its magnitude decreases with the square of the distance
-            from the lunar center.<br/>
-            From orbital mechanics follows:
+            The Moonlander simulation currently uses a central-body gravity
+            model based on Newtonian point-mass gravitation.
           </p>
 
-          <BlockMath math={`\\vec{a}_{grav} = - \\frac{\\mu}{||\\vec{r}||³} \\vec{r}`} />
-          Or rather:
-          <BlockMath math={`\\vec{a}_{grav} = - \\frac{\\mu}{||\\vec{r}||2}`} />
+          <p>
+            The gravitational acceleration acting on the spacecraft is computed
+            as:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{a}_{grav}
+              =
+              -
+              \\frac{\\mu}{||\\mathbf{r}||^3}
+              \\mathbf{r}
+            `}
+          />
 
           <p>
             Where:
-            <br />• <strong><InlineMath math={'\\vec{r}'} /></strong> is the spacecraft position vector
-            <br />• <strong><InlineMath math={'||\\vec{r}||'} /></strong>distance from the lunar center
-            <br />• <strong><InlineMath math={'\\mu'} /></strong> is the lunar gravitational constant
+            <br />
+            • <strong><InlineMath math={'\\mathbf{a}_{grav}'} /></strong> is the gravitational acceleration vector [m/s²]
+            <br />
+            • <strong><InlineMath math={'\\mu'} /></strong> is the lunar gravitational parameter [m³/s²]
+            <br />
+            • <strong><InlineMath math={'\\mathbf{r}'} /></strong> is the spacecraft position vector [m]
+            <br />
+            • <strong><InlineMath math={'||\\mathbf{r}||'} /></strong> is the spacecraft distance from the lunar center [m]
+          </p>
+
+          <p>
+            This formulation naturally produces the inverse-square dependence
+            of gravity while preserving the correct radial acceleration
+            direction.
           </p>
         </section>
 
-        {/* ============================
-            Acceleration Model
-        ============================ */}
-          <section className="mathSection">
+        <hr />
+
+        {/* ========================================================= */}
+        {/* THRUST */}
+        {/* ========================================================= */}
+
+        <section className="mathSection">
           <h2>Thrust Acceleration</h2>
+
           <p>
-          The acceleration produced by the spacecraft's engines is calculated by dividing the 
-          thrust force by the spacecraft mass and applying it along the thrust direction:
+            The spacecraft propulsion system generates acceleration by applying
+            a thrust force vector along the engine thrust direction.
           </p>
-          <BlockMath math={`\\vec{a}_{thrust} = \\vec{d} \\cdot \\frac{F_{T}}{m}`} />
+
+          <p>
+            The generated thrust force vector is:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{F}_{thr}
+              =
+              F_T
+              \\hat{\\mathbf{d}}
+            `}
+          />
+
           <p>
             Where:
-            <br />• <strong><InlineMath math={'\\vec{a}_{thrust}'} /></strong> is the thrust acceleration vector [m/s²]
-            <br />• <strong><InlineMath math={'\\vec{d}'} /></strong> is the unit vector in the direction of the thrust force
-            <br />• <strong><InlineMath math={'F_{T}'} /></strong> is the thrust magnitude produced by the engine [N]
-            <br />• <strong><InlineMath math={'m'} /></strong> is the current spacecraft mass [kg]
-          </p>
-          </section>
-        <section className="mathSection">
-          <h2>Total Acceleration</h2>
-
-          <p>
-            The total acceleration acting on the spacecraft is the superposition of
-            thrust-induced acceleration and gravitational acceleration.
+            <br />
+            • <strong><InlineMath math={'F_T'} /></strong> is the scalar thrust force magnitude [N]
+            <br />
+            • <strong><InlineMath math={'\\hat{\\mathbf{d}}'} /></strong> is the normalized thrust direction vector [-]
           </p>
 
-          <BlockMath math={`\\vec{a} = \\vec{a}_{grav} + \\vec{a}_{thrust}`} />
-          <BlockMath math={`\\vec{a} = \\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}`} />
-        </section>
-
-        {/* ============================
-            Numerical Integration
-        ============================ */}
-        <section className="mathSection">
-          <h2>Motion Integration</h2>
-
           <p>
-            Position and velocity are updated using constant-acceleration kinematic equations
-            over a discrete time step <InlineMath math={'\\Delta t'} />.
+            Applying Newton's second law yields the thrust-induced acceleration:
           </p>
 
-          <BlockMath math={`\\vec{v}(t + \\Delta t) = \\vec{v}(t) + \\vec{a} \\cdot \\Delta t`} />
-          Or rather: 
-          <BlockMath math={`\\vec{v}(t + \\Delta t) = \\vec{v}(t) + (\\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}) \\cdot \\Delta t`} />
-          As well as position:
-          <BlockMath math={`\\vec{p}(t + \\Delta t) = \\vec{p}(t) + \\vec{v}(t) \\cdot \\Delta t + \\frac{1}{2} \\vec{a} \\cdot \\Delta t^2`} />
-          Or rather:
-          <BlockMath math={`\\vec{p}(t + \\Delta t) = \\vec{p}(t) + \\vec{v}(t) \\cdot \\Delta t + \\frac{1}{2} (\\frac{\\mu}{||\\vec{r}||³} \\vec{r} + \\vec{d} \\cdot \\frac{F_{T}}{m}) \\cdot \\Delta t^2`} />
+          <BlockMath
+            math={`
+              \\mathbf{a}_{thrust}
+              =
+              \\frac{\\mathbf{F}_{thr}}{m}
+              =
+              \\frac{F_T\\hat{\\mathbf{d}}}{m}
+            `}
+          />
 
           <p>
-            This approach provides a stable and computationally efficient integration scheme
-            suitable for real-time simulation.
+            Where:
+            <br />
+            • <strong><InlineMath math={'\\mathbf{a}_{thrust}'} /></strong> is the thrust acceleration vector [m/s²]
+            <br />
+            • <strong><InlineMath math={'m'} /></strong> is the current spacecraft mass [kg]
           </p>
         </section>
 
-        {/* ============================
-            G-Load Computation
-        ============================ */}
+        <hr />
+
+        {/* ========================================================= */}
+        {/* TOTAL ACCELERATION */}
+        {/* ========================================================= */}
+
         <section className="mathSection">
-          <h2>G-Load (Proper Acceleration)</h2>
+          <h2>Total Translational Acceleration</h2>
 
           <p>
-            The experienced g-load is computed from the proper acceleration, which excludes
-            gravitational acceleration.
+            The total translational acceleration acting on the spacecraft is
+            obtained through superposition of gravitational acceleration and
+            thrust-induced acceleration.
           </p>
 
-          <BlockMath math={`a_{proper} = a_{total} - \\vec{g}`} />
-          <BlockMath math={`g_{load} = \\frac{\\|a_{proper}\\|}{g_0}`} />
+          <BlockMath
+            math={`
+              \\mathbf{a}
+              =
+              \\mathbf{a}_{grav}
+              +
+              \\mathbf{a}_{thrust}
+            `}
+          />
 
           <p>
-            Where <strong>g_0 = 9.80665 m/s^2</strong> is standard Earth gravity.
-            This value represents the acceleration actually felt by the spacecraft structure
-            and crew.
+            Substituting both acceleration models gives:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{a}
+              =
+              -
+              \\frac{\\mu}{||\\mathbf{r}||^3}
+              \\mathbf{r}
+              +
+              \\frac{F_T\\hat{\\mathbf{d}}}{m}
+            `}
+          />
+        </section>
+
+        <hr />
+
+        {/* ========================================================= */}
+        {/* NUMERICAL INTEGRATION */}
+        {/* ========================================================= */}
+
+        <section className="mathSection">
+          <h2>Discrete-Time Motion Integration</h2>
+
+          <p>
+            Spacecraft motion is propagated in discrete simulation steps using
+            constant-acceleration kinematic relations over one timestep
+            <InlineMath math={'\\Delta t'} />.
+          </p>
+
+          <p>
+            Velocity propagation:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{v}(t+\\Delta t)
+              =
+              \\mathbf{v}(t)
+              +
+              \\mathbf{a}\\Delta t
+            `}
+          />
+
+          <p>
+            Position propagation:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{p}(t+\\Delta t)
+              =
+              \\mathbf{p}(t)
+              +
+              \\mathbf{v}(t)\\Delta t
+              +
+              \\frac{1}{2}
+              \\mathbf{a}
+              \\Delta t^2
+            `}
+          />
+
+          <p>
+            Substituting the complete acceleration model yields:
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{v}(t+\\Delta t)
+              =
+              \\mathbf{v}(t)
+              +
+              \\left(
+              -
+              \\frac{\\mu}{||\\mathbf{r}||^3}
+              \\mathbf{r}
+              +
+              \\frac{F_T\\hat{\\mathbf{d}}}{m}
+              \\right)
+              \\Delta t
+            `}
+          />
+
+          <BlockMath
+            math={`
+              \\mathbf{p}(t+\\Delta t)
+              =
+              \\mathbf{p}(t)
+              +
+              \\mathbf{v}(t)\\Delta t
+              +
+              \\frac{1}{2}
+              \\left(
+              -
+              \\frac{\\mu}{||\\mathbf{r}||^3}
+              \\mathbf{r}
+              +
+              \\frac{F_T\\hat{\\mathbf{d}}}{m}
+              \\right)
+              \\Delta t^2
+            `}
+          />
+
+          <p>
+            This integration scheme provides a numerically stable and
+            computationally efficient propagation method suitable for
+            deterministic real-time simulation.
           </p>
         </section>
 
-        {/* ============================
-            Summary
-        ============================ */}
+        <hr />
+
+        {/* ========================================================= */}
+        {/* G LOAD */}
+        {/* ========================================================= */}
+
         <section className="mathSection">
-          <h2>Summary</h2>
+          <h2>Proper Acceleration and G-Load</h2>
+
+          <p>
+            The experienced spacecraft g-load is computed from the proper
+            acceleration, which excludes gravitational free-fall acceleration.
+          </p>
+
+          <BlockMath
+            math={`
+              \\mathbf{a}_{proper}
+              =
+              \\mathbf{a}
+              -
+              \\mathbf{a}_{grav}
+            `}
+          />
+
+          <p>
+            The corresponding g-load becomes:
+          </p>
+
+          <BlockMath
+            math={`
+              g_{load}
+              =
+              \\frac{
+              ||\\mathbf{a}_{proper}||
+              }{
+              g_0
+              }
+            `}
+          />
+
+          <p>
+            Where:
+            <br />
+            • <strong><InlineMath math={'g_0'} /></strong> is standard Earth gravity [m/s²]
+          </p>
+
+          <p>
+            This quantity represents the acceleration experienced by the
+            spacecraft structure and potential crew.
+          </p>
+        </section>
+
+        <hr />
+
+        {/* ========================================================= */}
+        {/* SUMMARY */}
+        {/* ========================================================= */}
+
+        <section className="mathSection">
+          <h2>Key Characteristics</h2>
+
           <ul>
-            <li>Radial inverse-square gravity model for the Moon</li>
-            <li>Vector-based thrust and acceleration computation</li>
-            <li>Discrete-time kinematic integration</li>
-            <li>Physically correct g-load estimation</li>
+            <li>Newtonian central-body gravity model</li>
+            <li>Vector-based thrust force representation</li>
+            <li>Physically consistent translational acceleration model</li>
+            <li>Discrete-time rigid-body motion propagation</li>
+            <li>Proper acceleration and g-load estimation</li>
+            <li>Deterministic and real-time capable implementation</li>
           </ul>
         </section>
 

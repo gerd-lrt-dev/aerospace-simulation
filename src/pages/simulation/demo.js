@@ -82,6 +82,28 @@ export default function SimulationDemo() {
         </section>
 
         <section className="simSection">
+          <div className="simCard">
+            <img
+              src="/img/simulation/RCS_UI_Status.png"
+              className="simImage"
+              alt="Moonlander cockpit RCS telemetry indicators"
+            />
+
+            <p className="simCaption">
+              <strong>Figure 2 — RCS Telemetry Integration in the Cockpit Interface.</strong>
+              <p>
+              The cockpit now visualizes Reaction Control System activity at multiple
+              abstraction levels: the Landing View shows whether RCS activity is present
+              in the vehicle state display, the STATUS block reports how many of the
+              configured RCS thrusters are currently active, and the ENGINE block exposes
+              active thruster-level thrust information when individual RCS engines are
+              firing.
+              </p>
+            </p>
+          </div>
+        </section>
+
+        <section className="simSection">
           <h2>Research-Oriented Cockpit Interface</h2>
 
           <p className="simDescription">
@@ -109,6 +131,7 @@ export default function SimulationDemo() {
               individually with its name, role, remaining propellant mass and fill ratio.
               A visual fill bar shows the remaining propellant relative to the tank capacity.
             </p>
+
             <p>
               This supports spacecraft configurations with multiple tanks, such as separate
               main engine and RCS propellant reservoirs, and makes fuel usage easier to analyze
@@ -118,31 +141,44 @@ export default function SimulationDemo() {
 
           <div className="interfaceBlock">
             <h3>LANDING VIEW — 2.5D Situational Visualization</h3>
+
             <p>
               The landing visualization has been upgraded from a simple one-dimensional
               altitude display to a lightweight 2.5D situational view. It shows the lander
               in a local ENU frame using a side view for vertical motion and a top view for
               horizontal drift and target-relative motion.
             </p>
+
             <p>
-              The view includes trajectory history, velocity vectors, target reference and
-              yaw indication. This provides a clearer interpretation of how the vehicle moves
-              through space without requiring full 3D rendering.
+              The view includes trajectory history, velocity vectors, target reference,
+              yaw indication and a compact state overlay. The state overlay now also
+              indicates RCS activity, allowing the user to immediately see whether
+              translational control thrusters are contributing to the current vehicle
+              motion.
             </p>
           </div>
 
           <div className="interfaceBlock">
-            <h3>ENGINE — Propulsion and Loads</h3>
+            <h3>ENGINE — Propulsion, RCS Activity and Loads</h3>
+
             <p>
-              The propulsion section displays thrust-related telemetry and vehicle loads.
-              The interface is being prepared for more complex propulsion systems where
-              multiple thrusters or tank connections may contribute to the resulting force
-              and torque acting on the lander.
+              The propulsion section displays thrust-related telemetry for the main engine
+              and the Reaction Control System. Main engine thrust is shown as aggregated
+              force output, while RCS activity is displayed dynamically only when individual
+              thrusters are active.
+            </p>
+
+            <p>
+              For active RCS thrusters, the cockpit shows the corresponding thruster name,
+              axis assignment, current thrust, target thrust and actuator state. This keeps
+              the cockpit compact during inactive phases while still exposing detailed
+              propulsion behavior during manual or automated translational control.
             </p>
           </div>
 
           <div className="interfaceBlock">
             <h3>CONTROL — Autopilot and Controller Output</h3>
+
             <p>
               The cockpit reports whether the autopilot is active and displays controller
               output such as active mode information. This is especially relevant for testing
@@ -152,13 +188,22 @@ export default function SimulationDemo() {
           </div>
 
           <div className="interfaceBlock">
-            <h3>STATUS — Spacecraft State Machine</h3>
+            <h3>STATUS — Spacecraft State Machine and RCS Activity</h3>
+
             <p>
               The status section reports discrete spacecraft states such as
               <em> OPERATIONAL</em>, <em> LANDED</em>, <em> CRASHED</em> or
               <em> DESTROYED</em>. These states provide a clear interpretation of the
               simulation outcome and can be used later for automated evaluation of landing
               performance.
+            </p>
+
+            <p>
+              In addition, the status block now reports the number of active RCS thrusters
+              relative to the number of configured RCS engines, for example
+              <strong> RCS Active: 3 / 6</strong>. This gives an immediate overview of
+              current translational control activity without requiring the user to inspect
+              every individual thruster.
             </p>
           </div>
         </section>
@@ -177,7 +222,7 @@ export default function SimulationDemo() {
             Planned extensions include structured simulation data export, controller comparison
             workflows and plotting tools for post-run analysis. Relevant quantities include
             altitude, vertical velocity, lateral drift, fuel consumption, thrust commands,
-            tank usage and final touchdown conditions.
+            tank usage, RCS activity and final touchdown conditions.
           </p>
         </section>
 

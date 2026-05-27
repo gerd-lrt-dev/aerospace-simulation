@@ -113,3 +113,13 @@
 
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
+
+.katex {
+    margin-left: 0.15rem;
+    margin-right: 0.15rem;
+}
+
+.katex-display {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

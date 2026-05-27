@@ -23,14 +23,21 @@ export default function Mathematics() {
 
           <div className="mathLinks">
 
+            <a className="mathButton" href="/mathematics/physics">
+              <div className="mathTitle">Motion Calculations</div>
+              <div className="mathDesc">Equations of motion and vehicle dynamics</div>
+            </a>
+
             <a className="mathButton" href="/mathematics/thrust">
               <div className="mathTitle">Thrust Model</div>
               <div className="mathDesc">Engine thrust generation and limits</div>
             </a>
 
-            <a className="mathButton" href="/mathematics/physics">
-              <div className="mathTitle">Motion Calculations</div>
-              <div className="mathDesc">Equations of motion and vehicle dynamics</div>
+            <a className="mathButton" href="/mathematics/RCSBasicModel">
+              <div className="mathTitle">Reaction Control System</div>
+              <div className="mathDesc">
+                Binary thruster dynamics, actuator delay, and RCS propulsion model
+              </div>
             </a>
 
             <a className="mathButton" href="/mathematics/impact">
