@@ -5,30 +5,44 @@ import '../css/about.css';
 export default function About() {
   return (
     <Layout
-      title="About Moonlander"
-      description="Moonlander – A research-oriented spacecraft simulation platform for propulsion, guidance, and control">
+      title="About Spaceflight Dynamics Framework"
+      description="Spaceflight Dynamics Framework (SDF) – A modular research-oriented environment for spacecraft dynamics, propulsion, guidance, control, and telemetry-driven simulation">
 
       <main className="aboutContainer">
 
-        <h1>About Moonlander</h1>
+        <h1>About Spaceflight Dynamics Framework</h1>
 
         <section>
           <p>
-            <strong>Moonlander</strong> is a research-oriented C++ simulation platform
-            for spacecraft dynamics, propulsion modeling, guidance, control, and
-            telemetry-driven analysis.
+            <strong>Spaceflight Dynamics Framework (SDF)</strong> is an open-source
+            modular C++ research and simulation environment for spacecraft dynamics,
+            propulsion modeling, guidance, control development, and telemetry-driven
+            analysis.
           </p>
 
           <p>
-            The project is evolving from a classical lunar landing simulation into
-            a modular engineering environment for developing, validating, and
-            comparing spacecraft subsystem models.
+            The project originated as a lunar landing simulation and is now evolving
+            into a broader framework for spaceflight dynamics research, subsystem
+            experimentation, and future autonomous flight applications.
+          </p>
+
+          <p>
+            SDF follows an open engineering philosophy focused on transparency,
+            modularity, reproducibility, and collaborative development. The project is
+            intended to provide a technically accessible platform for experimentation,
+            learning, contribution, and long-term architectural evolution.
           </p>
 
           <p>
             The focus is not gameplay, but explicit physical modeling, clean system
-            boundaries, reproducible simulation behavior, and an architecture that can
-            support future autonomous landing research.
+            boundaries, reproducible simulation behavior, and extensible architecture
+            design suitable for future frontend/backend decoupling and research workflows.
+          </p>
+
+          <p>
+            The current development milestone focuses on establishing a complete
+            full-state 6DOF-capable simulation architecture as the technical foundation
+            for future spacecraft dynamics research.
           </p>
         </section>
 
@@ -42,10 +56,10 @@ export default function About() {
           </p>
 
           <p>
-            The current implementation supports three-dimensional translational
-            spacecraft dynamics with vectorized force representation. The software
-            architecture is prepared for future extension toward full 6-DOF rigid-body
-            dynamics, including attitude dynamics and rotational RCS control.
+            The current implementation provides a modular translational spacecraft
+            dynamics environment while the software architecture is already prepared
+            for extension toward full rigid-body 6DOF simulation, including attitude
+            dynamics and rotational RCS control.
           </p>
         </section>
 
@@ -53,9 +67,9 @@ export default function About() {
           <h2>System Architecture</h2>
 
           <p>
-            Moonlander follows a subsystem-oriented architecture in which user input,
-            command routing, propulsion modeling, physics propagation, telemetry, and
-            visualization are separated.
+            SDF follows a subsystem-oriented simulation architecture in which user
+            input, command routing, propulsion modeling, physics propagation,
+            telemetry, and visualization are separated.
           </p>
 
           <ul>
@@ -103,10 +117,10 @@ export default function About() {
           <h2>Guidance and Control</h2>
 
           <p>
-            Moonlander supports both manual and automated control paths. Operator
-            input is processed in the frontend through the <strong>InputMapper</strong>,
-            transferred as a structured flight command, and routed through the
-            simulation backend.
+            SDF supports both manual and automated control paths through a modular
+            command routing and control architecture. Operator input is processed
+            in the frontend through the <strong>InputMapper</strong>, transferred as
+            a structured flight command, and routed through the simulation backend.
           </p>
 
           <p>
@@ -138,7 +152,7 @@ export default function About() {
           </p>
 
           <p>
-            The next architectural step is the introduction of a dedicated wrapper
+            The next architectural step is the introduction of a dedicated mapping
             layer that translates backend domain data into frontend-facing telemetry
             DTOs. This prepares the system for a future ROS-based interface where the
             frontend can be replaced without changing backend simulation logic.
@@ -147,6 +161,14 @@ export default function About() {
 
         <section>
           <h2>Current Development Status</h2>
+
+          <p>
+            Current development status:
+            <strong> Pre-release Development Build</strong>
+            <br />
+            Active milestone:
+            <strong> M1 - Full 6DOF Simulation</strong>
+          </p>
 
           <ul>
             <li>3D translational spacecraft dynamics implemented</li>
@@ -159,7 +181,31 @@ export default function About() {
             <li>JSON-based spacecraft configuration system implemented</li>
             <li>Qt cockpit telemetry for main engine, RCS activity, fuel, state, and navigation data</li>
             <li>Adaptive descent guidance for automated landing</li>
-            <li>Preparation for DTO wrapper, telemetry export, ROS interface, and future 6-DOF dynamics</li>
+            <li>Preparation for DTO mapping, telemetry export, ROS interface, and future 6-DOF dynamics</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Release Strategy</h2>
+
+          <p>
+            SDF is currently under active pre-release development. The project has
+            not yet published a formal release version. Current work is focused on
+            completing the first major architectural milestone:
+            <strong> M1 - Full 6DOF Simulation</strong>.
+          </p>
+
+          <p>
+            The planned research release line will introduce a more stable public
+            project baseline, clearer frontend/backend boundaries, improved telemetry
+            interfaces, and a stronger foundation for reproducible simulation studies.
+          </p>
+
+          <ul>
+            <li><strong>Current state:</strong> Pre-release development build</li>
+            <li><strong>Active milestone:</strong> M1 - Full 6DOF Simulation</li>
+            <li><strong>Planned release line:</strong> v0.2 - SDF Research Release</li>
+            <li><strong>Strategic direction:</strong> From lunar landing simulation toward a reusable spaceflight dynamics research framework</li>
           </ul>
         </section>
 
@@ -167,9 +213,10 @@ export default function About() {
           <h2>Goals and Vision</h2>
 
           <p>
-            The long-term objective of Moonlander is to evolve into a flexible
-            research platform for spacecraft propulsion, guidance, control, and
-            flight dynamics experimentation.
+            The long-term objective of SDF is to evolve into a flexible and extensible
+            spaceflight dynamics research framework supporting spacecraft simulation,
+            guidance research, telemetry workflows, control-system experimentation,
+            and future distributed simulation architectures.
           </p>
 
           <ul>
@@ -179,7 +226,7 @@ export default function About() {
             <li>Telemetry export for reproducible analysis and post-processing</li>
             <li>Scenario-based autonomous landing research campaigns</li>
             <li>Advanced guidance, control, and optimization methods</li>
-            <li>Support for broader mission phases including deorbit, descent, landing, and later orbital scenarios</li>
+            <li>Support for broader mission phases including deorbit, descent, landing, orbital transfer, and multi-body scenarios</li>
           </ul>
 
           <p>

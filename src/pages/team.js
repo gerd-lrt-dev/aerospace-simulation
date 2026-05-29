@@ -5,48 +5,103 @@ import '../css/team.css';
 
 export default function Team() {
   return (
-    <Layout title="Team">
+    <Layout
+      title="Team | Spaceflight Dynamics Framework"
+      description="Core contributors, project leadership, and open-source collaboration within the Spaceflight Dynamics Framework">
+
       <main className="teamContainer">
 
         <section className="teamIntro">
+
           <h1>Team</h1>
+
           <p>
-            Moonlander is currently developed as a focused engineering project,
-            combining physics-based simulation, control systems and software architecture.
+            <strong>Spaceflight Dynamics Framework (SDF)</strong> is currently
+            developed as a focused open-source aerospace engineering and
+            simulation project combining spacecraft dynamics, propulsion
+            modeling, guidance and control systems, telemetry workflows,
+            and modular software architecture.
           </p>
+
+          <p>
+            The project originated as a lunar landing simulation and is evolving
+            toward a broader research-oriented framework for spacecraft dynamics
+            experimentation, frontend/backend decoupling, telemetry-driven
+            analysis, and future autonomous flight applications.
+          </p>
+
+          <p>
+            Development follows an open engineering philosophy with emphasis on
+            transparency, modularity, reproducibility, and contribution-friendly
+            architecture design.
+          </p>
+
         </section>
 
         <section className="teamGrid">
+
           <Link to="/team/gerd" className="teamCard">
-            <img src="/img/team/gerd.jpg" alt="Gerd profile" />
+
+            <img
+              src="/img/team/gerd.jpg"
+              alt="Gerd Schendzielorz profile"
+            />
+
             <h3>Gerd Schendzielorz</h3>
+
             <span className="alias">gerd-lrt-dev</span>
-            <p className="role">Project Lead & Simulation Engineer</p>
-            <p className="degree">M.Sc. Aerospace Engineering</p>
+
+            <p className="role">
+              Project Lead & Simulation Engineer
+            </p>
+
+            <p className="degree">
+              M.Sc. Aerospace Engineering
+            </p>
+
             <div className="contact">
               <span>Email:</span>
+
               <a href="mailto:info@aerospace-simulation.dev">
                 info@aerospace-simulation.dev
               </a>
             </div>
+
             <ul>
-              <li>Physics-based simulation</li>
-              <li>Control systems</li>
-              <li>C++ backend architecture</li>
-              <li>Qt & UI systems</li>
+              <li>Spacecraft dynamics simulation</li>
+              <li>Guidance and control systems</li>
+              <li>C++ simulation backend architecture</li>
+              <li>Qt frontend and telemetry systems</li>
+              <li>Propulsion and RCS modeling</li>
+              <li>Research-oriented software architecture</li>
             </ul>
+
           </Link>
+
         </section>
 
         <section className="teamRecruiting">
-          <h2>Interested in contributing?</h2>
+
+          <h2>Open-Source Collaboration</h2>
+
           <p>
-            If you are interested in simulation, control theory or aerospace software
-            engineering, take a look at the recruiting section.
+            SDF is currently transitioning toward a more collaborative
+            open-source development model. Contributions in simulation,
+            control theory, aerospace software engineering, telemetry,
+            ROS integration, frontend systems, optimization, and
+            spacecraft dynamics are highly welcome.
           </p>
+
+          <p>
+            The framework is intentionally structured around modular
+            subsystem boundaries to make contribution, experimentation,
+            and future architectural evolution easier.
+          </p>
+
           <Link className="recruitButton" to="/recruiting">
             View Recruiting
           </Link>
+
         </section>
 
       </main>

@@ -1,0 +1,55 @@
+.aiContainer {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.aiContainer h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.aiContainer h2 {
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #3B82F6;
+}
+
+.aiContainer p,
+.aiContainer li {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.aiContainer ul {
+  padding-left: 20px;
+}
+
+.aiIntro,
+.aiSection {
+  margin-bottom: 35px;
+}
+
+.aiContainer strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .aiContainer h1 {
+    font-size: 2.3rem;
+  }
+
+  .aiContainer h2 {
+    font-size: 1.7rem;
+  }
+
+  .aiContainer p,
+  .aiContainer li {
+    font-size: 1rem;
+  }
+}

@@ -6,8 +6,8 @@ import '../css/simulation.css';
 export default function Simulation() {
   return (
     <Layout
-      title="Simulation"
-      description="Moonlander simulation architecture, model scope, and current spacecraft dynamics behavior">
+      title="Simulation | Spaceflight Dynamics Framework"
+      description="Simulation architecture, propulsion modeling, telemetry flow, and spacecraft dynamics research within the Spaceflight Dynamics Framework">
 
       <main className="simulationPage">
 
@@ -15,24 +15,29 @@ export default function Simulation() {
           <h1>Simulation</h1>
 
           <p>
-            The Moonlander simulation is a modular spacecraft dynamics environment
-            implemented in C++. It is designed for propulsion modeling, guidance,
-            control, telemetry generation, and reproducible simulation-based
-            experimentation.
+            The simulation environment of the
+            <strong> Spaceflight Dynamics Framework (SDF)</strong> is designed
+            as a modular spacecraft dynamics and research platform implemented
+            in modern C++.
           </p>
 
           <p>
-            The current system supports three-dimensional translational dynamics
-            with vectorized force representation, a multi-engine propulsion
-            architecture, individual RCS thruster models, and real-time cockpit
-            telemetry.
+            SDF combines propulsion modeling, guidance and control logic,
+            telemetry generation, subsystem-oriented architecture design,
+            and real-time visualization within a reproducible simulation workflow.
           </p>
 
           <p>
-            The architecture is intentionally structured to evolve toward full
-            6-DOF spacecraft dynamics while maintaining clear subsystem boundaries
-            between frontend, backend, command flow, physics, propulsion, and
-            telemetry.
+            The current development milestone focuses on establishing a complete
+            full-state 6DOF-capable simulation architecture while maintaining
+            clean separation between frontend, backend, command flow, physics
+            propagation, propulsion systems, and telemetry transport layers.
+          </p>
+
+          <p>
+            Rather than targeting a single fixed scenario, the framework is
+            intended to evolve toward a reusable research environment for future
+            spacecraft dynamics experimentation and autonomous flight studies.
           </p>
         </section>
 
@@ -40,15 +45,16 @@ export default function Simulation() {
           <h2>Simulation Demonstration</h2>
 
           <p>
-            The following example shows a representative simulation run including
-            spacecraft motion, propulsion response, RCS activity, fuel state, and
-            real-time telemetry visualization in the cockpit interface.
+            The following example shows a representative research-oriented
+            simulation scenario including spacecraft motion, propulsion response,
+            RCS activity, fuel state, and real-time telemetry visualization in
+            the cockpit interface.
           </p>
 
           <div className="simCard">
             <img
               src={useBaseUrl('/img/simulation/Simulation_Startseite_small.png')}
-              alt="Moonlander simulation cockpit"
+              alt="Spaceflight Dynamics Framework simulation cockpit"
               className="simImage"
             />
             <a className="simButton" href="/simulation/demo">
@@ -63,7 +69,7 @@ export default function Simulation() {
           <p>
             The simulation is built around a modular C++ backend with a clear
             separation between physics, propulsion, control, configuration,
-            telemetry, and visualization.
+            telemetry, visualization, and frontend/backend interface boundaries.
           </p>
 
           <ul>
@@ -71,7 +77,8 @@ export default function Simulation() {
             <li><strong>Command Flow:</strong> Separation of operator input, structured flight commands, actuator commands, and physical force output</li>
             <li><strong>Propulsion System:</strong> Central Thrust Orchestrator managing main engine, RCS thrusters, thrust allocation, and fuel tanks</li>
             <li><strong>Telemetry Interface:</strong> Current Qt signal-slot communication between backend worker thread and frontend</li>
-            <li><strong>Future Interface:</strong> DTO wrapper and ROS-based communication layer for frontend/backend decoupling</li>
+            <li><strong>Frontend Architecture:</strong> Refactored Qt-based application shell with centralized page routing, telemetry visualization, and modular cockpit pages</li>
+            <li><strong>Future Interface:</strong> DTO mapping and ROS-based communication layer for frontend/backend decoupling</li>
             <li><strong>Frontend:</strong> Qt-based cockpit for real-time visualization, operator input, and presentation-oriented feedback</li>
           </ul>
 
@@ -100,7 +107,7 @@ export default function Simulation() {
 
           <p>
             This separation keeps actuator dynamics, command allocation, fuel
-            consumption, and force aggregation modular and testable.
+            consumption, and force aggregation modular, traceable, and testable.
           </p>
         </section>
 
@@ -110,14 +117,15 @@ export default function Simulation() {
           <p>
             Runtime data is collected for cockpit visualization and future
             analysis workflows. The cockpit presents selected operational data,
-            while the underlying telemetry path is being prepared for full export
-            and post-processing.
+            while the underlying telemetry path is being prepared for full export,
+            post-processing, and frontend-independent transport.
           </p>
 
           <ul>
             <li><strong>Cockpit Telemetry:</strong> Position, velocity, thrust, target thrust, fuel state, g-load, hull state, and active RCS thrusters</li>
             <li><strong>Engine-Level RCS Data:</strong> Individual RCS engine identification, axis assignment, current thrust, target thrust, and actuator state</li>
             <li><strong>Frontend DTOs:</strong> Frontend-specific telemetry structures such as RCSCockpitTelemetry reduce dependency on backend domain structs</li>
+            <li><strong>Telemetry Mapping Layer:</strong> Dedicated frontend telemetry DTO mapping prepared for future backend/frontend decoupling</li>
             <li><strong>Future Export:</strong> XML/CSV-style telemetry output for reproducible research runs, plotting, and validation</li>
             <li><strong>Future Transport:</strong> ROS-based interface for replacing the frontend without changing backend simulation logic</li>
           </ul>
@@ -136,16 +144,43 @@ export default function Simulation() {
           </ul>
 
           <p>
-            The current model intentionally excludes full rotational dynamics and
-            complete rigid-body 6-DOF propagation. However, engine positions,
-            thrust directions, RCS states, and torque-relevant architecture are
-            already being prepared for these future extensions.
+            The current simulation milestone intentionally focuses on translational
+            spacecraft dynamics while the surrounding software architecture is
+            already prepared for future rigid-body 6DOF extension.
+          </p>
+
+          <p>
+            Engine positions, thrust directions, RCS states, and torque-relevant
+            architecture are already being prepared for future rotational dynamics,
+            attitude stabilization, and full spacecraft state propagation.
           </p>
 
           <p>
             A detailed mathematical formulation is provided in the Mathematics
             section.
           </p>
+        </section>
+
+        <section className="simSection">
+          <h2>Research Direction</h2>
+
+          <p>
+            SDF is currently transitioning from a dedicated lunar landing
+            simulation toward a broader spaceflight dynamics research framework.
+          </p>
+
+          <p>
+            The architectural focus is shifting toward modularity, subsystem
+            separation, telemetry abstraction, frontend/backend decoupling, and
+            extensibility for future simulation workflows.
+          </p>
+
+          <ul>
+            <li><strong>Current milestone:</strong> M1 - Full 6DOF Simulation</li>
+            <li><strong>Current state:</strong> Pre-release development build</li>
+            <li><strong>Planned release line:</strong> v0.2 - SDF Research Release</li>
+            <li><strong>Future direction:</strong> Extensible spacecraft dynamics and control research environment</li>
+          </ul>
         </section>
 
       </main>

@@ -6,22 +6,31 @@ import '../../css/architecture.css';
 export default function Architecture() {
   return (
     <Layout
-      title="Moonlander Architecture"
-      description="Architecture and data flow of the Moonlander research-oriented spacecraft simulation platform">
+      title="Architecture | Spaceflight Dynamics Framework"
+      description="Frontend, backend, physics, propulsion, command flow, and telemetry architecture of the Spaceflight Dynamics Framework">
 
       <main className="architectureContainer">
-        <h1>Moonlander Architecture</h1>
+        <h1>Spaceflight Dynamics Framework Architecture</h1>
 
         <section>
           <h2>System Overview</h2>
+
           <p>
-            Moonlander is structured as a modular spacecraft simulation platform
-            with separated frontend, backend, configuration, control, physics,
-            propulsion, and telemetry layers. The current implementation supports
-            three-dimensional translational spacecraft motion and is being
-            developed toward a research-capable simulation framework for future
-            6-DOF dynamics.
+            The <strong>Spaceflight Dynamics Framework (SDF)</strong> is structured
+            as a modular spacecraft simulation and research environment with
+            separated frontend, backend, configuration, control, physics,
+            propulsion, telemetry, and visualization layers.
           </p>
+
+          <p>
+            The current implementation supports three-dimensional translational
+            spacecraft motion and is being developed toward a full-state
+            6DOF-capable simulation architecture. The long-term direction is a
+            reusable open-source framework for spacecraft dynamics research,
+            control-system experimentation, telemetry workflows, and future
+            frontend/backend decoupling.
+          </p>
+
           <p>
             The architecture separates user interaction, command generation,
             propulsion modeling, numerical state propagation, telemetry
@@ -34,19 +43,20 @@ export default function Architecture() {
         <section className="diagramSection">
           <img
             src={useBaseUrl('/img/architecture/architecture.drawio.svg')}
-            alt="Moonlander system architecture and data flow diagram"
+            alt="SDF system architecture and data flow diagram"
             className="archDiagram"
           />
         </section>
 
         <section>
           <h2>Component Descriptions</h2>
+
           <ul>
             <li>
               <strong>Frontend / Cockpit:</strong> Qt-based user interface for
               telemetry display, spacecraft selection, cockpit visualization,
-              manual operator input, and presentation-oriented simulation
-              feedback.
+              manual operator input, control reference pages, settings
+              placeholders, and presentation-oriented simulation feedback.
             </li>
             <li>
               <strong>InputMapper:</strong> Frontend-side input processing class
@@ -92,13 +102,11 @@ export default function Architecture() {
               <strong>Frontend Telemetry DTOs:</strong> Frontend-side telemetry
               structures such as <code>RCSCockpitTelemetry</code> represent
               reduced cockpit data independently from backend domain structs.
-              This is the first step toward replacing direct frontend usage of
-              backend structs.
             </li>
             <li>
-              <strong>Future Interface Wrapper:</strong> Issue D19 introduces the
-              required wrapper layer to translate backend domain data into
-              frontend-facing DTOs and later ROS messages.
+              <strong>Telemetry Mapping Layer:</strong> Planned translation
+              layer that maps backend domain state into frontend-facing DTOs and
+              later ROS message contracts.
             </li>
           </ul>
         </section>
@@ -106,19 +114,127 @@ export default function Architecture() {
         <hr />
 
         <section>
+          <h2>Frontend Architecture</h2>
+
+          <p>
+            The frontend has been refactored into a clearer Qt application
+            structure. <code>MainWindow</code> now acts as the central application
+            shell and frontend coordinator. It owns the persistent top navigation
+            bar, the central page stack, the shared configuration manager, and
+            the simulation worker thread.
+          </p>
+
+          <p>
+            Individual pages are now treated as focused UI components rather than
+            application controllers. The landing page only presents the project
+            entry point and emits navigation requests. The spacecraft selection
+            page handles configuration selection. The cockpit page handles
+            telemetry visualization and operator interaction. Additional pages
+            such as control help and settings can now be integrated without
+            changing the overall navigation structure.
+          </p>
+
+          <p>
+            This structure reduces coupling between pages, prevents nested page
+            stacks, and prepares the frontend for future expansion such as
+            settings, telemetry inspection, replay views, ROS communication
+            monitoring, and additional research-oriented tools.
+          </p>
+
+          <section className="diagramSection">
+            <img
+              src={useBaseUrl('/img/architecture/FrontEnd.drawio.svg')}
+              alt="SDF frontend architecture diagram"
+              className="archDiagram"
+            />
+          </section>
+
+          <h3>Frontend Components</h3>
+
+          <ul>
+            <li>
+              <strong>MainWindow:</strong> Central Qt application shell. It owns
+              the top bar, page stack, core pages, configuration manager,
+              simulation thread, and worker interface.
+            </li>
+            <li>
+              <strong>TopBarWidget:</strong> Persistent navigation bar for global
+              frontend navigation, settings access, and control help access.
+            </li>
+            <li>
+              <strong>QStackedWidget:</strong> Central page container used to
+              switch between homepage, spacecraft selection, cockpit, controls
+              help, and settings pages.
+            </li>
+            <li>
+              <strong>Homepage:</strong> Pure landing page. It displays the SDF
+              branding, development status, and primary entry points without
+              owning worker threads or sub-pages.
+            </li>
+            <li>
+              <strong>SpacecraftSelectionPage:</strong> UI page for selecting
+              JSON-defined spacecraft configurations through the shared
+              <code>ConfigManager</code>.
+            </li>
+            <li>
+              <strong>cockpitPage:</strong> Main simulation cockpit page. It
+              displays telemetry, forwards operator commands, and owns cockpit
+              widgets such as <code>LandingView</code> and <code>inputmapper</code>.
+            </li>
+            <li>
+              <strong>ControlsHelpPage:</strong> Static control reference page
+              showing keyboard-first control bindings and planned controller
+              readiness.
+            </li>
+            <li>
+              <strong>SettingsPage:</strong> Placeholder page for the planned
+              v0.2 SDF Research Release settings subsystem.
+            </li>
+            <li>
+              <strong>inputmapper:</strong> Converts keyboard input into
+              structured <code>FlightCommand</code> data.
+            </li>
+            <li>
+              <strong>LandingView:</strong> Lightweight 2.5D visualization widget
+              for spatial landing state, trajectory history, velocity vectors,
+              and RCS activity indication.
+            </li>
+            <li>
+              <strong>UIBuilder:</strong> Shared helper for consistent frontend
+              UI elements, buttons, labels, page titles, and telemetry detail
+              boxes.
+            </li>
+          </ul>
+
+          <h3>Frontend Design Direction</h3>
+
+          <ul>
+            <li>Centralized page routing through <code>MainWindow</code></li>
+            <li>Persistent global navigation through <code>TopBarWidget</code></li>
+            <li>UI pages with focused responsibilities</li>
+            <li>No nested application windows inside the homepage</li>
+            <li>Simulation worker ownership located at application shell level</li>
+            <li>Preparation for future settings, help, telemetry, and ROS tooling pages</li>
+          </ul>
+        </section>
+
+        <hr />
+
+        <section>
           <h2>Physics Architecture</h2>
+
           <p>
             The physics architecture is centered around modular force models,
             numerical integration, sensor feedback, and control components. The
             current scope focuses on three-dimensional translational dynamics.
-            Rotational dynamics and full rigid-body 6-DOF propagation are
-            planned future extensions.
+            Rotational dynamics and full rigid-body 6DOF propagation are planned
+            future extensions.
           </p>
 
           <section className="diagramSection">
             <img
               src={useBaseUrl('/img/architecture/physics_architecture.drawio.svg')}
-              alt="Moonlander physics architecture diagram"
+              alt="SDF physics architecture diagram"
               className="archDiagram"
             />
           </section>
@@ -189,6 +305,7 @@ export default function Architecture() {
 
         <section>
           <h2>Propulsion Architecture</h2>
+
           <p>
             The propulsion subsystem is built around a central Thrust
             Orchestrator. Instead of treating propulsion as a single scalar
@@ -196,6 +313,7 @@ export default function Architecture() {
             engine-specific runtime states, RCS allocation, and vectorized thrust
             aggregation.
           </p>
+
           <p>
             The main engine and RCS thrusters are modeled separately, but expose
             a common interface through <code>IThrustModel</code>.
@@ -204,7 +322,7 @@ export default function Architecture() {
           <section className="diagramSection">
             <img
               src={useBaseUrl('/img/architecture/thrustStructure.drawio.svg')}
-              alt="Moonlander propulsion and thrust architecture diagram"
+              alt="SDF propulsion and thrust architecture diagram"
               className="archDiagram"
             />
           </section>
@@ -289,6 +407,7 @@ export default function Architecture() {
 
         <section>
           <h2>Command and Input Flow</h2>
+
           <p>
             Manual control input is processed separately from physical engine
             behavior. The frontend does not directly apply forces. Instead,
@@ -314,11 +433,13 @@ export default function Architecture() {
 
         <section>
           <h2>Telemetry and Frontend Data Boundary</h2>
+
           <p>
             The current implementation still uses some backend structs in the
             frontend, for example fuel tank and simulation data containers. This
             is recognized as an intermediate state and will be refactored.
           </p>
+
           <p>
             The target architecture introduces a strict boundary between backend
             domain models and frontend telemetry models. Backend structs describe
@@ -336,6 +457,10 @@ export default function Architecture() {
             <li>
               <strong>Frontend datastructs:</strong> Used for cockpit-specific
               telemetry such as <code>RCSCockpitTelemetry</code>.
+            </li>
+            <li>
+              <strong>TelemetryMapper:</strong> Planned mapping component that
+              will translate backend state into frontend telemetry DTOs.
             </li>
             <li>
               <strong>Issue D19 Wrapper:</strong> Planned wrapper layer that will
@@ -358,6 +483,7 @@ export default function Architecture() {
 
         <section>
           <h2>Optimization Components</h2>
+
           <p>
             The backend contains experimental optimization components based on
             NLopt. These components are currently used for thrust optimization
@@ -377,6 +503,7 @@ export default function Architecture() {
 
         <section>
           <h2>Architectural Design Principles</h2>
+
           <ul>
             <li>
               <strong>Separation of Concerns:</strong> Input handling, command
@@ -401,7 +528,7 @@ export default function Architecture() {
             <li>
               <strong>Vector-Based Dynamics:</strong> Propulsion output and
               motion propagation use vector quantities to support
-              three-dimensional dynamics and future 6-DOF extension.
+              three-dimensional dynamics and future 6DOF extension.
             </li>
             <li>
               <strong>Frontend/Backend Decoupling:</strong> Direct dependency of
@@ -412,6 +539,12 @@ export default function Architecture() {
               <strong>Research Orientation:</strong> The system is designed for
               reproducible simulation runs, telemetry export, model validation,
               and future autonomous landing research campaigns.
+            </li>
+            <li>
+              <strong>Open Engineering Philosophy:</strong> The project is
+              developed as an open-source framework with emphasis on transparent
+              architecture, modularity, reproducibility, and contribution-friendly
+              evolution.
             </li>
           </ul>
         </section>

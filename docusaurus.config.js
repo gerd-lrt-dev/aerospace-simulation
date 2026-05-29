@@ -3,8 +3,8 @@ import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Aerospace Simulation Platform',
-  tagline: 'Open-source aerospace simulation and control systems',
+  title: 'Spaceflight Dynamics Framework',
+  tagline: 'Open-source spacecraft dynamics simulation and control systems',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -69,52 +69,58 @@ const config = {
     },
 
     navbar: {
-      title: 'Moonlander',
+  title: 'SDF',
 
-      items: [
-        {
-          to: '/about',
-          label: 'About',
-          position: 'left',
-        },
-
-        {
-          to: '/simulation',
-          label: 'Simulation',
-          position: 'left',
-        },
-
-        {
-          to: '/simulation/architecture',
-          label: 'Architecture',
-          position: 'left',
-        },
-
-        {
-          to: '/docs',
-          label: 'Mathematics',
-          position: 'left',
-        },
-
-        {
-          to: '/team',
-          label: 'Team',
-          position: 'left',
-        },
-
-        {
-          to: '/recruiting',
-          label: 'Recruiting',
-          position: 'left',
-        },
-
-        {
-          href: 'https://github.com/gerd-lrt-dev/moonlander',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
+  items: [
+    {
+      to: '/about',
+      label: 'About',
+      position: 'left',
     },
+
+    {
+      to: '/simulation',
+      label: 'Simulation',
+      position: 'left',
+    },
+
+    {
+      to: '/simulation/architecture',
+      label: 'Architecture',
+      position: 'left',
+    },
+
+    {
+      to: '/docs',
+      label: 'Mathematics',
+      position: 'left',
+    },
+
+    {
+      to: '/team',
+      label: 'Team',
+      position: 'left',
+    },
+
+    {
+      to: '/recruiting',
+      label: 'Recruiting',
+      position: 'left',
+    },
+
+    {
+      to: '/ai-assisted-engineering',
+      label: 'AI-Assisted Engineering',
+      position: 'left',
+    },
+
+    {
+      href: 'https://github.com/gerd-lrt-dev/moonlander',
+      label: 'GitHub',
+      position: 'right',
+    },
+  ],
+},
 
     footer: {
       style: 'dark',
