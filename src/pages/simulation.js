@@ -53,7 +53,7 @@ export default function Simulation() {
 
           <div className="simCard">
             <img
-              src={useBaseUrl('/img/simulation/Simulation_Startseite_small.png')}
+              src={useBaseUrl('/img/simulation/Simulation_Startseite_SDF.png')}
               alt="Spaceflight Dynamics Framework simulation cockpit"
               className="simImage"
             />

@@ -1,11 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 
-export default function GerdProfile() {
+export default function JankoProfile() {
   return (
-    <Layout title="Gerd – SDF Team">
+    <Layout title="Janko – SDF Team">
       <main style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
-        <h1>Gerd</h1>
+        <h1>Janko</h1>
         <p>
           Detailed profile page coming soon.
         </p>

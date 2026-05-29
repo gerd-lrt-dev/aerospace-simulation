@@ -78,6 +78,46 @@ export default function Team() {
 
           </Link>
 
+          <Link to="/team/janko" className="teamCard">
+
+          <img
+            src="/img/team/janko.jpeg"
+            alt="Janko Kremer profile"
+          />
+
+          <h3>Janko Kremer</h3>
+
+          <span className="alias">
+            kremerjanko0-maker
+          </span>
+
+          <p className="role">
+            Co-Project Lead & Software Developer
+          </p>
+
+          <p className="degree">
+            B.Sc. Student in Business Informatics
+          </p>
+
+          <div className="contact">
+            <span>Email:</span>
+
+              <a href="mailto:info@aerospace-simulation.dev">
+                info@aerospace-simulation.dev
+              </a>
+          </div>
+
+          <ul>
+            <li>Coordinate transformation systems</li>
+            <li>Software architecture and backend development</li>
+            <li>Web development and frontend integration</li>
+            <li>Java and object-oriented software engineering</li>
+            <li>Simulation framework implementation</li>
+            <li>Open-source collaboration and tooling</li>
+          </ul>
+
+        </Link>
+
         </section>
 
         <section className="teamRecruiting">
