@@ -12,104 +12,179 @@ export default function Architecture() {
       <main className="architectureContainer">
         <h1>Spaceflight Dynamics Framework Architecture</h1>
 
-        <section>
-          <h2>System Overview</h2>
+      <section>
+        <h2>System Overview</h2>
 
-          <p>
-            The <strong>Spaceflight Dynamics Framework (SDF)</strong> is structured
-            as a modular spacecraft simulation and research environment with
-            separated frontend, backend, configuration, control, physics,
-            propulsion, telemetry, and visualization layers.
-          </p>
+        <p>
+          The <strong>Spaceflight Dynamics Framework (SDF)</strong> is structured as a
+          modular spacecraft simulation and research environment with a clear separation
+          between the Qt-based frontend, the simulation worker thread, the backend-side
+          simulation interface, and the backend simulation engine.
+        </p>
 
-          <p>
-            The current implementation supports three-dimensional translational
-            spacecraft motion and is being developed toward a full-state
-            6DOF-capable simulation architecture. The long-term direction is a
-            reusable open-source framework for spacecraft dynamics research,
-            control-system experimentation, telemetry workflows, and future
-            frontend/backend decoupling.
-          </p>
+        <p>
+          The overview intentionally shows only the main architectural building blocks.
+          Detailed subsystem diagrams are provided separately for the frontend,
+          backend, configuration flow, telemetry flow, propulsion, physics, and
+          coordinate transformation layers.
+        </p>
 
-          <p>
-            The architecture separates user interaction, command generation,
-            propulsion modeling, numerical state propagation, telemetry
-            generation, and visualization. This enables individual subsystems to
-            be extended, validated, or replaced without restructuring the entire
-            simulation.
-          </p>
-        </section>
+        <p>
+          The current architecture supports three-dimensional translational spacecraft
+          motion and is being developed toward a full-state 6DOF-capable simulation
+          framework. The backend already separates orchestration, spacecraft state,
+          physics, propulsion, configuration interpretation, telemetry exchange, and
+          coordinate frame transformation.
+        </p>
 
-        <section className="diagramSection">
-          <img
-            src={useBaseUrl('/img/architecture/architecture.drawio.svg')}
-            alt="SDF system architecture and data flow diagram"
-            className="archDiagram"
-          />
-        </section>
+        <p>
+          The <strong>Spacecraft</strong> component acts as the single source of truth
+          for the simulation state. <strong>SimControl</strong> orchestrates the
+          simulation flow, while the backend-side <strong>Simulation Interface
+          Layer</strong> defines the stable communication boundary between the
+          simulation engine and exchangeable frontend implementations.
+        </p>
+      </section>
 
-        <section>
-          <h2>Component Descriptions</h2>
+      <section className="diagramSection">
+        <img
+          src={useBaseUrl('/img/architecture/OverviewStructureNEW.drawio.svg')}
+          alt="SDF system overview showing frontend, simulation worker, backend interface layer, simulation core, configuration flow, telemetry DTOs, physics, propulsion, and coordinate transformation"
+          className="archDiagram"
+        />
+      </section>
 
-          <ul>
-            <li>
-              <strong>Frontend / Cockpit:</strong> Qt-based user interface for
-              telemetry display, spacecraft selection, cockpit visualization,
-              manual operator input, control reference pages, settings
-              placeholders, and presentation-oriented simulation feedback.
-            </li>
-            <li>
-              <strong>InputMapper:</strong> Frontend-side input processing class
-              that maps keyboard input, and later controller input, into a
-              structured <code>FlightCommand</code>.
-            </li>
-            <li>
-              <strong>FlightCommand:</strong> Frontend command structure used as
-              a high-level input contract between input devices and the
-              simulation command path. It collects main engine, translational
-              RCS, rotational RCS, stabilization, and assisted-control commands.
-            </li>
-            <li>
-              <strong>SimulationWorker:</strong> Worker-thread component that
-              executes simulation steps outside the UI thread and exchanges data
-              between frontend and backend through the current Qt signal-slot
-              interface.
-            </li>
-            <li>
-              <strong>SimControl:</strong> Central simulation coordinator
-              responsible for simulation flow, command forwarding, parameter
-              validation, and interaction with the spacecraft instance.
-            </li>
-            <li>
-              <strong>Backend / Simulation Core:</strong> C++ simulation layer
-              containing spacecraft state propagation, physics models,
-              propulsion models, control logic, sensor models, optimization
-              components, and telemetry generation.
-            </li>
-            <li>
-              <strong>Spacecraft:</strong> Owns the physical spacecraft state,
-              including position, velocity, mass properties, propulsion state,
-              integrity state, and dynamic quantities required for force-based
-              simulation.
-            </li>
-            <li>
-              <strong>Configuration / JSON:</strong> External configuration
-              layer for spacecraft mass properties, initial conditions, fuel
-              tanks, main engines, RCS engines, directions, positions, and
-              engine-to-tank assignment.
-            </li>
-            <li>
-              <strong>Frontend Telemetry DTOs:</strong> Frontend-side telemetry
-              structures such as <code>RCSCockpitTelemetry</code> represent
-              reduced cockpit data independently from backend domain structs.
-            </li>
-            <li>
-              <strong>Telemetry Mapping Layer:</strong> Planned translation
-              layer that maps backend domain state into frontend-facing DTOs and
-              later ROS message contracts.
-            </li>
-          </ul>
-        </section>
+      <section>
+        <h2>Component Descriptions</h2>
+
+        <ul>
+          <li>
+            <strong>Frontend / UI Cockpit:</strong> Qt-based user interface containing
+            the main window, cockpit page, landing visualization, user interaction,
+            operator input, and presentation-oriented telemetry feedback.
+          </li>
+
+          <li>
+            <strong>MainWindow:</strong> Top-level Qt application window responsible
+            for page composition, navigation, and connecting frontend components to the
+            simulation runtime.
+          </li>
+
+          <li>
+            <strong>CockpitPage:</strong> Main simulation-facing cockpit view. It
+            displays telemetry, forwards user interaction, and receives simulation
+            updates from the worker-thread boundary.
+          </li>
+
+          <li>
+            <strong>LandingView:</strong> Frontend visualization component for the
+            current 2.5D landing and motion representation.
+          </li>
+
+          <li>
+            <strong>ConfigManager:</strong> Frontend-side configuration component that
+            selects and loads spacecraft configuration files before they are handed
+            over to the simulation backend.
+          </li>
+
+          <li>
+            <strong>JSON Config File:</strong> External spacecraft configuration source
+            containing mass properties, initial conditions, fuel tanks, main engines,
+            RCS engines, engine directions, engine positions, and engine-to-tank
+            assignments.
+          </li>
+
+          <li>
+            <strong>SimulationWorker:</strong> Worker-thread component that separates
+            the UI thread from the simulation loop. It executes simulation steps
+            outside the main thread and exchanges commands and telemetry through the
+            Qt signal-slot mechanism.
+          </li>
+
+          <li>
+            <strong>Simulation Interface Layer:</strong> Backend-side interface
+            boundary between the Qt runtime and the simulation core. It defines the
+            stable communication contract for frontend-to-backend commands and
+            backend-to-frontend telemetry.
+          </li>
+
+          <li>
+            <strong>FlightCommand DTO:</strong> Frontend-to-backend command object used
+            to transport high-level operator or assistance commands into the simulation
+            command path.
+          </li>
+
+          <li>
+            <strong>TelemetryState DTO:</strong> Backend-to-frontend telemetry object
+            intended to expose reduced, frontend-facing simulation state without
+            leaking backend domain structures into the UI.
+          </li>
+
+          <li>
+            <strong>Backend / Simulation Engine:</strong> C++ simulation backend
+            containing the simulation core, spacecraft state representation, physics
+            models, propulsion models, coordinate transformation logic, configuration
+            interpretation, and telemetry generation.
+          </li>
+
+          <li>
+            <strong>SimControl:</strong> Central simulation orchestrator responsible
+            for simulation flow, command forwarding, validation, frame updates, and
+            interaction with the spacecraft instance.
+          </li>
+
+          <li>
+            <strong>Spacecraft:</strong> Core domain object and single source of truth
+            for the simulation state. It owns the current state representation,
+            spacecraft properties, propulsion state, physical state, and dynamic
+            quantities required for force-based propagation.
+          </li>
+
+          <li>
+            <strong>State Representation:</strong> Backend state structures describing
+            the authoritative spacecraft state, including position, velocity,
+            orientation, angular velocity, mass-related quantities, and simulation
+            status.
+          </li>
+
+          <li>
+            <strong>JsonConfigReader:</strong> Backend-side JSON interpreter that
+            translates external configuration data into backend domain structures used
+            to initialize the spacecraft and mission context.
+          </li>
+
+          <li>
+            <strong>CoordinateTransformer:</strong> Backend coordinate transformation
+            component for translating between simulation frames such as MCI, MCMF,
+            MSC, ENU, LVLH, and SBF.
+          </li>
+
+          <li>
+            <strong>Physics:</strong> Physical calculation orchestrator responsible
+            for evaluating environmental and force-related models required for state
+            propagation.
+          </li>
+
+          <li>
+            <strong>Thrust:</strong> Propulsion calculation orchestrator responsible
+            for main engine thrust, RCS thrust, fuel consumption, and propulsion state
+            aggregation.
+          </li>
+
+          <li>
+            <strong>Models and Abstract Model Interfaces:</strong> Extension points for
+            concrete physics, propulsion, control, sensor, and optimization models.
+            These abstractions allow individual simulation models to be replaced or
+            extended without changing the complete backend architecture.
+          </li>
+
+          <li>
+            <strong>Data Structs:</strong> Backend data containers used for exchanging
+            simulation state, propulsion state, control input, telemetry values, and
+            model-specific data inside the simulation engine.
+          </li>
+        </ul>
+      </section>
 
         <hr />
 
@@ -220,6 +295,167 @@ export default function Architecture() {
 
         <hr />
 
+        <section>
+          <h2>Backend Architecture</h2>
+
+          <p>
+            The backend of the <strong>Spaceflight Dynamics Framework (SDF)</strong> is
+            designed as a modular simulation engine centered around a single
+            authoritative spacecraft representation. It separates simulation
+            orchestration, state management, coordinate transformations, propulsion
+            modeling, physical state propagation, telemetry generation, and future
+            optimization components into clearly defined subsystems.
+          </p>
+
+          <p>
+            At the center of the backend architecture is the <strong>Spacecraft</strong>{' '}
+            component. It acts as the <strong>Single Source of Truth (SSOT)</strong> for
+            the simulation state. The associated <strong>StateVector</strong> represents
+            the dynamic state used for numerical propagation and is one of the most
+            important runtime data structures in the simulation core.
+          </p>
+
+          <p>
+            <strong>SimControl</strong> acts as the central simulation orchestrator. It
+            coordinates simulation execution, forwards commands, triggers subsystem
+            updates, manages mission and frame context data, and controls the overall
+            simulation lifecycle.
+          </p>
+
+          <section className="diagramSection">
+            <img
+              src={useBaseUrl('/img/architecture/BackEnd.drawio.svg')}
+              alt="SDF backend architecture diagram showing simulation interface layer, SimControl, Spacecraft, StateVector, coordinate transformation, physics, propulsion, telemetry, configuration, and planned thrust optimizer"
+              className="archDiagram"
+            />
+          </section>
+
+          <p>
+            In the diagram, the orange-highlighted components represent the core
+            simulation state path. <strong>Spacecraft</strong> and
+            <strong> StateVector</strong> form the central runtime state authority. The
+            pink-highlighted <strong>Thrust Optimizer</strong> represents a planned
+            research-oriented extension for the future SDF v0.2 release.
+          </p>
+
+          <h3>Backend Components</h3>
+
+          <ul>
+            <li>
+              <strong>Simulation Interface Layer:</strong> Backend-side communication
+              boundary between external frontend implementations and the simulation
+              engine. It defines command and telemetry contracts and prepares the
+              architecture for future frontend replacement and ROS-based communication.
+            </li>
+
+            <li>
+              <strong>FlightCommand DTO:</strong> Frontend-to-backend command structure
+              used to transfer operator input, assisted-control commands, main engine
+              commands, and RCS commands into the backend command path.
+            </li>
+
+            <li>
+              <strong>TelemetryState DTO:</strong> Backend-to-frontend telemetry
+              structure used to expose reduced simulation state to visualization layers
+              without leaking backend domain structures into the frontend.
+            </li>
+
+            <li>
+              <strong>SimControl:</strong> Central simulation coordinator responsible for
+              simulation lifecycle handling, command forwarding, subsystem coordination,
+              mission context handling, frame context handling, and interaction with the
+              active spacecraft instance.
+            </li>
+
+            <li>
+              <strong>Spacecraft:</strong> Core backend domain object and
+              <strong> Single Source of Truth</strong> for the current simulation state.
+              It owns vehicle configuration, runtime state, propulsion state, physical
+              state, and mission-related state data.
+            </li>
+
+            <li>
+              <strong>StateVector:</strong> Primary dynamic state representation used by
+              the simulation. It contains the propagated spacecraft state, including
+              position, velocity, orientation, angular velocity, and additional dynamic
+              state quantities.
+            </li>
+
+            <li>
+              <strong>JsonConfigReader:</strong> Backend-side configuration interpreter
+              that translates external JSON spacecraft configuration files into backend
+              domain structures used to initialize spacecraft properties, engine
+              configurations, fuel systems, initial conditions, and mission context data.
+            </li>
+
+            <li>
+              <strong>CoordinateTransformer:</strong> Central backend component for
+              coordinate and frame transformations between MCI, MCMF, MSC, ENU, LVLH,
+              and SBF reference frames.
+            </li>
+
+            <li>
+              <strong>Physics:</strong> Backend subsystem responsible for environmental
+              force modeling, force aggregation, acceleration computation, numerical
+              integration, and state propagation.
+            </li>
+
+            <li>
+              <strong>Thrust:</strong> Propulsion subsystem responsible for main engine
+              thrust, RCS thruster behavior, thrust allocation, fuel consumption, and
+              resulting force generation.
+            </li>
+
+            <li>
+              <strong>Models and Abstract Interfaces:</strong> Extension points for
+              physics models, propulsion models, controllers, sensors, integrators, and
+              future research models. These interfaces allow individual simulation
+              models to be replaced without restructuring the backend.
+            </li>
+
+            <li>
+              <strong>Telemetry Mapping:</strong> Backend mapping path that transforms
+              simulation-internal state into frontend-facing telemetry DTOs.
+            </li>
+
+            <li>
+              <strong>Thrust Optimizer:</strong> Planned SDF v0.2 research extension for
+              optimization-based thrust, trajectory, guidance, and fuel-efficiency
+              experiments. It is intentionally separated from the core real-time
+              simulation loop.
+            </li>
+          </ul>
+
+          <h3>Backend Design Direction</h3>
+
+          <ul>
+            <li>
+              SimControl orchestrates simulation flow, while Spacecraft owns the
+              authoritative simulation state.
+            </li>
+            <li>
+              Spacecraft and StateVector form the core runtime state path.
+            </li>
+            <li>
+              Coordinate transformation is treated as a dedicated backend subsystem.
+            </li>
+            <li>
+              Physics and propulsion are separated but connected through force
+              generation and state propagation.
+            </li>
+            <li>
+              Telemetry is transferred through explicit DTOs instead of exposing backend
+              domain structures to the frontend.
+            </li>
+            <li>
+              Optimization components are separated from the core loop and reserved for
+              research-oriented SDF v0.2 functionality.
+            </li>
+          </ul>
+        </section>
+
+        <hr />
+        
         <section>
           <h2>Physics Architecture</h2>
 
