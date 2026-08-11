@@ -50,6 +50,13 @@ export default function Mathematics() {
               </div>
             </a>
 
+            <a className="mathButton" href="/mathematics/rotationalDynamics">
+              <div className="mathTitle">Rotational Dynamics</div>
+              <div className="mathDesc">
+                Rigid-body rotation, torque and attitude propagation
+              </div>
+            </a>
+
             <a className="mathButton" href="/mathematics/thrust">
               <div className="mathTitle">Thrust Model</div>
               <div className="mathDesc">

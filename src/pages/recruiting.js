@@ -1,247 +1,438 @@
 import React from 'react';
+
 import Layout from '@theme/Layout';
+
 import '../css/recruiting.css';
 
 export default function Recruiting() {
-  return (
-    <Layout
-      title="Recruiting & Collaboration | Spaceflight Dynamics Framework"
-      description="Open-source collaboration, contribution philosophy, and community participation within the Spaceflight Dynamics Framework">
+return ( <Layout
+   title="Recruiting & Collaboration | Spaceflight Dynamics Framework"
+   description="Open-source collaboration, contribution workflow, GitHub Issues, and community participation within the Spaceflight Dynamics Framework">
 
-      <main className="recruitingContainer">
+  <main className="recruitingContainer">
 
-        <h1>Recruiting & Collaboration</h1>
+    <h1>Recruiting & Collaboration</h1>
 
-        <section className="recruitIntro">
+    <section className="recruitIntro">
 
-          <div className="recruitIntroText">
+      <div className="recruitIntroText">
 
-            <p>
-              <strong>Spaceflight Dynamics Framework (SDF)</strong> started as a
-              small personal experiment in physics-based simulation, software
-              architecture, and control-system development. Over time, the scope
-              of the project has grown steadily — both in technical depth and in
-              conceptual ambition.
-            </p>
+        <p>
+          <strong>Spaceflight Dynamics Framework (SDF)</strong> started as a
+          small personal experiment in physics-based simulation, software
+          architecture, and control-system development. Over time, the scope
+          of the project has grown steadily — both in technical depth and
+          conceptual ambition.
+        </p>
 
-            <p>
-              What originally began as a lunar landing simulation is now evolving
-              toward a broader open-source framework for spacecraft dynamics,
-              propulsion modeling, telemetry-driven analysis, and future
-              autonomous flight research.
-            </p>
+        <p>
+          What originally began as a lunar landing simulation is now evolving
+          into a broader open-source framework for spacecraft dynamics,
+          propulsion modeling, guidance and control, telemetry-driven analysis,
+          and aerospace simulation research.
+        </p>
 
-            <p>
-              All development is fully <strong>open source</strong>, enabling
-              contributors to explore, understand, modify, discuss, and extend
-              the project architecture collaboratively.
-            </p>
+        <p>
+          All development is fully <strong>open source</strong>, allowing
+          contributors to explore, understand, modify, discuss, validate, and
+          extend the project collaboratively.
+        </p>
 
-          </div>
+      </div>
 
-          <div className="recruitIntroImage">
+      <div className="recruitIntroImage">
 
-            <img
-              src="/img/recruiting/join.png"
-              alt="Join the SDF mission"
-            />
+        <img
+          src="/img/recruiting/join.png"
+          alt="Join the SDF mission"
+        />
 
-            <p className="imageCredit">
-              Image generated with AI
-            </p>
+        <p className="imageCredit">
+          Image generated with AI
+        </p>
 
-          </div>
+      </div>
 
-        </section>
+    </section>
 
-        <section className="recruitSection">
+    <section className="recruitSection">
 
-          <h2>Project Philosophy</h2>
+      <h2>Project Philosophy</h2>
 
-          <p>
-            SDF does not follow a rigid commercial roadmap or a fixed production
-            objective. Instead, the framework is intentionally developed as an
-            <strong> open and evolving engineering environment</strong> where
-            contributors can actively shape both technical direction and
-            implementation strategy.
-          </p>
+      <p>
+        SDF does not follow a rigid commercial roadmap or a fixed production
+        objective. Instead, the framework is intentionally developed as an
+        <strong> open and evolving engineering environment</strong> where
+        contributors can actively influence technical direction,
+        implementation strategy, validation, and future research capabilities.
+      </p>
 
-          <p>
-            The project emphasizes curiosity, experimentation, architectural
-            transparency, and learning through practical engineering work.
-            Contributors are encouraged to ask questions, challenge assumptions,
-            propose ideas, discuss concepts, and participate in architectural
-            evolution.
-          </p>
+      <p>
+        The project emphasizes curiosity, experimentation, architectural
+        transparency, scientific consistency, and learning through practical
+        engineering work. Contributors are encouraged to ask questions,
+        challenge assumptions, propose ideas, discuss concepts, and participate
+        in architectural evolution.
+      </p>
 
-          <p>
-            Contribution is intentionally understood in a broad sense.
-            Participating does <strong>not</strong> necessarily mean writing large
-            amounts of production code. Valuable contribution can also include:
-          </p>
+      <p>
+        Contribution is intentionally understood in a broad sense.
+        Participating does <strong>not</strong> necessarily mean writing large
+        amounts of production code. Valuable contributions can also include:
+      </p>
 
-          <ul>
-            <li>Discussing architecture decisions</li>
-            <li>Proposing simulation ideas or mission concepts</li>
-            <li>Reviewing telemetry or UI concepts</li>
-            <li>Suggesting mathematical improvements</li>
-            <li>Testing simulation behavior</li>
-            <li>Providing engineering feedback</li>
-            <li>Creating diagrams or documentation</li>
-            <li>Experimenting with small isolated features</li>
-            <li>Exploring future research directions</li>
-          </ul>
+      <ul>
+        <li>Discussing architecture decisions</li>
+        <li>Proposing simulation ideas or mission concepts</li>
+        <li>Reviewing mathematical and physical models</li>
+        <li>Validating simulation behavior</li>
+        <li>Reviewing telemetry or UI concepts</li>
+        <li>Suggesting numerical or mathematical improvements</li>
+        <li>Providing aerospace engineering feedback</li>
+        <li>Creating diagrams or technical documentation</li>
+        <li>Experimenting with isolated features</li>
+        <li>Exploring future research directions</li>
+      </ul>
 
-          <p>
-            The framework is intentionally structured around modular subsystem
-            boundaries so contributors can engage with isolated areas of interest
-            without needing to understand the entire codebase immediately.
-          </p>
+      <p>
+        The framework is intentionally structured around modular subsystem
+        boundaries so contributors can engage with isolated areas of interest
+        without needing to understand the entire codebase immediately.
+      </p>
 
-        </section>
+    </section>
 
-        <section className="recruitSection">
+    <section className="recruitSection">
 
-          <h2>Collaboration & Contribution</h2>
+      <h2>Collaboration & Contribution</h2>
 
-          <p>
-            Contributions are not limited to predefined tasks. Participants are
-            encouraged to bring in their own ideas, interests, technical
-            questions, and research perspectives.
-          </p>
+      <p>
+        Contributions are not limited to predefined tasks. Participants are
+        encouraged to bring their own ideas, technical questions, engineering
+        experience, and research perspectives into the project.
+      </p>
 
-          <p>
-            Areas of collaboration currently include:
-          </p>
+      <p>
+        Areas of collaboration currently include:
+      </p>
 
-          <ul>
-            <li>Spacecraft dynamics and physics modeling</li>
-            <li>Guidance and control systems</li>
-            <li>RCS and propulsion modeling</li>
-            <li>Simulation backend architecture</li>
-            <li>Frontend UI and telemetry systems</li>
-            <li>ROS and interface abstraction</li>
-            <li>Optimization and numerical methods</li>
-            <li>Dataflow and telemetry design</li>
-            <li>Documentation and engineering diagrams</li>
-            <li>Simulation validation and testing</li>
-          </ul>
+      <ul>
+        <li>6DoF spacecraft dynamics and physical modeling</li>
+        <li>Guidance, navigation, and control</li>
+        <li>RCS and propulsion modeling</li>
+        <li>Attitude-control systems</li>
+        <li>Simulation backend architecture</li>
+        <li>Frontend UI and telemetry visualization</li>
+        <li>ROS2 and interface abstraction</li>
+        <li>Optimization and numerical integration</li>
+        <li>Telemetry and research-data workflows</li>
+        <li>Documentation and engineering diagrams</li>
+        <li>Simulation verification and validation</li>
+      </ul>
 
-          <p>
-            Because the framework is <strong>open source</strong>,
-            collaboration within SDF is organized primarily through
-            <strong> GitHub Issues</strong>. Planned features, architectural
-            discussions, subsystem tasks, frontend improvements, and future
-            research directions are tracked transparently through the issue system.
-          </p>
+    </section>
 
-          <p>
-            Contributors interested in getting started are encouraged to explore
-            issues marked with:
-          </p>
+    <section className="recruitSection">
 
-          <ul>
-            <li><strong>Help Wanted</strong> — areas where support or collaboration is actively welcome</li>
-            <li><strong>Good First Issue</strong> — beginner-friendly tasks suitable for onboarding and first contributions</li>
-          </ul>
+      <h2>Issue-Based Development</h2>
 
-          <p>
-            While contributing does not necessarily require large-scale coding,
-            practical collaboration currently assumes basic familiarity with
-            GitHub workflows such as cloning repositories, creating branches,
-            and working with issues or pull requests.
-          </p>
+      <p>
+        SDF follows an <strong>issue-based development process</strong>.
+        Every implementation, validation task, bugfix, architectural change,
+        or major documentation activity should be associated with a GitHub
+        Issue before development begins.
+      </p>
 
-          <p>
-            If setup, onboarding, or development environment configuration becomes
-            a hurdle, support can be provided directly. Feel free to reach out via
-            the contact email for help with project setup, architecture orientation,
-            or contribution onboarding.
-          </p>
-        
+      <p>
+        This keeps technical decisions traceable, makes the development
+        roadmap transparent, and allows contributors to understand why a
+        change exists before examining the implementation itself.
+      </p>
 
-        </section>
+      <p>
+        Open development tasks and discussions can be found directly in the
+        project&apos;s GitHub Issue tracker:
+      </p>
 
-        <section className="recruitSection">
+      <div className="buttonCenter">
+        <a
+          href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/issues"
+          className="contactButton"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Explore GitHub Issues
+        </a>
+      </div>
 
-          <h2>Current Development Direction</h2>
+      <p>
+        Contributors interested in getting started should particularly look
+        for issues labeled <strong>Help Wanted</strong> or <strong>Good First Issue</strong>.
+      </p>
 
-          <p>
-            SDF is currently in an active pre-release development phase focused
-            on the milestone:
-            <strong> M1 - Full 6DOF Simulation</strong>.
-          </p>
+      <ul>
+        <li>
+          <strong>Help Wanted:</strong> Tasks where technical discussion,
+          implementation support, testing, review, or engineering expertise
+          is actively welcome.
+        </li>
 
-          <p>
-            Current architectural work includes frontend restructuring,
-            telemetry abstraction, propulsion-system expansion, DTO mapping,
-            future ROS integration, and preparation for rigid-body spacecraft
-            dynamics.
-          </p>
+        <li>
+          <strong>Good First Issue:</strong> Smaller or well-isolated tasks
+          suitable for learning the codebase and contribution workflow.
+        </li>
+      </ul>
 
-          <p>
-            The planned release line is:
-            <strong> v0.2 - SDF Research Release</strong>.
-          </p>
+    </section>
 
-        </section>
+    <section className="recruitSection">
 
-        <section className="recruitSection">
+      <h2>Understanding SDF Issue IDs</h2>
 
-          <h2>Expectations</h2>
+      <p>
+        SDF uses a lightweight issue-key convention to make the purpose of
+        development tasks immediately visible. An issue identifier consists
+        of a category letter followed by a sequential number.
+      </p>
 
-          <p>
-            SDF is not a pressure-driven production project. There are no strict
-            deadlines or mandatory contribution quotas. What matters most is
-            constructive collaboration, curiosity, technical interest, and the
-            motivation to explore engineering concepts together.
-          </p>
+      <p>
+        For example, an issue named <strong>D23 - Basic RCS Model</strong>
+        identifies the task as a developer-oriented implementation issue.
+        The same identifier is then reused in branches and commit messages.
+      </p>
 
-          <p>
-            Small contributions, isolated experiments, discussions, and gradual
-            involvement are completely welcome.
-          </p>
+      <ul>
+        <li>
+          <strong>D — Developer Task:</strong> Implementation work, code
+          changes, or smaller technical features
+        </li>
 
-        </section>
+        <li>
+          <strong>M — Mathematical Model:</strong> Equations, physics models,
+          guidance laws, controller formulations, or optimization models
+        </li>
 
-        <section className="recruitSection">
+        <li>
+          <strong>A — Architecture:</strong> Interfaces, subsystem boundaries,
+          structural changes, or major refactoring
+        </li>
 
-          <h2>Who is this for?</h2>
+        <li>
+          <strong>W — Website / Documentation:</strong> Technical
+          documentation, diagrams, mathematical documentation, or website work
+        </li>
 
-          <p>
-            The project is suitable for students, engineers, developers, and
-            technically curious contributors interested in simulation,
-            spacecraft dynamics, control systems, telemetry workflows,
-            aerospace software engineering, or modular system architecture.
-          </p>
+        <li>
+          <strong>P — Project Management:</strong> Milestones, roadmap,
+          repository organization, or planning activities
+        </li>
 
-          <p>
-            Motivation, curiosity, and openness to learning are valued more than
-            formal experience level.
-          </p>
+        <li>
+          <strong>F — Feature Proposal:</strong> Larger functional extensions
+          or new framework capabilities
+        </li>
 
-        </section>
+        <li>
+          <strong>B — Bugfix:</strong> Incorrect behavior, defects, or runtime
+          errors
+        </li>
 
-        <section className="recruitContact">
+        <li>
+          <strong>R — Refactoring:</strong> Internal restructuring without an
+          intended functional change
+        </li>
 
-          <h2>Get in Touch</h2>
+        <li>
+          <strong>T — Tests / Validation:</strong> Verification, validation,
+          analytical comparison, or simulation testing
+        </li>
+      </ul>
 
-          <p>
-            Interested in contributing, discussing ideas, or simply following
-            the project evolution? Feel free to reach out or explore the
-            open-source repository.
-          </p>
+      <p>
+        The identifier remains visible throughout the development history.
+        A typical development flow may therefore look like:
+      </p>
 
-          <a
-            href="mailto:info@aerospace-simulation.dev"
-            className="contactButton"
-          >
-            info@aerospace-simulation.dev
-          </a>
+      <ul>
+        <li><strong>Issue:</strong> D23 - Basic RCS Model</li>
+        <li><strong>Branch:</strong> feature/D23-Basic-RCS-Model</li>
+        <li><strong>Commit:</strong> D23 - Implement RCS actuator dynamics</li>
+      </ul>
 
-        </section>
+      <p>
+        Development should take place on an issue-specific branch and the
+        resulting Pull Request should reference the corresponding issue.
+        This keeps implementation, discussion, review, and project history
+        connected.
+      </p>
 
-      </main>
-    </Layout>
-  );
+    </section>
+
+    <section className="recruitSection">
+
+      <h2>Contribution Workflow</h2>
+
+      <p>
+        The typical contribution workflow is intentionally lightweight:
+      </p>
+
+      <ol>
+        <li>Find an existing GitHub Issue or create a new one.</li>
+        <li>Discuss the intended change where appropriate.</li>
+        <li>Fork or clone the repository.</li>
+        <li>Create an issue-specific feature branch.</li>
+        <li>Implement and document the change.</li>
+        <li>Commit using the corresponding issue identifier.</li>
+        <li>Submit a Pull Request referencing the issue.</li>
+      </ol>
+
+      <p>
+        Practical collaboration therefore assumes basic familiarity with
+        Git and GitHub workflows. Contributors do not need to be experts,
+        and support with repository setup, architecture orientation, or the
+        contribution process is welcome.
+      </p>
+
+      <p>
+        The complete engineering and contribution guidelines are maintained
+        in the repository documentation.
+      </p>
+
+      <div className="buttonCenter">
+        <a
+          href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/blob/main/docs/contributing.md"
+          className="contactButton"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read Contribution Guidelines
+        </a>
+      </div>
+
+    </section>
+
+    <section className="recruitSection">
+
+      <h2>Current Development Direction</h2>
+
+      <p>
+        SDF is currently in active pre-release development around its first
+        major technical milestone:
+        <strong> M1 - 6DoF Core Simulation</strong>.
+      </p>
+
+      <p>
+        The complete translational and rotational rigid-body dynamics pipeline
+        has been implemented. Current work focuses on systematic physical and
+        numerical verification, cockpit integration of the rotational state,
+        and extension of the RCS architecture toward dedicated attitude
+        control.
+      </p>
+
+      <p>
+        Further development will expand telemetry analysis, numerical methods,
+        control capabilities, environmental models, and external interfaces
+        while preserving the modular architecture of the simulation core.
+      </p>
+
+    </section>
+
+    <section className="recruitSection">
+
+      <h2>Engineering Standards</h2>
+
+      <p>
+        Contributions should preserve the core design principles of the
+        framework. In particular, SDF favors modular and interface-driven
+        implementations, explicit physical assumptions, clear subsystem
+        boundaries, and reproducible simulation behavior.
+      </p>
+
+      <ul>
+        <li>Physical quantities should use SI units.</li>
+        <li>Public APIs and important functions should include Doxygen documentation.</li>
+        <li>Mathematical models should document equations, variables, assumptions, and limitations.</li>
+        <li>Frontend components should not depend directly on backend implementation details.</li>
+        <li>Simulation data exposed externally should use explicit telemetry structures.</li>
+        <li>Architecture and mathematical documentation should be updated when major models or interfaces change.</li>
+      </ul>
+
+      <p>
+        Scientific consistency and maintainability should take priority over
+        implementation convenience.
+      </p>
+
+    </section>
+
+    <section className="recruitSection">
+
+      <h2>Expectations</h2>
+
+      <p>
+        SDF is not a pressure-driven production project. There are no strict
+        deadlines or mandatory contribution quotas. What matters most is
+        constructive collaboration, curiosity, technical interest, and the
+        motivation to explore engineering concepts together.
+      </p>
+
+      <p>
+        Small contributions, isolated experiments, technical discussions,
+        documentation improvements, validation work, and gradual involvement
+        are completely welcome.
+      </p>
+
+    </section>
+
+    <section className="recruitSection">
+
+      <h2>Who is this for?</h2>
+
+      <p>
+        The project is suitable for students, engineers, software developers,
+        researchers, and technically curious contributors interested in
+        simulation, spacecraft dynamics, control systems, telemetry workflows,
+        numerical methods, aerospace software engineering, or modular system
+        architecture.
+      </p>
+
+      <p>
+        Formal aerospace experience is not a prerequisite. Motivation,
+        curiosity, technical rigor, and openness to learning are valued more
+        than a specific professional background.
+      </p>
+
+    </section>
+
+    <section className="recruitContact">
+
+      <h2>Get in Touch</h2>
+
+      <p>
+        Interested in contributing, discussing an idea, reviewing a model,
+        or simply following the project? Explore the open issues, join a
+        technical discussion, or get in touch directly.
+      </p>
+
+      <a
+        href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/issues"
+        className="contactButton"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View Open Issues
+      </a>
+
+      <a
+        href="mailto:info@aerospace-simulation.dev"
+        className="contactButton"
+      >
+        info@aerospace-simulation.dev
+      </a>
+
+    </section>
+
+  </main>
+</Layout>
+
+);
 }

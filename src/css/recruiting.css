@@ -10,6 +10,7 @@
   font-family: 'Inter', sans-serif;
 }
 
+
 /* =========================
    Section Styling
    ========================= */
@@ -44,12 +45,33 @@
   color: #d8d8d8;
 }
 
-.recruitSection li::before {
-  content: "•";
-  position: absolute;
-  left: -1.2rem;
-  color: #5da9ff;
+/* =========================
+   Buttons
+   ========================= */
+
+.contactButton {
+  display: inline-block;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
+
+.contactButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Centers standalone buttons within a section */
+.buttonCenter {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
 
 /* =========================
    Contact Section
@@ -74,40 +96,6 @@
   margin-bottom: 1.6rem;
 }
 
-.contactButton {
-  display: inline-block;
-  padding: 0.6rem 1.6rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: background 0.25s ease, border-color 0.25s ease;
-}
-
-.contactButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-/* =========================
-   Responsive Adjustments
-   ========================= */
-
-@media (max-width: 600px) {
-  .recruitingContainer {
-    padding: 3rem 1.2rem 4rem;
-  }
-
-  .recruitSection h2 {
-    font-size: 1.4rem;
-  }
-
-  .contactButton {
-    font-size: 0.9rem;
-    padding: 0.5rem 1.4rem;
-  }
-}
 
 /* =========================
    Intro Section: Text + Image
@@ -130,15 +118,19 @@
 
 .recruitIntroImage {
   flex-shrink: 0;
-  width: 350px; /* kleineres Bild */
+  width: 350px;
 }
 
 .recruitIntroImage img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   transition: transform 0.25s ease;
+}
+
+.recruitIntroImage img:hover {
+  transform: scale(1.03);
 }
 
 .imageCredit {
@@ -148,12 +140,9 @@
   margin-top: 0.25rem;
 }
 
-.recruitIntroImage img:hover {
-  transform: scale(1.03);
-}
 
 /* =========================
-   Responsive Anpassung
+   Responsive Adjustments
    ========================= */
 
 @media (max-width: 700px) {
@@ -161,9 +150,71 @@
     flex-direction: column;
     text-align: center;
   }
+
   .recruitIntroImage {
     width: 70%;
     margin-top: 1.5rem;
   }
 }
 
+@media (max-width: 600px) {
+  .recruitingContainer {
+    padding: 3rem 1.2rem 4rem;
+  }
+
+  .recruitSection h2 {
+    font-size: 1.4rem;
+  }
+
+  .contactButton {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.4rem;
+  }
+}
+
+/* =========================
+   Lists
+   ========================= */
+
+/* Unordered lists */
+
+.recruitSection ul {
+  list-style: none;
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.recruitSection ul li {
+  position: relative;
+  font-size: 0.95rem;
+  margin-bottom: 0.45rem;
+  color: #d8d8d8;
+}
+
+.recruitSection ul li::before {
+  content: "•";
+  position: absolute;
+  left: -1.2rem;
+  color: #5da9ff;
+}
+
+
+/* Ordered lists */
+
+.recruitSection ol {
+  list-style: decimal;
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.recruitSection ol li {
+  position: static;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  color: #d8d8d8;
+}
+
+.recruitSection ol li::before {
+  content: none;
+}

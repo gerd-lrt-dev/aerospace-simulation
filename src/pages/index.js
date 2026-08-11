@@ -1,26 +1,27 @@
 import React from 'react';
 import Layout from '@theme/Layout';
-import Topbar from '../components/Topbar'; // Pfad ggf. anpassen
 import '../css/hero.css';
 
 export default function Home() {
   return (
     <Layout
-      title="Spaceflight Dynamics Framework – Research Simulation Platform"
-      description="Modular C++ research framework for spacecraft dynamics, propulsion modeling, guidance, control, and real-time telemetry visualization">
+      title="Spaceflight Dynamics Framework – Spacecraft Simulation Platform"
+      description="Modular open-source C++ framework for 6DoF spacecraft dynamics, propulsion, guidance, control, and real-time telemetry visualization">
 
       <main className="hero">
         <div className="heroOverlay">
+
           <h1>Spaceflight Dynamics Framework</h1>
 
           <p>
-            Modular C++ simulation framework for spacecraft dynamics,
-            propulsion modeling, guidance, control development, and
-            real-time telemetry visualization with a Qt-based cockpit frontend.
+            Modular open-source C++ framework for 6DoF spacecraft dynamics,
+            propulsion modeling, guidance and control development, numerical
+            simulation, and real-time telemetry visualization with a Qt-based
+            cockpit frontend.
           </p>
 
           <span>
-            Pre-release Development · Milestone 1: Full 6DOF Simulation
+            Pre-release Development · Milestone 1: 6DoF Core Simulation
           </span>
 
           <div className="exploreButtonContainer">
@@ -28,6 +29,7 @@ export default function Home() {
               Explore Project Details
             </a>
           </div>
+
         </div>
 
         <span className="heroAiCredit">AI-generated image</span>
