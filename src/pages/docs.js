@@ -73,6 +73,14 @@ export default function Mathematics() {
               </div>
             </a>
 
+            <a className="mathButton" href="/mathematics/RCSControlAllocation">
+              <div className="mathTitle">RCS Control Allocation</div>
+              <div className="mathDesc">
+                Geometry-based allocation of translational and rotational RCS
+                commands to individual spacecraft thrusters
+              </div>
+            </a>
+
             <a className="mathButton" href="/mathematics/impact">
               <div className="mathTitle">Impact & Structural Integrity</div>
               <div className="mathDesc">
