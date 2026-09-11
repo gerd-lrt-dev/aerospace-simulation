@@ -270,11 +270,9 @@ StateVector attitude + origin
             across the Qt thread boundary.
           </p>
 
-          <FlowBlock>{`StateVector
-        \
-SimulationFrameContext ──→ simData ──→ TelemetryMapper ──→ TelemetryDTO
-        /
-MissionContext
+          <FlowBlock>{`StateVector ────────────────┐
+SimulationFrameContext ──────┼──→ simData ──→ TelemetryMapper ──→ TelemetryDTO
+MissionContext ──────────────┘
 
 spacecraft propulsion / tanks / G-load / integrity
         └──────────────────────────────→ simData
