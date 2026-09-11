@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import '../../css/architecture.css';
@@ -44,6 +45,12 @@ export default function Architecture() {
           <strong> FlightCommand DTO</strong>, telemetry is exposed through
           <strong> Telemetry DTO</strong>, and the <strong>TelemetryMapper</strong> translates between backend domain data and frontend-facing data structures.
         </p>
+
+        <p>
+          For a step-by-step view of initialization, command routing, force generation,
+          state propagation, frame derivation, and telemetry transport, see the{' '}
+          <Link to="/simulation/data-flow"><strong>SDF Runtime Data Flow</strong></Link> documentation.
+        </p>
       </section>
 
       <section className="diagramSection">
@@ -83,10 +90,10 @@ export default function Architecture() {
           </li>
 
           <li>
-            <strong>Spacecraft:</strong> Authoritative domain object and single source
-            of truth for the current spacecraft state, including position, velocity,
-            angular velocity, quaternion-based attitude, mass properties, propulsion
-            state, and mission status.
+            <strong>Spacecraft:</strong> Authoritative domain object and owner of the
+            propagated spacecraft <strong>StateVector</strong>. It coordinates vehicle
+            configuration, propulsion, physics updates, mission references, and derived
+            frame representations while keeping the dynamic state centralized.
           </li>
 
           <li>
@@ -229,10 +236,27 @@ export default function Architecture() {
 
         <p>
           At the center of the backend architecture is the <strong>Spacecraft</strong>{' '}
-          component. It acts as the <strong>Single Source of Truth (SSOT)</strong> for
-          the simulation state. The associated <strong>StateVector</strong> represents
-          the dynamic state used for numerical propagation and is one of the most
-          important runtime data structures in the simulation core.
+          component. It owns the authoritative dynamic <strong>StateVector</strong> used
+          for numerical propagation. Translational runtime state is propagated in
+          <strong> Moon-Centered Inertial (MCI)</strong> coordinates, while attitude and
+          angular velocity remain represented in their defined inertial/body-frame forms.
+        </p>
+
+        <p>
+          Initial configuration is intentionally separated from runtime propagation.
+          A spacecraft may be initialized directly in MCI or relative to the configured
+          landing site in ENU. ENU input is resolved once through <code>ENU → MCMF → MCI</code>;
+          direct MCI input is assigned directly. After that resolution step, the
+          <strong>StateVector</strong> is authoritative and MCMF, MSC, ENU, LVLH, and SBF
+          representations are derived from it rather than integrated independently.
+        </p>
+
+        <p>
+          <strong>MissionContext</strong> stores stable mission references such as the
+          canonical landing site and its derived reference-frame representations.
+          <strong> SimulationFrameContext</strong> stores state-dependent frame views
+          reconstructed from the current spacecraft state. This keeps mission reference
+          data separate from the propagated spacecraft state.
         </p>
 
         <p>
@@ -272,10 +296,10 @@ export default function Architecture() {
           </li>
 
           <li>
-            <strong>Spacecraft:</strong> Core backend domain object and
-            <strong> Single Source of Truth</strong> for the current simulation state.
-            It owns vehicle configuration, runtime state, propulsion state, physical
-            state, and mission-related data.
+            <strong>Spacecraft:</strong> Core backend domain object and owner of the
+            authoritative runtime <strong>StateVector</strong>. It coordinates vehicle
+            configuration, propulsion state, physics updates, mission references, and
+            derived runtime frame data.
           </li>
 
           <li>
@@ -285,15 +309,32 @@ export default function Architecture() {
             <code> Eigen::Vector3d</code> for translational quantities and
             <code> Eigen::Quaterniond</code> for spacecraft attitude, together with
             angular velocity, mass properties, and additional dynamic state
-            quantities.
+            quantities. MCI position and velocity are the authoritative translational
+            runtime representation.
+          </li>
+
+          <li>
+            <strong>MissionContext:</strong> Persistent mission-reference data. The
+            landing site is configured canonically in MSC and is resolved during
+            initialization into MCMF, MCI, and a landing-site ENU frame. These values
+            are references for navigation and guidance, not independently propagated
+            spacecraft state.
+          </li>
+
+          <li>
+            <strong>SimulationFrameContext:</strong> Current spacecraft state expressed
+            in derived MCI, MCMF, MSC, ENU, LVLH, and SBF representations. The context
+            is rebuilt from the authoritative state and is not integrated directly by
+            the physics engine.
           </li>
 
           <li>
             <strong>JsonConfigReader:</strong> Backend-side configuration interpreter
             that translates external JSON spacecraft configuration files into backend
             domain structures used to initialize spacecraft properties, engine
-            configurations, fuel systems, initial conditions, and mission context
-            data.
+            configurations, fuel systems, initial conditions, and mission context data.
+            It supports consistent ENU/ENU and MCI/MCI initial-state definitions and
+            rejects mixed position/velocity frame combinations.
           </li>
 
           <li>
@@ -326,7 +367,10 @@ export default function Architecture() {
 
           <li>
             <strong>Telemetry Mapping:</strong> Mapping layer responsible for
-            translating backend simulation data into frontend-facing telemetry DTOs.
+            translating backend <code>simData</code> into frontend-facing telemetry DTOs.
+            It exposes the authoritative navigation state together with derived frame
+            context data without giving the frontend direct access to backend domain
+            structures.
           </li>
 
           <li>
@@ -345,7 +389,12 @@ export default function Architecture() {
             authoritative simulation state.
           </li>
           <li>
-            Spacecraft and StateVector form the core runtime state path.
+            Spacecraft and StateVector form the core runtime state path; MCI position
+            and velocity remain authoritative after initial-state resolution.
+          </li>
+          <li>
+            MissionContext stores stable mission references, while SimulationFrameContext
+            stores state-dependent derived frame representations.
           </li>
           <li>
             Eigen provides the standardized mathematical foundation for vector,
@@ -632,18 +681,36 @@ export default function Architecture() {
           </p>
 
           <p>
-            The <strong>TelemetryMapper</strong> translates the authoritative backend
-            spacecraft state into <strong>TelemetryDTO</strong> structures. This prevents
-            cockpit components from depending directly on backend domain models and
-            establishes a stable communication contract for future frontend and ROS
-            integrations.
+            The backend first aggregates the authoritative <strong>StateVector</strong>,
+            the current <strong>SimulationFrameContext</strong>, mission references,
+            propulsion state, tank state, integrity, and sensor values into
+            <strong> simData</strong>. The <strong>TelemetryMapper</strong> then translates
+            that snapshot into <strong>TelemetryDTO</strong> structures for the frontend.
+          </p>
+
+          <p>
+            This mapping exposes authoritative MCI navigation data together with derived
+            MCI, MCMF, MSC, ENU, and LVLH frame representations without giving cockpit
+            components direct access to backend domain structures. It also establishes a
+            stable contract for future export, validation, replay, and ROS integrations.
           </p>
 
           <h3>Current Architecture</h3>
           <ul>
             <li>
-              <strong>Backend domain state:</strong> Internal spacecraft, propulsion,
-              physics, fuel, and simulation state remains owned by the backend.
+              <strong>StateVector:</strong> Authoritative propagated spacecraft state.
+            </li>
+            <li>
+              <strong>SimulationFrameContext:</strong> Derived current frame representations
+              reconstructed from the authoritative state.
+            </li>
+            <li>
+              <strong>MissionContext:</strong> Mission-specific navigation reference data
+              carried with backend simulation data where required.
+            </li>
+            <li>
+              <strong>simData:</strong> Aggregated backend telemetry snapshot containing
+              navigation, frame, propulsion, tank, integrity, sensor, and console data.
             </li>
             <li>
               <strong>TelemetryDTO:</strong> Explicit frontend-facing representation of
@@ -654,6 +721,12 @@ export default function Architecture() {
               backend domain state into telemetry DTOs.
             </li>
           </ul>
+
+          <p>
+            See <Link to="/simulation/data-flow">Runtime Data Flow</Link> for the complete
+            <code>StateVector → SimulationFrameContext → simData → TelemetryMapper → TelemetryDTO</code>
+            path and the associated state-ownership rules.
+          </p>
 
           <h3>Design Direction</h3>
           <ul>
@@ -703,13 +776,15 @@ export default function Architecture() {
             </li>
             <li>
               <strong>Configuration-Driven Setup:</strong> Spacecraft engines,
-              tanks, mass properties, and initial conditions are loaded from
-              external configuration.
+              tanks, mass properties, mission references, and initial conditions are
+              loaded from external configuration. Initial-state input may be expressed
+              in ENU or MCI, while runtime propagation remains MCI-based after resolution.
             </li>
             <li>
               <strong>Explicit Runtime State:</strong> Engine states,
               spacecraft states, telemetry states, and fuel states are modeled
-              explicitly.
+              explicitly. MissionContext and SimulationFrameContext remain distinct from
+              the authoritative propagated StateVector.
             </li>
             <li>
               <strong>6DoF Rigid-Body Dynamics:</strong> Translational and rotational
@@ -719,9 +794,9 @@ export default function Architecture() {
               complete six-degree-of-freedom state.
             </li>
             <li>
-              <strong>Frontend/Backend Decoupling:</strong> Direct dependency of
-              the frontend on backend domain structs is temporary and will be
-              replaced by DTO and ROS-based communication layers.
+              <strong>Frontend/Backend Decoupling:</strong> Frontend/backend interaction
+              is mediated through explicit command and telemetry DTOs, keeping cockpit
+              components independent of backend domain structures.
             </li>
             <li>
               <strong>Research Orientation:</strong> The system is designed for
