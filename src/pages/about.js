@@ -43,9 +43,9 @@ const audienceCards = [
 ];
 
 export default function About() {
-  const aboutLogo = useBaseUrl('/img/about/logo.svg');
+  const aboutLogo = useBaseUrl('/img/About/logo.png');
   const fallbackLogo = useBaseUrl('/img/logo.svg');
-  const aboutVideo = useBaseUrl('/img/about/application-demo.mp4');
+  const aboutVideo = useBaseUrl('/img/About/3DDemo.mp4');
   const fallbackVideo = useBaseUrl('/img/simulation/3DDemo.mp4');
 
   return (
