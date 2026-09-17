@@ -1,8 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import '../css/hero.css';
 
 export default function Home() {
+  const heroLogo = useBaseUrl('/img/About/logo.png');
+
   return (
     <Layout
       title="Spaceflight Dynamics Framework – Spacecraft Simulation Platform"
@@ -11,7 +14,13 @@ export default function Home() {
       <main className="hero">
         <div className="heroOverlay">
 
-          <h1>Spaceflight Dynamics Framework</h1>
+          <h1 className="heroLogoTitle">
+            <img
+              src={heroLogo}
+              alt="Spaceflight Dynamics Framework"
+              className="heroLogo"
+            />
+          </h1>
 
           <p>
             Modular open-source C++ framework for 6DoF spacecraft dynamics,

@@ -28,3 +28,26 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* About hero branding: keep the logo as a prominent standalone brand element. */
+.aboutPage .aboutLogoRow {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 1.6rem;
+}
+
+.aboutPage .aboutHeroLogo {
+  width: clamp(240px, 27vw, 330px);
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (max-width: 700px) {
+  .aboutPage .aboutHeroLogo {
+    width: min(280px, 78vw);
+    max-height: 130px;
+  }
+}

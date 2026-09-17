@@ -1,0 +1,166 @@
+.dataFlowContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dataFlowLead {
+  max-width: 900px;
+  font-size: 1.05rem;
+}
+
+.dataFlowNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.dataFlowNav a {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.4rem;
+  text-decoration: none;
+}
+
+.flowSection {
+  margin: 2.5rem 0;
+}
+
+.flowBlock {
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.5rem;
+  background: var(--ifm-background-surface-color);
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.flowGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.flowCard {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.5rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.flowCard h3 {
+  margin-top: 0;
+}
+
+.flowNote {
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--ifm-color-primary);
+  background: var(--ifm-background-surface-color);
+  margin: 1rem 0;
+}
+
+.layerFlow {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.archLayer {
+  position: relative;
+  padding: 1rem 1.15rem 1.15rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-left-width: 4px;
+  border-radius: 0.55rem;
+}
+
+.archLayerLabel {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.archLayer .flowBlock {
+  margin: 0;
+  border-color: transparent;
+  background: transparent;
+  padding: 0;
+}
+
+.archLayerFrontend {
+  border-left-color: #4f8cff;
+  background: rgba(79, 140, 255, 0.08);
+}
+
+.archLayerFrontend .archLayerLabel {
+  color: #7eabff;
+}
+
+.archLayerInterface {
+  border-left-color: #9a6cff;
+  background: rgba(154, 108, 255, 0.08);
+}
+
+.archLayerInterface .archLayerLabel {
+  color: #b99aff;
+}
+
+.archLayerBackend {
+  border-left-color: #45b97c;
+  background: rgba(69, 185, 124, 0.08);
+}
+
+.archLayerBackend .archLayerLabel {
+  color: #72d59e;
+}
+
+.layerBoundaryArrow {
+  text-align: center;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.layerLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.9rem 0 1.25rem;
+  font-size: 0.9rem;
+}
+
+.layerLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.layerLegendSwatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.2rem;
+}
+
+.layerLegendFrontend {
+  background: #4f8cff;
+}
+
+.layerLegendInterface {
+  background: #9a6cff;
+}
+
+.layerLegendBackend {
+  background: #45b97c;
+}
+
+.flowSourceLink {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
