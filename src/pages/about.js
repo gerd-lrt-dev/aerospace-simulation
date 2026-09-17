@@ -1,386 +1,296 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import '../css/about.css';
 
+const capabilityCards = [
+  {
+    kicker: 'SIMULATE',
+    title: 'Spacecraft motion in 6DoF',
+    text: 'Run translational and rotational spacecraft dynamics with propulsion, fuel, reference frames, and attitude propagation.',
+  },
+  {
+    kicker: 'DEVELOP',
+    title: 'Guidance and control',
+    text: 'Build and test manual control, controllers, autopilot logic, and physically modeled main-engine and RCS actuation.',
+  },
+  {
+    kicker: 'EXPERIMENT',
+    title: 'Models and configurations',
+    text: 'Define spacecraft in JSON, exchange subsystem models, and use the modular C++ architecture as an engineering testbed.',
+  },
+  {
+    kicker: 'ANALYZE',
+    title: 'Engineering telemetry',
+    text: 'Inspect simulation state in the cockpit and export recorded telemetry to XML for validation and post-processing.',
+  },
+];
+
+const audienceCards = [
+  {
+    title: 'Students & Engineers',
+    text: 'Inspect how spacecraft dynamics, coordinate frames, propulsion, control, and software architecture work together.',
+  },
+  {
+    title: 'GNC & Simulation Developers',
+    text: 'Prototype controllers, spacecraft configurations, physical models, and verification scenarios in a transparent simulation stack.',
+  },
+  {
+    title: 'Open-Source Contributors',
+    text: 'Contribute to a real C++/Qt aerospace project with separated subsystems, explicit interfaces, tests, and public engineering documentation.',
+  },
+];
+
 export default function About() {
+  const aboutLogo = useBaseUrl('/img/about/logo.svg');
+  const fallbackLogo = useBaseUrl('/img/logo.svg');
+  const aboutVideo = useBaseUrl('/img/about/application-demo.mp4');
+  const fallbackVideo = useBaseUrl('/img/simulation/3DDemo.mp4');
+
   return (
     <Layout
-      title="About Spaceflight Dynamics Framework"
-      description="Spaceflight Dynamics Framework (SDF) – A modular open-source C++ framework for 6DoF spacecraft dynamics, propulsion, guidance, control, telemetry, and aerospace simulation research">
+      title="About | Spaceflight Dynamics Framework"
+      description="Discover SDF: an open-source C++/Qt framework for 6DoF spacecraft dynamics, guidance, control, telemetry, and simulation research.">
+      <main className="aboutPage">
+        <section className="aboutHero">
+          <div className="aboutHeroCopy">
+            <div className="aboutLogoRow">
+              <img
+                src={aboutLogo}
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = fallbackLogo;
+                }}
+                alt="Spaceflight Dynamics Framework logo"
+                className="aboutHeroLogo"
+              />
+              <span className="aboutEyebrow">OPEN-SOURCE SPACEFLIGHT SIMULATION</span>
+            </div>
 
-      <main className="aboutContainer">
+            <h1>Understand, control, and analyze spacecraft motion.</h1>
+            <p className="aboutHeroLead">
+              <strong>Spaceflight Dynamics Framework (SDF)</strong> is a modular C++/Qt
+              simulation framework for spacecraft dynamics, propulsion, guidance,
+              control, and engineering telemetry.
+            </p>
+            <p className="aboutHeroText">
+              It turns the complete path from spacecraft configuration and control input
+              to physical motion and recorded telemetry into an inspectable,
+              modifiable engineering environment.
+            </p>
 
-        <h1>About Spaceflight Dynamics Framework</h1>
+            <div className="aboutHeroActions">
+              <Link className="button button--primary button--lg" to="/simulation">
+                Explore the Simulation
+              </Link>
+              <a
+                className="button button--secondary button--lg"
+                href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework"
+                target="_blank"
+                rel="noreferrer">
+                View on GitHub
+              </a>
+            </div>
 
-        <section>
-          <p>
-            <strong>Spaceflight Dynamics Framework (SDF)</strong> is an open-source
-            modular C++ simulation framework for spacecraft dynamics, propulsion
-            modeling, guidance, control development, telemetry, and aerospace
-            simulation research.
-          </p>
+            <div className="aboutTechLine" aria-label="Core technologies and capabilities">
+              <span>C++</span>
+              <span>Qt</span>
+              <span>6DoF</span>
+              <span>GNC</span>
+              <span>Telemetry</span>
+              <span>Open Source</span>
+            </div>
+          </div>
 
-          <p>
-            The project originated as an autonomous lunar landing simulation and
-            has since evolved into a broader framework for spacecraft dynamics,
-            subsystem experimentation, control-system development, and future
-            research-oriented simulation workflows.
-          </p>
-
-          <p>
-            SDF follows an open engineering philosophy focused on transparency,
-            modularity, reproducibility, and collaborative development. The project
-            is intended to provide a technically accessible platform for
-            experimentation, learning, contribution, model validation, and
-            long-term architectural evolution.
-          </p>
-
-          <p>
-            The focus is not gameplay, but explicit physical modeling, well-defined
-            system boundaries, reproducible simulation behavior, and an extensible
-            software architecture suitable for real-time simulation and future
-            scientific analysis.
-          </p>
-
-          <p>
-            The current development milestone establishes the complete
-            <strong> 6DoF Core Simulation</strong>, including translational and
-            rotational rigid-body dynamics, force and torque propagation,
-            angular-velocity integration, and quaternion-based spacecraft attitude.
-            The remaining milestone work focuses on systematic physical and numerical
-            verification of the complete motion pipeline.
-          </p>
+          <div className="aboutHeroVisual">
+            <video
+              className="aboutHeroVideo"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              poster={useBaseUrl('/img/simulation/Simulation_Beispiel3.png')}>
+              <source src={aboutVideo} type="video/mp4" />
+              <source src={fallbackVideo} type="video/mp4" />
+              Your browser does not support embedded video.
+            </video>
+            <p className="aboutVisualCaption">
+              Current application footage. The demo asset will be replaced as the UI evolves.
+            </p>
+          </div>
         </section>
 
-        <section>
-          <h2>Research Platform Overview</h2>
-
-          <p>
-            The backend is implemented as a modular C++ simulation core with
-            separated subsystems for dynamics, propulsion, control, automation,
-            sensing, configuration, numerical integration, optimization, coordinate
-            transformation, and telemetry.
+        <section className="aboutSection aboutCenteredSection">
+          <span className="aboutSectionKicker">WHAT CAN I DO WITH SDF?</span>
+          <h2>A simulation framework built for engineering work</h2>
+          <p className="aboutSectionLead">
+            SDF is not a fixed lunar-landing demo. The lunar scenario is the current
+            proving ground for a reusable spacecraft simulation architecture.
           </p>
 
-          <p>
-            The current implementation provides a complete rigid-body 6DoF
-            spacecraft dynamics pipeline. Translational and rotational motion are
-            evaluated through separate physical models while sharing a common
-            numerical integration architecture.
-          </p>
-
-          <p>
-            The rotational simulation includes torque generation, torque aggregation,
-            spacecraft inertia, Euler rigid-body dynamics, angular velocity
-            propagation, and quaternion-based attitude kinematics.
-          </p>
+          <div className="aboutCardGrid aboutCapabilityGrid">
+            {capabilityCards.map((card) => (
+              <article className="aboutCard aboutCapabilityCard" key={card.kicker}>
+                <span className="aboutCardKicker">{card.kicker}</span>
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
-        <section>
-          <h2>System Architecture</h2>
+        <section className="aboutSection aboutWhySection">
+          <div className="aboutSectionHeading">
+            <span className="aboutSectionKicker">WHY SDF?</span>
+            <h2>Make the simulation understandable, not just executable.</h2>
+          </div>
 
-          <p>
-            SDF follows a subsystem-oriented simulation architecture in which user
-            input, command routing, propulsion modeling, physical state propagation,
-            telemetry generation, and visualization are separated through explicit
-            interfaces.
-          </p>
-
-          <ul>
-            <li>
-              <strong>Dynamics:</strong> Full rigid-body 6DoF spacecraft dynamics
-              including translational and rotational state propagation
-            </li>
-
-            <li>
-              <strong>Physics:</strong> Modular translational and rotational physics
-              models including lunar central-body gravity and Euler rigid-body
-              rotational dynamics
-            </li>
-
-            <li>
-              <strong>Propulsion:</strong> Multi-engine architecture with Thrust
-              Orchestrator, main engine model, individual RCS thruster models,
-              force aggregation, and torque generation
-            </li>
-
-            <li>
-              <strong>Control:</strong> Manual and automated command paths using
-              InputMapper, InputArbiter, controller modules, and autopilot logic
-            </li>
-
-            <li>
-              <strong>Configuration:</strong> JSON-based spacecraft setup for
-              engines, tanks, mass properties, inertia tensor, initial state,
-              actuator geometry, and mission parameters
-            </li>
-
-            <li>
-              <strong>Telemetry:</strong> Explicit telemetry DTOs and mapping
-              between backend domain state and frontend visualization
-            </li>
-
-            <li>
-              <strong>Coordinate Transformation:</strong> Dedicated transformation
-              architecture for spacecraft, local, lunar-fixed, and inertial
-              reference frames
-            </li>
-
-            <li>
-              <strong>Frontend:</strong> Qt-based cockpit interface for real-time
-              telemetry visualization and operator interaction
-            </li>
-          </ul>
+          <div className="aboutWhyGrid">
+            <article>
+              <span className="aboutWhyNumber">01</span>
+              <h3>Physics you can inspect</h3>
+              <p>
+                Dynamics, propulsion, coordinate systems, control, numerical integration,
+                and telemetry are explicit software components rather than a black box.
+              </p>
+            </article>
+            <article>
+              <span className="aboutWhyNumber">02</span>
+              <h3>Built for experimentation</h3>
+              <p>
+                Spacecraft configurations and simulation subsystems are separated so the
+                framework can evolve with new models, controllers, scenarios, and research questions.
+              </p>
+            </article>
+            <article>
+              <span className="aboutWhyNumber">03</span>
+              <h3>Engineering data, not just visuals</h3>
+              <p>
+                The cockpit is one consumer of the simulation. Recorded telemetry and XML
+                export make the same simulation useful for verification and post-processing.
+              </p>
+            </article>
+          </div>
         </section>
 
-        <section>
-          <h2>Propulsion System</h2>
+        <section className="aboutSection">
+          <div className="aboutSectionHeading aboutCenteredHeading">
+            <span className="aboutSectionKicker">SEE IT IN CONTEXT</span>
+            <h2>One framework, several engineering viewpoints</h2>
+          </div>
 
-          <p>
-            The propulsion subsystem is built around a centralized
-            <strong> Thrust Orchestrator</strong>. It manages multiple engines,
-            fuel tanks, engine-specific runtime states, command forwarding,
-            actuator updates, fuel consumption, and aggregation of the resulting
-            body-fixed forces and torques.
-          </p>
+          <div className="aboutFeatureRows">
+            <article className="aboutFeatureRow">
+              <div className="aboutFeatureVisual aboutFeatureVisual--dynamics">
+                <span>6DoF</span>
+              </div>
+              <div className="aboutFeatureCopy">
+                <span className="aboutCardKicker">SPACECRAFT DYNAMICS</span>
+                <h3>Translation, rotation, attitude, and frames</h3>
+                <p>
+                  Propagate a rigid-body spacecraft state while keeping inertial, lunar-fixed,
+                  landing-site-relative, orbital, and body-frame representations available to
+                  the subsystems that need them.
+                </p>
+                <Link to="/simulation/architecture">Explore the architecture →</Link>
+              </div>
+            </article>
 
-          <p>
-            The propulsion architecture separates command input, actuator state,
-            force generation, and resulting rotational moments:
-          </p>
+            <article className="aboutFeatureRow aboutFeatureRow--reverse">
+              <div className="aboutFeatureVisual aboutFeatureVisual--control">
+                <span>GNC</span>
+              </div>
+              <div className="aboutFeatureCopy">
+                <span className="aboutCardKicker">GUIDANCE & CONTROL</span>
+                <h3>From command to physical response</h3>
+                <p>
+                  Manual commands, automated control, main-engine thrust, and RCS actuation
+                  interact with the same physics core rather than bypassing the vehicle model.
+                </p>
+                <Link to="/simulation/data-flow">Follow the runtime data flow →</Link>
+              </div>
+            </article>
 
-          <ul>
-            <li>
-              <strong>Main Engine:</strong> Scalar thrust model with dynamic
-              response, target tracking, thrust direction, fuel consumption,
-              and propulsion-induced torque representation
-            </li>
-
-            <li>
-              <strong>RCS Thrusters:</strong> Individual binary actuator models
-              with command delay, first-order rise and decay dynamics, scalar
-              thrust output, mounting position, thrust direction, torque
-              generation, and propellant consumption
-            </li>
-
-            <li>
-              <strong>RCSControlAllocator:</strong> Axis-based allocation from
-              translational RCS commands to individual thruster commands
-            </li>
-
-            <li>
-              <strong>Force and Torque Aggregation:</strong> Individual propulsion
-              outputs are combined into total body-fixed force and torque vectors
-              for use by the 6DoF dynamics pipeline
-            </li>
-
-            <li>
-              <strong>Fuel System:</strong> Multi-tank support with tank assignment
-              and engine-specific mass-flow computation
-            </li>
-
-            <li>
-              <strong>Telemetry:</strong> Engine-level state export for cockpit
-              visualization, debugging, and future analysis workflows
-            </li>
-          </ul>
-
-          <p>
-            This design allows main engines and RCS thrusters to be modeled
-            independently while exposing a unified propulsion interface to the
-            spacecraft dynamics layer.
-          </p>
+            <article className="aboutFeatureRow">
+              <div className="aboutFeatureVisual aboutFeatureVisual--telemetry">
+                <span>XML</span>
+              </div>
+              <div className="aboutFeatureCopy">
+                <span className="aboutCardKicker">TELEMETRY & ANALYSIS</span>
+                <h3>Turn a simulation run into inspectable data</h3>
+                <p>
+                  Runtime telemetry feeds the Qt cockpit and can be recorded and exported
+                  for later analysis, debugging, and systematic verification work.
+                </p>
+                <Link to="/simulation">See the simulation frontend →</Link>
+              </div>
+            </article>
+          </div>
         </section>
 
-        <section>
-          <h2>Guidance and Control</h2>
+        <section className="aboutSection aboutAudienceSection">
+          <div className="aboutSectionHeading aboutCenteredHeading">
+            <span className="aboutSectionKicker">WHO IS IT FOR?</span>
+            <h2>For people who want to look inside the simulation</h2>
+          </div>
 
-          <p>
-            SDF supports both manual and automated control paths through a modular
-            command-routing and control architecture. Operator input is processed
-            in the frontend through the <strong>InputMapper</strong>, transferred
-            as a structured flight command, and routed through the simulation
-            backend.
-          </p>
-
-          <p>
-            The current control stack includes:
-          </p>
-
-          <ul>
-            <li>
-              <strong>Adaptive Descent Controller:</strong> Energy-based landing
-              guidance with brake-ratio-based mode switching
-            </li>
-
-            <li>
-              <strong>PD Velocity Control:</strong> Gravity-compensated velocity
-              tracking with thrust saturation handling
-            </li>
-
-            <li>
-              <strong>InputArbiter:</strong> Separation and arbitration between
-              manual and automated control commands
-            </li>
-
-            <li>
-              <strong>Manual Translational RCS Control:</strong> Body-axis
-              translation commands mapped to individual RCS thrusters through
-              the allocator
-            </li>
-          </ul>
-
-          <p>
-            Dedicated RCS-based attitude control is the next propulsion-control
-            extension. Future rotational RCS allocation will provide commanded
-            roll, pitch, and yaw authority through physically modeled thruster
-            combinations rather than artificial torque inputs.
-          </p>
+          <div className="aboutCardGrid aboutAudienceGrid">
+            {audienceCards.map((card) => (
+              <article className="aboutCard" key={card.title}>
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
-        <section>
-          <h2>Configuration and Data Flow</h2>
+        <section className="aboutStatusSection">
+          <div>
+            <span className="aboutSectionKicker">SDF TODAY</span>
+            <h2>Pre-release, with the 6DoF core in place.</h2>
+            <p>
+              Development is currently focused on release readiness and systematic
+              verification of the simulation core before the first lightweight public release.
+            </p>
+          </div>
 
-          <p>
-            Spacecraft are defined using external JSON configuration files. These
-            definitions include mass properties, inertia values, initial state,
-            fuel tanks, main engines, RCS thrusters, thrust directions, mounting
-            positions, and engine-to-tank assignments.
-          </p>
-
-          <p>
-            Runtime simulation state remains internal to the backend. Frontend-facing
-            telemetry is exposed through dedicated DTOs instead of directly exposing
-            backend domain structures.
-          </p>
-
-          <p>
-            The <strong>TelemetryMapper</strong> translates the authoritative
-            backend spacecraft state into frontend-facing telemetry structures.
-            This establishes a stable communication boundary between the simulation
-            engine and cockpit frontend and provides the architectural basis for
-            future transport mechanisms such as ROS2.
-          </p>
-
-          <p>
-            The current 6DoF state includes translational quantities together with
-            angular velocity and quaternion-based spacecraft attitude. The cockpit
-            frontend is being adapted to visualize these additional rotational
-            state variables.
-          </p>
+          <dl className="aboutStatusGrid">
+            <div>
+              <dt>Status</dt>
+              <dd>Pre-release development</dd>
+            </div>
+            <div>
+              <dt>Core</dt>
+              <dd>6DoF spacecraft dynamics</dd>
+            </div>
+            <div>
+              <dt>Current focus</dt>
+              <dd>Verification & release readiness</dd>
+            </div>
+            <div>
+              <dt>Project model</dt>
+              <dd>Open-source C++ / Qt</dd>
+            </div>
+          </dl>
         </section>
 
-        <section>
-          <h2>Current Development Status</h2>
-
-          <p>
-            Current development status:
-            <strong> Pre-release Development Build</strong>
-            <br />
-            Active milestone:
-            <strong> M1 - 6DoF Core Simulation</strong>
-          </p>
-
-          <ul>
-            <li>Three-dimensional translational spacecraft dynamics implemented</li>
-            <li>Three-axis rigid-body rotational dynamics implemented</li>
-            <li>Euler rigid-body equations including gyroscopic coupling implemented</li>
-            <li>Spacecraft inertia tensor integrated into rotational dynamics</li>
-            <li>Angular velocity propagation implemented</li>
-            <li>Quaternion-based attitude propagation implemented</li>
-            <li>Force and torque aggregation implemented</li>
-            <li>Multi-engine propulsion architecture implemented</li>
-            <li>Main engine model with dynamic response implemented</li>
-            <li>Individual RCS thruster model implemented</li>
-            <li>Translational RCS command allocation implemented</li>
-            <li>Multi-tank fuel system implemented</li>
-            <li>JSON-based spacecraft configuration system implemented</li>
-            <li>Telemetry DTO and TelemetryMapper architecture implemented</li>
-            <li>Qt cockpit telemetry and operator interface implemented</li>
-            <li>Adaptive descent guidance for automated landing implemented</li>
-            <li>Systematic 6DoF physics verification pending as the M1 exit criterion</li>
-            <li>Cockpit adaptation to rotational state currently planned</li>
-            <li>Dedicated RCS attitude-control development planned</li>
-          </ul>
+        <section className="aboutExploreSection">
+          <h2>Go deeper</h2>
+          <p>Use the technical pages when you want implementation detail.</p>
+          <div className="aboutExploreLinks">
+            <Link to="/simulation/architecture">Architecture</Link>
+            <Link to="/simulation/data-flow">Runtime Data Flow</Link>
+            <Link to="/docs">Mathematics</Link>
+            <a
+              href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework"
+              target="_blank"
+              rel="noreferrer">
+              GitHub
+            </a>
+          </div>
         </section>
-
-        <section>
-          <h2>Release Strategy</h2>
-
-          <p>
-            SDF is currently under active pre-release development. The project has
-            not yet published a formal stable release. Current work is focused on
-            completing and validating the first major technical milestone:
-            <strong> M1 - 6DoF Core Simulation</strong>.
-          </p>
-
-          <p>
-            Completion of M1 requires systematic verification of the complete
-            translational and rotational motion pipeline, including coordinate
-            transformations, force and torque signs, numerical propagation,
-            quaternion attitude behavior, and physical plausibility.
-          </p>
-
-          <p>
-            After this verification baseline, development can proceed toward a
-            lightweight public SDF release and subsequently toward research-oriented
-            extensions such as advanced numerical integration, telemetry analysis,
-            controller benchmarking, and additional physical models.
-          </p>
-
-          <ul>
-            <li>
-              <strong>Current state:</strong> Pre-release development build
-            </li>
-
-            <li>
-              <strong>Active milestone:</strong> M1 - 6DoF Core Simulation
-            </li>
-
-            <li>
-              <strong>Current milestone exit criterion:</strong> Complete physical
-              and numerical verification of the 6DoF motion pipeline
-            </li>
-
-            <li>
-              <strong>Strategic direction:</strong> From autonomous lunar landing
-              simulation toward a reusable spacecraft dynamics framework
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Goals and Vision</h2>
-
-          <p>
-            The long-term objective of SDF is to evolve into a flexible and extensible
-            spaceflight dynamics framework supporting spacecraft simulation,
-            guidance research, telemetry workflows, control-system experimentation,
-            model validation, and future distributed simulation architectures.
-          </p>
-
-          <ul>
-            <li>Systematic verification and validation of the 6DoF simulation core</li>
-            <li>Dedicated rotational RCS control and attitude stabilization</li>
-            <li>Advanced spacecraft guidance and control algorithms</li>
-            <li>Higher-order numerical integration methods</li>
-            <li>Extended environmental and disturbance models</li>
-            <li>ROS2-based external communication and integration</li>
-            <li>Telemetry export for reproducible analysis and post-processing</li>
-            <li>Controller benchmarking and simulation comparison workflows</li>
-            <li>Scenario-based autonomous landing research campaigns</li>
-            <li>
-              Support for broader mission phases including deorbit, descent,
-              landing, orbital transfer, and multi-body scenarios
-            </li>
-          </ul>
-
-          <p>
-            The project is intended to provide a technically robust and extensible
-            simulation environment rather than a fixed single-scenario demonstration.
-          </p>
-        </section>
-
       </main>
     </Layout>
   );
