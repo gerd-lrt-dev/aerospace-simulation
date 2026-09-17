@@ -69,58 +69,64 @@ const config = {
     },
 
     navbar: {
-  title: 'SDF',
+      title: 'SDF',
 
-  items: [
-    {
-      to: '/about',
-      label: 'About',
-      position: 'left',
-    },
+      items: [
+        {
+          to: '/about',
+          label: 'About',
+          position: 'left',
+        },
 
-    {
-      to: '/simulation',
-      label: 'Simulation',
-      position: 'left',
-    },
+        {
+          to: '/simulation',
+          label: 'Simulation',
+          position: 'left',
+        },
 
-    {
-      to: '/simulation/architecture',
-      label: 'Architecture',
-      position: 'left',
-    },
+        {
+          to: '/simulation/architecture',
+          label: 'Architecture',
+          position: 'left',
+        },
 
-    {
-      to: '/docs',
-      label: 'Mathematics',
-      position: 'left',
-    },
+        {
+          to: '/simulation/data-flow',
+          label: 'Runtime Data Flow',
+          position: 'left',
+        },
 
-    {
-      to: '/team',
-      label: 'Team',
-      position: 'left',
-    },
+        {
+          to: '/docs',
+          label: 'Mathematics',
+          position: 'left',
+        },
 
-    {
-      to: '/recruiting',
-      label: 'Recruiting',
-      position: 'left',
-    },
+        {
+          to: '/team',
+          label: 'Team',
+          position: 'left',
+        },
 
-    {
-      to: '/ai-assisted-engineering',
-      label: 'AI-Assisted Engineering',
-      position: 'left',
-    },
+        {
+          to: '/recruiting',
+          label: 'Recruiting',
+          position: 'left',
+        },
 
-    {
-      href: 'https://github.com/gerd-lrt-dev/moonlander',
-      label: 'GitHub',
-      position: 'right',
+        {
+          to: '/ai-assisted-engineering',
+          label: 'AI-Assisted Engineering',
+          position: 'left',
+        },
+
+        {
+          href: 'https://github.com/gerd-lrt-dev/moonlander',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
     },
-  ],
-},
 
     footer: {
       style: 'dark',
