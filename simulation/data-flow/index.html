@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="plugin-pages plugin-id-default" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Runtime Data Flow | Spaceflight Dynamics Framework | Spaceflight Dynamics Framework</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://www.aerospace-simulation.dev/img/social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://www.aerospace-simulation.dev/img/social-card.jpg"><meta data-rh="true" property="og:url" content="https://www.aerospace-simulation.dev/simulation/data-flow"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Runtime Data Flow | Spaceflight Dynamics Framework | Spaceflight Dynamics Framework"><meta data-rh="true" name="description" content="Runtime data paths, state ownership, frame resolution, command timing, telemetry recording, and XML export in the Spaceflight Dynamics Framework"><meta data-rh="true" property="og:description" content="Runtime data paths, state ownership, frame resolution, command timing, telemetry recording, and XML export in the Spaceflight Dynamics Framework"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://www.aerospace-simulation.dev/simulation/data-flow"><link data-rh="true" rel="alternate" href="https://www.aerospace-simulation.dev/simulation/data-flow" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.aerospace-simulation.dev/simulation/data-flow" hreflang="x-default"><link rel="stylesheet" href="/css/hero.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-vZTG9CkD7F8F4s1Ttq2dXZkZ3YB+6+Jk6bXIpwM1KgiEkfK1pSvi8aF6F0B" crossorigin="anonymous"><link rel="stylesheet" href="/assets/css/styles.26c48495.css">
+<script src="/assets/js/runtime~main.c0a012e6.js" defer="defer"></script>
+<script src="/assets/js/main.2c9c18f3.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","dark"),document.documentElement.setAttribute("data-theme-choice","dark"),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><b class="navbar__title text--truncate">SDF</b></a><a class="navbar__item navbar__link" href="/about">About</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/simulation">Simulation</a><a class="navbar__item navbar__link" href="/simulation/architecture">Architecture</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/simulation/data-flow">Runtime Data Flow</a><a class="navbar__item navbar__link" href="/docs">Mathematics</a><a class="navbar__item navbar__link" href="/team">Team</a><a class="navbar__item navbar__link" href="/recruiting">Recruiting</a><a class="navbar__item navbar__link" href="/ai-assisted-engineering">AI-Assisted Engineering</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/gerd-lrt-dev/moonlander" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><main class="dataFlowContainer"><h1>SDF Runtime Data Flow</h1><p class="dataFlowLead">This page complements the <a href="/simulation/architecture">system architecture overview</a>. The architecture page explains which subsystems exist and how responsibilities are separated; this page focuses on how configuration, commands, forces, state, reference frames, telemetry, and recorded simulation data move through the running application.</p><div class="flowNote"><strong>Core rule:</strong> the configured initial state may be expressed in ENU or MCI, but after one-time initialization the authoritative translational runtime state is propagated in MCI. MCMF, MSC, ENU, LVLH, and SBF representations are derived from that runtime state.</div><nav class="dataFlowNav" aria-label="Runtime data flow sections"><a href="#initialization">Initialization</a><a href="#control">Control</a><a href="#forces">Forces</a><a href="#propagation">Propagation</a><a href="#frames">Frames</a><a href="#telemetry">Telemetry</a><a href="#recording">Recording &amp; XML</a><a href="#lifecycle">Lifecycle</a><a href="#ownership">Ownership</a></nav><section id="initialization" class="flowSection"><h2>1. Configuration to Authoritative Runtime State</h2><p>Spacecraft configuration describes how the initial position and velocity are expressed. It does not define the runtime propagation frame. Current SDF supports two consistent initialization modes: ENU/ENU and MCI/MCI. Mixed position and velocity frame combinations are rejected by the configuration reader.</p><pre class="flowBlock"><code>JSON spacecraft configuration
+        ↓
+jsonConfigReader
+        ↓
+customSpacecraft + MissionContext
+        ↓
+Mission-frame initialization
+        ↓
+Configured initial-state resolution
+        ↓
+Authoritative StateVector
+(MCI position + MCI velocity)</code></pre><div class="flowGrid"><div class="flowCard"><h3>Landing-site-relative ENU</h3><pre class="flowBlock"><code>Landing Site (MSC)
+        ↓
+MCMF landing-site state
+        ↓
+Landing-site ENU frame
+        ↓
+Configured ENU state
+        ↓
+ENU → MCMF → MCI
+        ↓
+StateVector</code></pre><p>ENU is an input and mission/navigation representation. It is resolved once during initialization.</p></div><div class="flowCard"><h3>Direct MCI</h3><pre class="flowBlock"><code>Configured MCI state
+        ↓
+Direct assignment
+        ↓
+StateVector</code></pre><p>Direct MCI initialization remains available for orbital, low-level, analytical, and verification scenarios.</p></div></div></section><section id="control" class="flowSection"><h2>2. Control Input to Actuation</h2><p>Frontend input and automated control produce commands, not forces. The propulsion subsystem owns conversion from those commands into main-engine and RCS actuator states.</p><div class="layerLegend" aria-label="Architecture layer legend"><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendFrontend"></span>Frontend</span><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendInterface"></span>Interface Layer</span><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendBackend"></span>Backend</span></div><div class="layerFlow"><div class="archLayer archLayerFrontend"><div class="archLayerLabel">Frontend</div><pre class="flowBlock"><code>User Input
+  ↓
+inputmapper
+  ↓
+FlightCommandDTO
+  ↓
+cockpitPage
+  ↓
+SimulationWorker</code></pre></div><div class="layerBoundaryArrow" aria-hidden="true">↓</div><div class="archLayer archLayerInterface"><div class="archLayerLabel">Interface Layer</div><pre class="flowBlock"><code>TelemetryMapper
+  ↓
+ControlCommand</code></pre></div><div class="layerBoundaryArrow" aria-hidden="true">↓</div><div class="archLayer archLayerBackend"><div class="archLayerLabel">Backend</div><pre class="flowBlock"><code>Manual ControlCommand ───────┐
+                           ↓
+                      InputArbiter
+                           ↑
+spacecraft state → AdaptiveDescentController → PD Controller
+                           ↓
+                       simcontrol
+                           ↓
+                       spacecraft
+                           ↓
+                         Thrust</code></pre></div></div><p>The visual grouping marks the application boundaries explicitly: UI input and worker scheduling remain in the frontend/application layer, <code>TelemetryMapper</code> and the DTO/domain-command translation form the interface boundary, and arbitration, simulation orchestration, spacecraft logic, and propulsion are backend responsibilities. Manual and automated control paths meet at <code>InputArbiter</code>.</p><h3>Per-step command timing</h3><p>Commands are transferred before the backend simulation advances. This prevents a one-step delay between frontend input and backend actuation.</p><pre class="flowBlock"><code>sendControlCommands()
+        ↓
+runStepSimulation(dt)
+        ↓
+getQTTelemetryData()
+        ↓
+append telemetry history
+        ↓
+emit stateUpdated(...)</code></pre></section><section id="forces" class="flowSection"><h2>3. Propulsion Force Generation to Physics</h2><p>Main-engine and RCS models generate forces and torques in the spacecraft body frame. The Thrust orchestrator aggregates those outputs before the translational force vector is transformed into MCI.</p><pre class="flowBlock"><code>Main Engine + RCS
+        ↓
+Thrust Orchestrator
+(SBF forces + torques)
+        ↓
+Current spacecraft attitude
+        ↓
+SBF → MCI force transform
+        ↓
+physics::computeAcc()
+        ↓
+BasicMoonGravityModel
+        ↓
+Gravity + thrust / mass
+        ↓
+Total MCI acceleration</code></pre><div class="flowNote">The SBF thrust vector is transformed using the <strong>current spacecraft attitude</strong>, not a static initialization orientation. Controller output remains an actuation request; propulsion owns command-to-force conversion and physics owns state-derivative evaluation.</div></section><section id="propagation" class="flowSection"><h2>4. Physics Calculation to State Propagation</h2><p><code>spacecraft::updateMovementData()</code> coordinates dynamics and integration. The physics and integrator layers compute updated quantities, while <code>spacecraft</code> commits them to the authoritative state.</p><pre class="flowBlock"><code>Authoritative StateVector
+        ↓
+spacecraft::updateMovementData()
+        ↓
+Current-attitude SBF thrust → MCI
+        ↓
+Translational acceleration
+        ↓
+EulerIntegrator
+        ↓
+MCI velocity + position
+
+SBF torque
+        ↓
+Rotational physics
+        ↓
+Angular acceleration
+        ↓
+EulerIntegrator
+        ↓
+SBF angular velocity + IB attitude
+        ↓
+StateVector commit
+        ↓
+spacecraft::updateFrames(time)</code></pre><p>Derived frame representations are reconstructed only after the current step has been committed.<code>SimulationFrameContext</code> therefore represents one coherent snapshot of the authoritative state.</p></section><section id="frames" class="flowSection"><h2>5. Mission Context and Derived Runtime Frames</h2><p>SDF separates stable mission references from state-dependent frame representations.<code>MissionContext</code> contains mission-level references; <code>SimulationFrameContext</code>contains frame representations derived from the current spacecraft state.</p><div class="flowGrid"><div class="flowCard"><h3>MissionContext</h3><ul><li>Canonical landing site in MSC</li><li>Derived landing-site state in MCMF</li><li>Derived landing-site state in MCI</li><li>Landing-site ENU frame</li></ul><p>These are persistent mission references, not propagated spacecraft state.</p></div><div class="flowCard"><h3>SimulationFrameContext</h3><ul><li>MCI spacecraft state</li><li>MCMF spacecraft state</li><li>MSC latitude / longitude / altitude</li><li>ENU spacecraft state and ENU frame</li><li>LVLH spacecraft state and LVLH frame</li><li>SBF frame derived from current attitude and origin</li></ul></div></div><pre class="flowBlock"><code>Authoritative StateVector
+        ↓
+spacecraft::updateFrames(time)
+        ↓
+MCI_State
+        ↓
+MCMF_State
+   ├──→ MSC_State
+   └──→ ENU_State
+
+MCI_State
+   └──→ LVLH_State
+
+StateVector attitude + origin
+   └──→ SBF_Frame</code></pre></section><section id="telemetry" class="flowSection"><h2>6. Backend State to Frontend Telemetry</h2><p>Backend domain state remains inside the simulation engine. After each completed step, one coherent backend snapshot is mapped into a frontend-facing <code>TelemetryDTO</code>.</p><div class="layerLegend" aria-label="Architecture layer legend"><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendFrontend"></span>Frontend</span><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendInterface"></span>Interface Layer</span><span class="layerLegendItem"><span class="layerLegendSwatch layerLegendBackend"></span>Backend</span></div><div class="layerFlow"><div class="archLayer archLayerBackend"><div class="archLayerLabel">Backend</div><pre class="flowBlock"><code>spacecraft::time ───────────┐
+StateVector ─────────────────┤
+SimulationFrameContext ──────┼──→ simData
+MissionContext ──────────────┤
+propulsion / tanks / sensors ┘</code></pre></div><div class="layerBoundaryArrow" aria-hidden="true">↓</div><div class="archLayer archLayerInterface"><div class="archLayerLabel">Interface Layer</div><pre class="flowBlock"><code>TelemetryMapper
+      ↓
+TelemetryDTO</code></pre></div><div class="layerBoundaryArrow" aria-hidden="true">↓</div><div class="archLayer archLayerFrontend"><div class="archLayerLabel">Frontend / Application</div><pre class="flowBlock"><code>SimulationWorker
+   ├──→ telemetry history
+   └──→ stateUpdated(...)
+             ↓
+       Qt thread boundary
+             ↓
+       cockpit / visualization</code></pre></div></div><p>The same layer colors are intentionally reused in the reverse direction. Backend state is aggregated into<code>simData</code>, translated at the interface boundary into <code>TelemetryDTO</code>, and then consumed by the worker/application layer for history recording and UI delivery.</p><h3>Authoritative simulation time</h3><pre class="flowBlock"><code>spacecraft::time
+        ↓
+simData::time
+        ↓
+TelemetryMapper
+        ↓
+TelemetryDTO::time
+        ↓
+Cockpit / Export</code></pre><p>The worker does not maintain a second simulation clock. The backend time used for time-dependent frame derivation is the same time exposed to telemetry consumers and scientific export.</p></section><section id="recording" class="flowSection"><h2>7. Telemetry Recording and XML Export</h2><p>Scientific export reuses the same <code>TelemetryDTO</code> snapshots consumed by the frontend. Recording is owned by <code>SimulationWorker</code>; XML serialization is delegated to<code>TelemetryXmlExporter</code>.</p><pre class="flowBlock"><code>simData
+   ↓
+TelemetryMapper
+   ↓
+TelemetryDTO
+   ↓
+SimulationWorker
+   ├──→ stateUpdated → Cockpit / Visualization
+   └──→ telemetryHistory_
+                  ↓ export request
+          TelemetryXmlExporter
+                  ↓
+            XML telemetry file</code></pre><ul><li>One snapshot is recorded after each completed backend simulation step.</li><li>Pause adds no snapshots because no backend steps are executed.</li><li>Stop terminates the active session but does not silently overwrite recorded history.</li><li>Starting a new run with existing history requires explicit overwrite confirmation before clearing it.</li><li><code>TelemetryXmlExporter</code> serializes existing history; it does not generate simulation state.</li></ul><div class="flowNote">Cockpit visualization and XML export therefore share one telemetry contract and one coherent per-step snapshot.</div></section><section id="lifecycle" class="flowSection"><h2>8. Simulation Lifecycle</h2><p>The runtime lifecycle distinguishes initial start, pause/resume, and stop/reset. Resume continues the existing backend state; it must not reinitialize the spacecraft.</p><pre class="flowBlock"><code>Configuration available
+        ↓
+Start requested
+        ↓
+initialized?
+   ├── no ─→ existing history?
+   │             ├── yes → overwrite confirmation → clear history
+   │             └── no
+   │                    ↓
+   │              backend initialize
+   │                    ↓
+   └── yes ─────────→ start QTimer
+                         ↓
+                   simulation steps
+
+Pause → stop QTimer only
+        ↓
+ preserve backend state + time + fuel + attitude
+        ↓
+Resume → start QTimer, no reinitialization
+
+Stop → stop QTimer
+       → reset UI telemetry
+       → backend reset
+       → initialized = false</code></pre><ul><li><strong>Initial start:</strong> creates and initializes the backend simulation session.</li><li><strong>Pause:</strong> freezes the step timer while preserving the complete backend state.</li><li><strong>Resume:</strong> continues the existing initialized session.</li><li><strong>Stop:</strong> terminates/resets the active simulation session.</li><li><strong>Restart after stop:</strong> creates a new session from configuration after any required history confirmation.</li></ul></section><section id="ownership" class="flowSection"><h2>9. State Ownership Summary</h2><div class="flowGrid"><div class="flowCard"><h3>Authoritative runtime state</h3><p><strong>StateVector</strong> is owned by <strong>spacecraft</strong> and is the source of truth for propagated position, velocity, attitude, and angular velocity.</p></div><div class="flowCard"><h3>Simulation time</h3><p><strong>spacecraft::time</strong> is the authoritative backend simulation clock and is propagated through <strong>simData</strong> into <strong>TelemetryDTO</strong>.</p></div><div class="flowCard"><h3>Mission references</h3><p><strong>MissionContext</strong> holds stable mission-specific navigation references such as the landing site and its derived reference frames.</p></div><div class="flowCard"><h3>Derived frame state</h3><p><strong>SimulationFrameContext</strong> is reconstructed from the authoritative state after each commit and is not independently integrated.</p></div><div class="flowCard"><h3>Telemetry snapshot</h3><p><strong>simData</strong> aggregates one backend step into the frontend/export-facing<strong> TelemetryDTO</strong> contract.</p></div><div class="flowCard"><h3>Recorded telemetry</h3><p><strong>SimulationWorker</strong> owns the telemetry history. <strong>TelemetryXmlExporter</strong>serializes that history without owning simulation state.</p></div></div></section><section class="flowSourceLink"><h2>Contributor-Level Reference</h2><p>This website presents the stable architectural view. The code-near reference, including detailed subsystem responsibilities and implementation-oriented data-flow notes, is maintained with the simulation source in <a href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/blob/main/docs/data-flow-diagrams.md">docs/data-flow-diagrams.md</a>.</p><p>Return to the <a href="/simulation/architecture">SDF Architecture overview</a> for subsystem structure, physics, propulsion, frontend, and backend architecture.</p></section></main></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Aerospace Simulation</div></div></div></footer></div>
+</body>
+</html>
