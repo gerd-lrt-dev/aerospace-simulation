@@ -7,6 +7,16 @@ function FlowBlock({ children }) {
   return <pre className="flowBlock"><code>{children}</code></pre>;
 }
 
+function LayerLegend() {
+  return (
+    <div className="layerLegend" aria-label="Architecture layer legend">
+      <span className="layerLegendItem"><span className="layerLegendSwatch layerLegendFrontend" />Frontend</span>
+      <span className="layerLegendItem"><span className="layerLegendSwatch layerLegendInterface" />Interface Layer</span>
+      <span className="layerLegendItem"><span className="layerLegendSwatch layerLegendBackend" />Backend</span>
+    </div>
+  );
+}
+
 export default function RuntimeDataFlow() {
   return (
     <Layout
@@ -105,8 +115,12 @@ StateVector`}</FlowBlock>
             conversion from those commands into main-engine and RCS actuator states.
           </p>
 
-          <FlowBlock>{`Manual path:
-User Input
+          <LayerLegend />
+
+          <div className="layerFlow">
+            <div className="archLayer archLayerFrontend">
+              <div className="archLayerLabel">Frontend</div>
+              <FlowBlock>{`User Input
   ↓
 inputmapper
   ↓
@@ -114,30 +128,42 @@ FlightCommandDTO
   ↓
 cockpitPage
   ↓
-SimulationWorker
-  ↓
-TelemetryMapper
-  ↓
-ControlCommand
-  ↓
-InputArbiter
-  ↓
-simcontrol
-  ↓
-spacecraft
-  ↓
-Thrust
+SimulationWorker`}</FlowBlock>
+            </div>
 
-Autopilot path:
-spacecraft state
+            <div className="layerBoundaryArrow" aria-hidden="true">↓</div>
+
+            <div className="archLayer archLayerInterface">
+              <div className="archLayerLabel">Interface Layer</div>
+              <FlowBlock>{`TelemetryMapper
   ↓
-AdaptiveDescentController
-  ↓
-PD Controller
-  ↓
-ControlCommand
-  ↓
-InputArbiter`}</FlowBlock>
+ControlCommand`}</FlowBlock>
+            </div>
+
+            <div className="layerBoundaryArrow" aria-hidden="true">↓</div>
+
+            <div className="archLayer archLayerBackend">
+              <div className="archLayerLabel">Backend</div>
+              <FlowBlock>{`Manual ControlCommand ───────┐
+                           ↓
+                      InputArbiter
+                           ↑
+spacecraft state → AdaptiveDescentController → PD Controller
+                           ↓
+                       simcontrol
+                           ↓
+                       spacecraft
+                           ↓
+                         Thrust`}</FlowBlock>
+            </div>
+          </div>
+
+          <p>
+            The visual grouping marks the application boundaries explicitly: UI input and worker scheduling remain in
+            the frontend/application layer, <code>TelemetryMapper</code> and the DTO/domain-command translation form
+            the interface boundary, and arbitration, simulation orchestration, spacecraft logic, and propulsion are
+            backend responsibilities. Manual and automated control paths meet at <code>InputArbiter</code>.
+          </p>
 
           <h3>Per-step command timing</h3>
           <p>
@@ -287,19 +313,46 @@ StateVector attitude + origin
             backend snapshot is mapped into a frontend-facing <code>TelemetryDTO</code>.
           </p>
 
-          <FlowBlock>{`spacecraft::time ───────────┐
-StateVector ─────────────────┤
-SimulationFrameContext ──────┼──→ simData ──→ TelemetryMapper ──→ TelemetryDTO
-MissionContext ──────────────┤
-propulsion / tanks / sensors ┘
+          <LayerLegend />
 
-TelemetryDTO
+          <div className="layerFlow">
+            <div className="archLayer archLayerBackend">
+              <div className="archLayerLabel">Backend</div>
+              <FlowBlock>{`spacecraft::time ───────────┐
+StateVector ─────────────────┤
+SimulationFrameContext ──────┼──→ simData
+MissionContext ──────────────┤
+propulsion / tanks / sensors ┘`}</FlowBlock>
+            </div>
+
+            <div className="layerBoundaryArrow" aria-hidden="true">↓</div>
+
+            <div className="archLayer archLayerInterface">
+              <div className="archLayerLabel">Interface Layer</div>
+              <FlowBlock>{`TelemetryMapper
+      ↓
+TelemetryDTO`}</FlowBlock>
+            </div>
+
+            <div className="layerBoundaryArrow" aria-hidden="true">↓</div>
+
+            <div className="archLayer archLayerFrontend">
+              <div className="archLayerLabel">Frontend / Application</div>
+              <FlowBlock>{`SimulationWorker
    ├──→ telemetry history
-   └──→ SimulationWorker::stateUpdated
+   └──→ stateUpdated(...)
              ↓
        Qt thread boundary
              ↓
        cockpit / visualization`}</FlowBlock>
+            </div>
+          </div>
+
+          <p>
+            The same layer colors are intentionally reused in the reverse direction. Backend state is aggregated into
+            <code>simData</code>, translated at the interface boundary into <code>TelemetryDTO</code>, and then consumed
+            by the worker/application layer for history recording and UI delivery.
+          </p>
 
           <h3>Authoritative simulation time</h3>
           <FlowBlock>{`spacecraft::time
