@@ -43,8 +43,6 @@ const audienceCards = [
 ];
 
 export default function About() {
-  const aboutLogo = useBaseUrl('/img/About/logo.png');
-  const fallbackLogo = useBaseUrl('/img/logo.svg');
   const aboutVideo = useBaseUrl('/img/About/3DDemo.mp4');
   const fallbackVideo = useBaseUrl('/img/simulation/3DDemo.mp4');
 
@@ -55,18 +53,7 @@ export default function About() {
       <main className="aboutPage">
         <section className="aboutHero">
           <div className="aboutHeroCopy">
-            <div className="aboutLogoRow">
-              <img
-                src={aboutLogo}
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = fallbackLogo;
-                }}
-                alt="Spaceflight Dynamics Framework logo"
-                className="aboutHeroLogo"
-              />
-              <span className="aboutEyebrow">OPEN-SOURCE SPACEFLIGHT SIMULATION</span>
-            </div>
+            <span className="aboutEyebrow">OPEN-SOURCE SPACEFLIGHT SIMULATION</span>
 
             <h1>Understand, control, and analyze spacecraft motion.</h1>
             <p className="aboutHeroLead">
