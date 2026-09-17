@@ -11,7 +11,7 @@ export default function RuntimeDataFlow() {
   return (
     <Layout
       title="Runtime Data Flow | Spaceflight Dynamics Framework"
-      description="Detailed runtime data paths, state ownership, frame resolution, physics propagation, and telemetry flow in the Spaceflight Dynamics Framework">
+      description="Runtime data paths, state ownership, frame resolution, command timing, telemetry recording, and XML export in the Spaceflight Dynamics Framework">
 
       <main className="dataFlowContainer">
         <h1>SDF Runtime Data Flow</h1>
@@ -19,8 +19,8 @@ export default function RuntimeDataFlow() {
         <p className="dataFlowLead">
           This page complements the <Link to="/simulation/architecture">system architecture overview</Link>.
           The architecture page explains which subsystems exist and how responsibilities are separated;
-          this page focuses on how configuration, commands, forces, state, reference frames, and telemetry
-          move through the running simulation.
+          this page focuses on how configuration, commands, forces, state, reference frames, telemetry,
+          and recorded simulation data move through the running application.
         </p>
 
         <div className="flowNote">
@@ -36,6 +36,7 @@ export default function RuntimeDataFlow() {
           <a href="#propagation">Propagation</a>
           <a href="#frames">Frames</a>
           <a href="#telemetry">Telemetry</a>
+          <a href="#recording">Recording & XML</a>
           <a href="#lifecycle">Lifecycle</a>
           <a href="#ownership">Ownership</a>
         </nav>
@@ -45,9 +46,9 @@ export default function RuntimeDataFlow() {
 
           <p>
             Spacecraft configuration describes how the initial position and velocity are expressed.
-            The configuration layer does not define the runtime propagation frame. Current SDF supports
-            two consistent initialization modes: ENU/ENU and MCI/MCI. Mixed position and velocity frame
-            combinations are rejected.
+            It does not define the runtime propagation frame. Current SDF supports two consistent
+            initialization modes: ENU/ENU and MCI/MCI. Mixed position and velocity frame combinations
+            are rejected by the configuration reader.
           </p>
 
           <FlowBlock>{`JSON spacecraft configuration
@@ -101,7 +102,7 @@ StateVector`}</FlowBlock>
 
           <p>
             Frontend input and automated control produce commands, not forces. The propulsion subsystem owns
-            the conversion from those commands into engine and RCS actuator states.
+            conversion from those commands into main-engine and RCS actuator states.
           </p>
 
           <FlowBlock>{`Manual path:
@@ -138,10 +139,21 @@ ControlCommand
   ↓
 InputArbiter`}</FlowBlock>
 
+          <h3>Per-step command timing</h3>
           <p>
-            Translational and rotational RCS requests are routed through the propulsion allocator before reaching
-            individual thruster models. Main-engine commands are forwarded to the main-engine model.
+            Commands are transferred before the backend simulation advances. This prevents a one-step delay
+            between frontend input and backend actuation.
           </p>
+
+          <FlowBlock>{`sendControlCommands()
+        ↓
+runStepSimulation(dt)
+        ↓
+getQTTelemetryData()
+        ↓
+append telemetry history
+        ↓
+emit stateUpdated(...)`}</FlowBlock>
         </section>
 
         <section id="forces" className="flowSection">
@@ -149,13 +161,15 @@ InputArbiter`}</FlowBlock>
 
           <p>
             Main-engine and RCS models generate forces and torques in the spacecraft body frame. The Thrust
-            orchestrator aggregates propulsion outputs before the translational force vector is transformed into MCI.
+            orchestrator aggregates those outputs before the translational force vector is transformed into MCI.
           </p>
 
           <FlowBlock>{`Main Engine + RCS
         ↓
 Thrust Orchestrator
 (SBF forces + torques)
+        ↓
+Current spacecraft attitude
         ↓
 SBF → MCI force transform
         ↓
@@ -168,8 +182,9 @@ Gravity + thrust / mass
 Total MCI acceleration`}</FlowBlock>
 
           <div className="flowNote">
-            Controller output is an actuation request. It is not a parallel physical force source.
-            Propulsion owns command-to-force conversion; physics owns state-derivative evaluation.
+            The SBF thrust vector is transformed using the <strong>current spacecraft attitude</strong>, not a static
+            initialization orientation. Controller output remains an actuation request; propulsion owns command-to-force
+            conversion and physics owns state-derivative evaluation.
           </div>
         </section>
 
@@ -178,14 +193,14 @@ Total MCI acceleration`}</FlowBlock>
 
           <p>
             <code>spacecraft::updateMovementData()</code> coordinates dynamics and integration. The physics and
-            integrator layers compute new values, while the spacecraft object commits them to the authoritative state.
+            integrator layers compute updated quantities, while <code>spacecraft</code> commits them to the authoritative state.
           </p>
 
           <FlowBlock>{`Authoritative StateVector
         ↓
 spacecraft::updateMovementData()
         ↓
-SBF thrust → MCI
+Current-attitude SBF thrust → MCI
         ↓
 Translational acceleration
         ↓
@@ -203,11 +218,13 @@ EulerIntegrator
         ↓
 SBF angular velocity + IB attitude
         ↓
-StateVector commit`}</FlowBlock>
+StateVector commit
+        ↓
+spacecraft::updateFrames(time)`}</FlowBlock>
 
           <p>
-            The current runtime state combines MCI translational quantities with quaternion-based attitude and
-            body-fixed angular velocity. Derived navigation frames are updated after the state commit.
+            Derived frame representations are reconstructed only after the current step has been committed.
+            <code>SimulationFrameContext</code> therefore represents one coherent snapshot of the authoritative state.
           </p>
         </section>
 
@@ -229,7 +246,7 @@ StateVector commit`}</FlowBlock>
                 <li>Derived landing-site state in MCI</li>
                 <li>Landing-site ENU frame</li>
               </ul>
-              <p>These are mission references, not integrated spacecraft state.</p>
+              <p>These are persistent mission references, not propagated spacecraft state.</p>
             </div>
 
             <div className="flowCard">
@@ -240,7 +257,7 @@ StateVector commit`}</FlowBlock>
                 <li>MSC latitude / longitude / altitude</li>
                 <li>ENU spacecraft state and ENU frame</li>
                 <li>LVLH spacecraft state and LVLH frame</li>
-                <li>SBF frame derived from spacecraft attitude and origin</li>
+                <li>SBF frame derived from current attitude and origin</li>
               </ul>
             </div>
           </div>
@@ -266,67 +283,122 @@ StateVector attitude + origin
           <h2>6. Backend State to Frontend Telemetry</h2>
 
           <p>
-            Backend domain state remains inside the simulation engine. The frontend receives explicit telemetry DTOs
-            across the Qt thread boundary.
+            Backend domain state remains inside the simulation engine. After each completed step, one coherent
+            backend snapshot is mapped into a frontend-facing <code>TelemetryDTO</code>.
           </p>
 
-          <FlowBlock>{`StateVector ────────────────┐
+          <FlowBlock>{`spacecraft::time ───────────┐
+StateVector ─────────────────┤
 SimulationFrameContext ──────┼──→ simData ──→ TelemetryMapper ──→ TelemetryDTO
-MissionContext ──────────────┘
-
-spacecraft propulsion / tanks / G-load / integrity
-        └──────────────────────────────→ simData
+MissionContext ──────────────┤
+propulsion / tanks / sensors ┘
 
 TelemetryDTO
-        ↓
-SimulationWorker::stateUpdated
-        ↓
-Qt thread boundary
-        ↓
-cockpitPage / visualization`}</FlowBlock>
+   ├──→ telemetry history
+   └──→ SimulationWorker::stateUpdated
+             ↓
+       Qt thread boundary
+             ↓
+       cockpit / visualization`}</FlowBlock>
 
-          <p>
-            Current telemetry exposes the authoritative MCI navigation state together with derived MCI, MCMF, MSC,
-            ENU, and LVLH frame data. This provides a stable interface for cockpit visualization and future export,
-            validation, replay, and ROS-oriented workflows.
-          </p>
-        </section>
-
-        <section id="lifecycle" className="flowSection">
-          <h2>7. Simulation Lifecycle</h2>
-
-          <FlowBlock>{`ConfigManager
+          <h3>Authoritative simulation time</h3>
+          <FlowBlock>{`spacecraft::time
         ↓
-MainWindow
-        ↓
-SimulationWorker
+simData::time
         ↓
 TelemetryMapper
         ↓
-simcontrol
+TelemetryDTO::time
         ↓
-jsonConfigReader
-        ↓
-customSpacecraft + MissionContext
-        ↓
-spacecraft construction
-        ↓
-Mission-frame initialization
-        ↓
-Initial-state resolution
-        ↓
-Authoritative MCI StateVector
-        ↓
-QTimer-driven simulation loop`}</FlowBlock>
+Cockpit / Export`}</FlowBlock>
 
           <p>
-            During each simulation step, propulsion is advanced, movement is propagated, frame representations are
-            reconstructed from the updated state, landing/integrity logic is evaluated, and telemetry is generated.
+            The worker does not maintain a second simulation clock. The backend time used for time-dependent frame
+            derivation is the same time exposed to telemetry consumers and scientific export.
           </p>
         </section>
 
+        <section id="recording" className="flowSection">
+          <h2>7. Telemetry Recording and XML Export</h2>
+
+          <p>
+            Scientific export reuses the same <code>TelemetryDTO</code> snapshots consumed by the frontend.
+            Recording is owned by <code>SimulationWorker</code>; XML serialization is delegated to
+            <code>TelemetryXmlExporter</code>.
+          </p>
+
+          <FlowBlock>{`simData
+   ↓
+TelemetryMapper
+   ↓
+TelemetryDTO
+   ↓
+SimulationWorker
+   ├──→ stateUpdated → Cockpit / Visualization
+   └──→ telemetryHistory_
+                  ↓ export request
+          TelemetryXmlExporter
+                  ↓
+            XML telemetry file`}</FlowBlock>
+
+          <ul>
+            <li>One snapshot is recorded after each completed backend simulation step.</li>
+            <li>Pause adds no snapshots because no backend steps are executed.</li>
+            <li>Stop terminates the active session but does not silently overwrite recorded history.</li>
+            <li>Starting a new run with existing history requires explicit overwrite confirmation before clearing it.</li>
+            <li><code>TelemetryXmlExporter</code> serializes existing history; it does not generate simulation state.</li>
+          </ul>
+
+          <div className="flowNote">
+            Cockpit visualization and XML export therefore share one telemetry contract and one coherent per-step snapshot.
+          </div>
+        </section>
+
+        <section id="lifecycle" className="flowSection">
+          <h2>8. Simulation Lifecycle</h2>
+
+          <p>
+            The runtime lifecycle distinguishes initial start, pause/resume, and stop/reset. Resume continues the
+            existing backend state; it must not reinitialize the spacecraft.
+          </p>
+
+          <FlowBlock>{`Configuration available
+        ↓
+Start requested
+        ↓
+initialized?
+   ├── no ─→ existing history?
+   │             ├── yes → overwrite confirmation → clear history
+   │             └── no
+   │                    ↓
+   │              backend initialize
+   │                    ↓
+   └── yes ─────────→ start QTimer
+                         ↓
+                   simulation steps
+
+Pause → stop QTimer only
+        ↓
+ preserve backend state + time + fuel + attitude
+        ↓
+Resume → start QTimer, no reinitialization
+
+Stop → stop QTimer
+       → reset UI telemetry
+       → backend reset
+       → initialized = false`}</FlowBlock>
+
+          <ul>
+            <li><strong>Initial start:</strong> creates and initializes the backend simulation session.</li>
+            <li><strong>Pause:</strong> freezes the step timer while preserving the complete backend state.</li>
+            <li><strong>Resume:</strong> continues the existing initialized session.</li>
+            <li><strong>Stop:</strong> terminates/resets the active simulation session.</li>
+            <li><strong>Restart after stop:</strong> creates a new session from configuration after any required history confirmation.</li>
+          </ul>
+        </section>
+
         <section id="ownership" className="flowSection">
-          <h2>8. State Ownership Summary</h2>
+          <h2>9. State Ownership Summary</h2>
 
           <div className="flowGrid">
             <div className="flowCard">
@@ -334,6 +406,14 @@ QTimer-driven simulation loop`}</FlowBlock>
               <p>
                 <strong>StateVector</strong> is owned by <strong>spacecraft</strong> and is the source of truth for
                 propagated position, velocity, attitude, and angular velocity.
+              </p>
+            </div>
+
+            <div className="flowCard">
+              <h3>Simulation time</h3>
+              <p>
+                <strong>spacecraft::time</strong> is the authoritative backend simulation clock and is propagated
+                through <strong>simData</strong> into <strong>TelemetryDTO</strong>.
               </p>
             </div>
 
@@ -348,16 +428,24 @@ QTimer-driven simulation loop`}</FlowBlock>
             <div className="flowCard">
               <h3>Derived frame state</h3>
               <p>
-                <strong>SimulationFrameContext</strong> is reconstructed from the authoritative state and is not
-                integrated directly by the physics engine.
+                <strong>SimulationFrameContext</strong> is reconstructed from the authoritative state after each
+                commit and is not independently integrated.
               </p>
             </div>
 
             <div className="flowCard">
               <h3>Telemetry snapshot</h3>
               <p>
-                <strong>simData</strong> aggregates runtime state and subsystem telemetry for mapping into the
-                frontend-facing <strong>TelemetryDTO</strong>.
+                <strong>simData</strong> aggregates one backend step into the frontend/export-facing
+                <strong> TelemetryDTO</strong> contract.
+              </p>
+            </div>
+
+            <div className="flowCard">
+              <h3>Recorded telemetry</h3>
+              <p>
+                <strong>SimulationWorker</strong> owns the telemetry history. <strong>TelemetryXmlExporter</strong>
+                serializes that history without owning simulation state.
               </p>
             </div>
           </div>
@@ -366,9 +454,9 @@ QTimer-driven simulation loop`}</FlowBlock>
         <section className="flowSourceLink">
           <h2>Contributor-Level Reference</h2>
           <p>
-            The website intentionally presents the stable architectural view. The code-near reference, including
-            detailed subsystem responsibilities and implementation-oriented data-flow notes, is maintained with the
-            simulation source in <a href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/blob/main/docs/data-flow-diagrams.md">docs/data-flow-diagrams.md</a>.
+            This website presents the stable architectural view. The code-near reference, including detailed
+            subsystem responsibilities and implementation-oriented data-flow notes, is maintained with the simulation
+            source in <a href="https://github.com/gerd-lrt-dev/spaceflight-dynamics-framework/blob/main/docs/data-flow-diagrams.md">docs/data-flow-diagrams.md</a>.
           </p>
           <p>
             Return to the <Link to="/simulation/architecture">SDF Architecture overview</Link> for subsystem structure,
