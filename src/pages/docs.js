@@ -28,12 +28,11 @@ export default function Mathematics() {
           </p>
 
           <p>
-            The current mathematical scope focuses primarily on translational
-            spacecraft dynamics, propulsion force generation, RCS actuator
-            behavior, landing control, and numerical state propagation.
-            Future extensions will introduce rigid-body rotational dynamics,
-            attitude propagation, torque modeling, and more advanced
-            guidance architectures.
+            The current mathematical scope covers translational and rotational
+            spacecraft dynamics, quaternion attitude propagation, propulsion and
+            RCS actuator behavior, control allocation, closed-loop attitude
+            stabilization, landing control, coordinate transformations, and
+            numerical state propagation.
           </p>
 
           <p>
@@ -115,8 +114,8 @@ export default function Mathematics() {
           </div>
 
           <p className="note">
-            Each subpage contains equations, diagrams, implementation-oriented
-            explanations, and engineering rationale for the corresponding
+            Each subpage contains equations, model assumptions, diagrams,
+            verification results, and engineering rationale for the corresponding
             simulation subsystem.
           </p>
 
