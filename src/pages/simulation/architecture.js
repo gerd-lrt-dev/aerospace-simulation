@@ -22,7 +22,9 @@ export default function Architecture() {
             frontend, the simulation worker, the interface layer, and the C++ simulation
             backend. Within the backend, simulation orchestration, spacecraft state,
             coordinate transformations, physics, propulsion, control, sensors, and
-            numerical integration are represented by dedicated components.
+            numerical integration are represented by dedicated components. The current
+            control architecture additionally contains dedicated automatic rotational
+            control for angular-rate damping and quaternion attitude hold.
           </p>
 
           <p>
@@ -132,7 +134,9 @@ export default function Architecture() {
             <li>
               <strong>cockpitPage:</strong> Main simulation presentation page. It is
               connected to <code>SimulationWorker</code> for telemetry and command exchange
-              and contains cockpit-specific widgets.
+              and contains cockpit-specific widgets. The cockpit exposes dedicated
+              <strong> Kill Rotation</strong> and <strong>Stabilize</strong> controls for
+              automatic rotational control.
             </li>
             <li>
               <strong>ControlsHelpPage:</strong> Static user-facing control reference.
@@ -146,8 +150,10 @@ export default function Architecture() {
               selecting and supplying JSON spacecraft configurations.
             </li>
             <li>
-              <strong>inputmapper:</strong> Cockpit-side input component that creates the
-              frontend command representation consumed by the interface boundary.
+              <strong>inputmapper:</strong> Cockpit-side input component that creates
+              manual translational and rotational RCS commands. Automatic attitude-mode
+              flags remain owned by the dedicated cockpit controls and are preserved when
+              manual axis commands are updated.
             </li>
             <li>
               <strong>LandingView:</strong> Cockpit visualization component for landing
@@ -189,11 +195,15 @@ export default function Architecture() {
           <ul>
             <li>
               <strong>FlightCommandDTO:</strong> Frontend-facing command contract used by
-              cockpit/input components and <code>SimulationWorker</code>.
+              cockpit/input components and <code>SimulationWorker</code>. In addition to
+              manual engine and RCS commands, the DTO contains explicit
+              <code>killRotation</code> and <code>stabilize</code> mode requests.
             </li>
             <li>
               <strong>TelemetryDTO:</strong> Frontend-facing telemetry contract used by
-              cockpit visualization, worker-side recording, and XML export.
+              cockpit visualization, worker-side recording, and XML export. It includes
+              the active automatic attitude-control state so verification data can be
+              associated unambiguously with Kill Rotation or Stabilize operation.
             </li>
             <li>
               <strong>TelemetryMapper:</strong> Translation component connecting DTOs with
@@ -288,8 +298,9 @@ export default function Architecture() {
             <li>
               <strong>simData:</strong> Backend-facing aggregate representation used at the
               interface boundary. It references state, frame, mission, propulsion, fuel,
-              sensor, integrity, console, and simulation-time information without exposing
-              the complete <code>spacecraft</code> object to the frontend.
+              sensor, integrity, console, automatic attitude-control mode, and
+              simulation-time information without exposing the complete
+              <code>spacecraft</code> object to the frontend.
             </li>
           </ul>
 
@@ -313,8 +324,11 @@ export default function Architecture() {
           <p>
             The physics subsystem contains the components responsible for translational
             and rotational rigid-body dynamics and the numerical integration interfaces
-            used by the spacecraft model. Physical models and integration algorithms are
-            intentionally represented by separate abstractions.
+            used by the spacecraft model. Physical models, integration algorithms, and
+            feedback-control components are intentionally represented by separate
+            abstractions. Automatic attitude control remains outside the rigid-body
+            equations and influences spacecraft motion only through the normal RCS
+            actuation path.
           </p>
 
           <section className="diagramSection">
@@ -357,22 +371,42 @@ export default function Architecture() {
               state, physical models, applied loads, and the selected integrator.
             </li>
             <li>
-              <strong>IController:</strong> Interface for feedback-control components.
+              <strong>IController:</strong> Generic feedback-controller interface. In
+              addition to scalar control operations, it exposes a quaternion-based
+              three-axis control function used by the attitude-control subsystem.
             </li>
             <li>
-              <strong>PD Controller:</strong> Concrete velocity-control component used by
-              the descent-control architecture.
+              <strong>PD Controller:</strong> Concrete feedback-controller implementation
+              used by both the descent-control architecture and the quaternion attitude
+              controller. For attitude control, it combines quaternion-error feedback with
+              body angular-rate damping.
+            </li>
+            <li>
+              <strong>IAttitudeControl:</strong> Dedicated interface for automatic
+              rotational-control modes. It separates the attitude-control contract from
+              both simulation orchestration and the physical rigid-body model.
+            </li>
+            <li>
+              <strong>AttitudeController:</strong> Concrete implementation of
+              <code>IAttitudeControl</code>. It provides <strong>Kill Rotation</strong>
+              for angular-rate damping and <strong>Stabilize</strong> for quaternion
+              attitude hold. Stabilize captures the current orientation as its reference
+              attitude and applies a hysteresis band around the settled state to reduce
+              repeated RCS switching.
             </li>
             <li>
               <strong>IAutopilot:</strong> Interface for automated guidance/control logic.
             </li>
             <li>
               <strong>Adaptive Descent Controller:</strong> Current automated descent
-              controller connected to the control subsystem.
+              controller connected to the main-engine control subsystem.
             </li>
             <li>
-              <strong>InputArbiter:</strong> Control-side component positioned between
-              manual/automated command producers and the backend actuation path.
+              <strong>InputArbiter:</strong> Control-authority component positioned between
+              manual and automated command producers and the backend actuation path. Main
+              engine, translational RCS, and rotational RCS authority can be resolved
+              independently so automatic attitude control does not replace unrelated
+              manual channels.
             </li>
             <li>
               <strong>ISensor / SensorModel:</strong> Sensor abstraction and concrete
@@ -387,6 +421,8 @@ export default function Architecture() {
             <li><code>Dynamics</code> connects physics-model and integrator abstractions.</li>
             <li>Propulsion supplies the loads consumed by the dynamics subsystem.</li>
             <li>Controllers and autopilot components are separated from the physical models and connect through the control architecture.</li>
+            <li><code>AttitudeController</code> consumes spacecraft attitude and angular velocity but does not directly modify the <code>StateVector</code>.</li>
+            <li>Automatic rotational commands are resolved by <code>InputArbiter</code> before reaching the RCS actuation subsystem.</li>
             <li>Sensor components observe simulation state without becoming state owners.</li>
           </ul>
         </section>
@@ -434,7 +470,9 @@ export default function Architecture() {
             </li>
             <li>
               <strong>RCSControlAllocator:</strong> RCS allocation component positioned
-              between spacecraft control requests and individual RCS engine models.
+              between spacecraft control requests and individual RCS engine models. It is
+              also the actuator-side consumer of automatic rotational commands generated
+              by Kill Rotation or Stabilize.
             </li>
             <li>
               <strong>EngineConfig / RCSEngineConfig:</strong> Static configuration objects
@@ -490,7 +528,8 @@ export default function Architecture() {
             <li>
               <strong>TelemetryDTO:</strong> Shared application-facing value contract used
               by <code>cockpitPage</code>, <code>SimulationWorker</code> telemetry history,
-              and the export subsystem.
+              and the export subsystem. The DTO contains explicit automation-state fields
+              for <code>killRotationActive</code> and <code>stabilizeActive</code>.
             </li>
             <li>
               <strong>SimulationWorker:</strong> Application-side owner of telemetry
@@ -557,8 +596,9 @@ export default function Architecture() {
             </li>
             <li>
               <strong>Interface-Based Extensibility:</strong> Physics, rotational models,
-              integrators, propulsion models, controllers, autopilots, and sensors expose
-              replaceable interfaces where appropriate.
+              integrators, propulsion models, generic controllers, attitude-control
+              implementations, autopilots, and sensors expose replaceable interfaces where
+              appropriate.
             </li>
             <li>
               <strong>Configuration-Driven Composition:</strong> Spacecraft, mission,
