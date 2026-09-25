@@ -62,14 +62,14 @@ export default function QuaternionAttitudeController() {
             math={`
               q
               =
-              \begin{bmatrix}
-              q_w \\
-              q_x \\
-              q_y \\
+              \\begin{bmatrix}
+              q_w \\\\
+              q_x \\\\
+              q_y \\\\
               q_z
-              \end{bmatrix},
-              \qquad
-              \lVert q \rVert = 1
+              \\end{bmatrix},
+              \\qquad
+              \\lVert q \\rVert = 1
             `}
           />
 
@@ -79,13 +79,13 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \mathbf{q}_v
+              \\mathbf{q}_v
               =
-              \begin{bmatrix}
-              q_x \\
-              q_y \\
+              \\begin{bmatrix}
+              q_x \\\\
+              q_y \\\\
               q_z
-              \end{bmatrix}.
+              \\end{bmatrix}.
             `}
           />
 
@@ -111,7 +111,7 @@ export default function QuaternionAttitudeController() {
             math={`
               q_{target}
               =
-              q\left(t_{activation}\right)
+              q\\left(t_{activation}\\right)
             `}
           />
 
@@ -124,13 +124,13 @@ export default function QuaternionAttitudeController() {
               q_e
               =
               q_{target}^{-1}
-              \otimes
+              \\otimes
               q_{current}
             `}
           />
 
           <p>
-            where <InlineMath math={'\otimes'} /> denotes quaternion
+            where <InlineMath math={'\\otimes'} /> denotes quaternion
             multiplication. For a unit quaternion,
             <InlineMath math={'q^{-1}=q^*'} />, so the inverse corresponds to the
             quaternion conjugate.
@@ -143,7 +143,7 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              q_{e,w} \ge 0.
+              q_{e,w} \\ge 0.
             `}
           />
 
@@ -155,13 +155,13 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \mathbf{e}_q
+              \\mathbf{e}_q
               =
-              \begin{bmatrix}
-              q_{e,x} \\
-              q_{e,y} \\
+              \\begin{bmatrix}
+              q_{e,x} \\\\
+              q_{e,y} \\\\
               q_{e,z}
-              \end{bmatrix}.
+              \\end{bmatrix}.
             `}
           />
         </section>
@@ -176,37 +176,37 @@ export default function QuaternionAttitudeController() {
             objective is
           </p>
 
-          <BlockMath math={'\boldsymbol{\omega} \rightarrow \mathbf{0}'} />
+          <BlockMath math={'\\boldsymbol{\\omega} \\rightarrow \\mathbf{0}'} />
 
           <p>
-            where <InlineMath math={'\boldsymbol{\omega}'} /> is the spacecraft
+            where <InlineMath math={'\\boldsymbol{\\omega}'} /> is the spacecraft
             angular velocity expressed in the spacecraft body-fixed frame.
             The three axes are treated independently according to
           </p>
 
           <BlockMath
             math={`
-              \mathbf{u}_{KR}
+              \\mathbf{u}_{KR}
               =
-              -\mathbf{K}_{\omega}
-              \odot
-              \boldsymbol{\omega}
+              -\\mathbf{K}_{\\omega}
+              \\odot
+              \\boldsymbol{\\omega}
             `}
           />
 
           <p>
             with component-wise multiplication
-            <InlineMath math={'\odot'} />. A small angular-rate deadband avoids
+            <InlineMath math={'\\odot'} />. A small angular-rate deadband avoids
             unnecessary RCS commands once the remaining rotation becomes
             sufficiently small:
           </p>
 
           <BlockMath
             math={`
-              |\omega_i|
-              \le
-              0.005\;\mathrm{rad/s}
-              \quad\Rightarrow\quad
+              |\\omega_i|
+              \\le
+              0.005\\;\\mathrm{rad/s}
+              \\quad\\Rightarrow\\quad
               u_{KR,i}=0.
             `}
           />
@@ -230,15 +230,15 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \mathbf{u}_{S}
+              \\mathbf{u}_{S}
               =
-              -\mathbf{K}_{P}
-              \odot
-              \mathbf{e}_q
+              -\\mathbf{K}_{P}
+              \\odot
+              \\mathbf{e}_q
               -
-              \mathbf{K}_{D}
-              \odot
-              \boldsymbol{\omega}
+              \\mathbf{K}_{D}
+              \\odot
+              \\boldsymbol{\\omega}
             `}
           />
 
@@ -255,12 +255,12 @@ export default function QuaternionAttitudeController() {
           <BlockMath
             math={`
               q_{current}
-              \rightarrow
+              \\rightarrow
               q_{target},
-              \qquad
-              \boldsymbol{\omega}
-              \rightarrow
-              \mathbf{0}.
+              \\qquad
+              \\boldsymbol{\\omega}
+              \\rightarrow
+              \\mathbf{0}.
             `}
           />
         </section>
@@ -278,17 +278,17 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \theta_e
+              \\theta_e
               =
-              2\arccos
-              \left(
-              \operatorname{clamp}
-              \left(
+              2\\arccos
+              \\left(
+              \\operatorname{clamp}
+              \\left(
               q_{e,w},
               -1,
               1
-              \right)
-              \right).
+              \\right)
+              \\right).
             `}
           />
 
@@ -320,10 +320,10 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \theta_e < 0.5^{\circ}
-              \quad\land\quad
-              \lVert\boldsymbol{\omega}\rVert_{\infty}
-              < 0.005\;\mathrm{rad/s}
+              \\theta_e < 0.5^{\\circ}
+              \\quad\\land\\quad
+              \\lVert\\boldsymbol{\\omega}\\rVert_{\\infty}
+              < 0.005\\;\\mathrm{rad/s}
             `}
           />
 
@@ -331,10 +331,10 @@ export default function QuaternionAttitudeController() {
 
           <BlockMath
             math={`
-              \theta_e > 1.0^{\circ}
-              \quad\lor\quad
-              \lVert\boldsymbol{\omega}\rVert_{\infty}
-              > 0.010\;\mathrm{rad/s}
+              \\theta_e > 1.0^{\\circ}
+              \\quad\\lor\\quad
+              \\lVert\\boldsymbol{\\omega}\\rVert_{\\infty}
+              > 0.010\\;\\mathrm{rad/s}
             `}
           />
 
@@ -379,37 +379,37 @@ export default function QuaternionAttitudeController() {
                 <td>Relative attitude</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\mathbf{e}_q'} /></td>
+                <td><InlineMath math={'\\mathbf{e}_q'} /></td>
                 <td>Vector part of the quaternion attitude error</td>
                 <td>–</td>
                 <td>3-axis control error</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\boldsymbol{\omega}'} /></td>
+                <td><InlineMath math={'\\boldsymbol{\\omega}'} /></td>
                 <td>Spacecraft body angular velocity</td>
                 <td>rad/s</td>
                 <td>SBF</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\mathbf{K}_P'} /></td>
+                <td><InlineMath math={'\\mathbf{K}_P'} /></td>
                 <td>Attitude-error proportional gain vector</td>
                 <td>–</td>
                 <td>Controller parameter</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\mathbf{K}_D'} /></td>
+                <td><InlineMath math={'\\mathbf{K}_D'} /></td>
                 <td>Angular-rate damping gain vector</td>
                 <td>–</td>
                 <td>Controller parameter</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\theta_e'} /></td>
+                <td><InlineMath math={'\\theta_e'} /></td>
                 <td>Total quaternion attitude error angle</td>
                 <td>rad / deg</td>
                 <td>Scalar error metric</td>
               </tr>
               <tr>
-                <td><InlineMath math={'\mathbf{u}_S'} /></td>
+                <td><InlineMath math={'\\mathbf{u}_S'} /></td>
                 <td>Stabilize rotational control command</td>
                 <td>–</td>
                 <td>SBF control axes</td>
