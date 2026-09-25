@@ -123,3 +123,18 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+/* ----------------------------- */
+/* Scientific Figures */
+/* ----------------------------- */
+
+.mathFigure {
+  margin: 2rem 0;
+}
+
+.mathFigure figcaption {
+  margin-top: 0.8rem;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
