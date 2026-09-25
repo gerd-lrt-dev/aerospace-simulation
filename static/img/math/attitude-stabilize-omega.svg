@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="100%" height="100%" fill="#111827"/>
+<text x="450" y="28" fill="#f3f4f6" font-family="Arial" font-size="20" text-anchor="middle">Stabilize Mode - Angular-Rate Envelope</text>
+<line x1="75.0" y1="55" x2="75.0" y2="435" stroke="#374151"/>
+<text x="75.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">14.5</text>
+<line x1="235.0" y1="55" x2="235.0" y2="435" stroke="#374151"/>
+<text x="235.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">24.9</text>
+<line x1="395.0" y1="55" x2="395.0" y2="435" stroke="#374151"/>
+<text x="395.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">35.2</text>
+<line x1="555.0" y1="55" x2="555.0" y2="435" stroke="#374151"/>
+<text x="555.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">45.6</text>
+<line x1="715.0" y1="55" x2="715.0" y2="435" stroke="#374151"/>
+<text x="715.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">56.0</text>
+<line x1="875.0" y1="55" x2="875.0" y2="435" stroke="#374151"/>
+<text x="875.0" y="460" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="middle">66.3</text>
+<line x1="75" y1="435.0" x2="875" y2="435.0" stroke="#374151"/>
+<text x="65" y="439.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">-0.0429</text>
+<line x1="75" y1="359.0" x2="875" y2="359.0" stroke="#374151"/>
+<text x="65" y="363.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">0.084</text>
+<line x1="75" y1="283.0" x2="875" y2="283.0" stroke="#374151"/>
+<text x="65" y="287.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">0.211</text>
+<line x1="75" y1="207.0" x2="875" y2="207.0" stroke="#374151"/>
+<text x="65" y="211.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">0.338</text>
+<line x1="75" y1="131.0" x2="875" y2="131.0" stroke="#374151"/>
+<text x="65" y="135.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">0.465</text>
+<line x1="75" y1="55.0" x2="875" y2="55.0" stroke="#374151"/>
+<text x="65" y="59.0" fill="#d1d5db" font-family="Arial" font-size="12" text-anchor="end">0.592</text>
+<text x="475" y="482" fill="#e5e7eb" font-family="Arial" font-size="14" text-anchor="middle">Time [s]</text>
+<text x="20" y="245" fill="#e5e7eb" font-family="Arial" font-size="14" text-anchor="middle" transform="rotate(-90 20 245)">max |omega| [rad/s]</text>
+<line x1="75" y1="406.3" x2="875" y2="406.3" stroke="#34d399" stroke-width="1.5" stroke-dasharray="7 5"/>
+<line x1="75" y1="403.3" x2="875" y2="403.3" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="7 5"/>
+<line x1="75.0" y1="55" x2="75.0" y2="435" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5 5"/>
+<polyline fill="none" stroke="#60a5fa" stroke-width="2.2" points="75.0,81.2 81.9,126.9 88.9,177.8 95.8,228.7 102.8,279.5 109.7,330.2 116.7,315.1 123.6,317.5 130.5,337.0 137.5,286.5 144.4,235.9 151.4,262.6 158.3,294.2 165.3,320.0 172.2,337.8 179.1,346.8 186.1,362.4 193.0,369.4 200.0,378.0 206.9,383.7 213.9,389.3 220.8,394.3 227.7,396.9 234.7,400.9 241.6,400.8 248.6,405.4 255.5,402.5 262.5,403.4 269.4,402.8 276.4,406.8 283.3,405.6 290.2,405.6 297.2,405.6 304.1,405.8 311.1,404.0 318.0,405.1 325.0,404.8 331.9,404.5 338.8,404.5 345.8,404.5 352.7,404.5 359.7,404.5 366.6,404.2 373.6,405.5 380.5,405.2 387.4,406.2 394.4,405.6 401.3,405.6 408.3,405.6 415.2,405.6 422.2,405.6 429.1,402.0 436.0,404.0 443.0,405.1 449.9,407.4 456.9,405.6 463.8,405.6 470.8,402.0 477.7,404.0 484.6,405.1 491.6,407.6 498.5,405.6 505.5,405.6 512.4,402.0 519.4,406.3 526.3,404.0 533.2,405.1 540.2,404.5 547.1,404.5 554.1,404.5 561.0,404.5 568.0,404.5 574.9,404.2 581.8,406.5 588.8,408.5 595.7,405.9 602.7,405.6 609.6,405.6 616.6,405.6 623.5,405.6 630.4,405.6 637.4,402.0 644.3,406.4 651.3,404.0 658.2,408.1 665.2,405.6 672.1,405.6 679.1,405.6 686.0,405.2 692.9,407.7 699.9,404.0 706.8,403.2 713.8,404.5 720.7,404.4 727.7,404.4 734.6,404.4 741.5,404.4 748.5,402.7 755.4,404.8 762.4,405.5 769.3,405.3 776.3,405.6 783.2,405.5 790.1,405.5 797.1,405.5 804.0,405.5 811.0,404.1 817.9,405.1 824.9,408.8 831.8,403.2 838.7,405.6 845.7,405.5 852.6,405.5 859.6,404.1 866.5,405.1 873.5,408.3"/>
+<line x1="85" y1="70" x2="113" y2="70" stroke="#60a5fa" stroke-width="2"/>
+<text x="120" y="74" fill="#e5e7eb" font-family="Arial" font-size="12">max |omega|</text>
+<line x1="85" y1="90" x2="113" y2="90" stroke="#34d399" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="120" y="94" fill="#e5e7eb" font-family="Arial" font-size="12">Correction OFF threshold</text>
+<line x1="85" y1="110" x2="113" y2="110" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="120" y="114" fill="#e5e7eb" font-family="Arial" font-size="12">Correction ON threshold</text>
+<line x1="85" y1="130" x2="113" y2="130" stroke="#f87171" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="120" y="134" fill="#e5e7eb" font-family="Arial" font-size="12">Stabilize activation</text>
+</svg>
