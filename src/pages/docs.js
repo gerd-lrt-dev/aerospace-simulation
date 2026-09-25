@@ -81,6 +81,14 @@ export default function Mathematics() {
               </div>
             </a>
 
+            <a className="mathButton" href="/mathematics/quaternionAttitudeController">
+              <div className="mathTitle">Quaternion Attitude Controller</div>
+              <div className="mathDesc">
+                Quaternion attitude error, angular-rate damping, attitude hold,
+                and hysteresis for discrete RCS stabilization
+              </div>
+            </a>
+
             <a className="mathButton" href="/mathematics/impact">
               <div className="mathTitle">Impact & Structural Integrity</div>
               <div className="mathDesc">
