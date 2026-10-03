@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 import '../../css/mathematics.css';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -385,6 +386,33 @@ export default function PhysicsModel() {
             computationally efficient propagation method suitable for
             deterministic real-time simulation.
           </p>
+        </section>
+
+        <hr />
+
+        {/* ========================================================= */}
+        {/* VERIFICATION LINK */}
+        {/* ========================================================= */}
+
+        <section className="mathSection">
+          <h2>Model Verification</h2>
+
+          <p>
+            The translational propagation model is connected to dedicated
+            verification cases that compare the implemented software behavior
+            against independent analytical reference solutions.
+          </p>
+
+          <p>
+            <strong>VER-TRA-001 — Free Translational Motion</strong> verifies the
+            discrete position and velocity propagation path for zero acceleration.
+            The case uses the analytical solution of uniform rectilinear motion and
+            checks the SDF result after 100 deterministic integration steps.
+          </p>
+
+          <Link className="button button--primary" to="/verification/ver-tra-001">
+            View VER-TRA-001
+          </Link>
         </section>
 
         <hr />
