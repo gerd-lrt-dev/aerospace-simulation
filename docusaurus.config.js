@@ -103,6 +103,12 @@ const config = {
         },
 
         {
+          to: '/verification',
+          label: 'Verification',
+          position: 'left',
+        },
+
+        {
           to: '/team',
           label: 'Team',
           position: 'left',
