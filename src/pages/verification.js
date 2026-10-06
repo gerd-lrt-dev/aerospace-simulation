@@ -74,16 +74,24 @@ export default function VerificationOverview() {
               </Link>
             </article>
 
-            <article className="verificationCard">
+            <article className="verificationCard verificationCardPass">
               <div className="verificationCardHeader">
                 <span className="verificationId">VER-ROT-001</span>
-                <span className="verificationStatus verificationStatusPlanned">PLANNED</span>
+                <span className="verificationStatus">PASS</span>
               </div>
               <h3>Constant Principal-Axis Torque</h3>
               <p>
-                Planned analytical verification of angular acceleration, angular velocity,
-                and quaternion attitude propagation under a controlled principal-axis torque.
+                Verifies rigid-body angular acceleration, angular velocity, and quaternion
+                attitude propagation under a constant torque about a principal body axis.
               </p>
+              <dl className="verificationMeta">
+                <div><dt>Domain</dt><dd>Rotational dynamics</dd></div>
+                <div><dt>Reference</dt><dd>Analytical</dd></div>
+                <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
+              </dl>
+              <Link className="verificationButton" to="/verification/ver-rot-001">
+                View verification case
+              </Link>
             </article>
 
             <article className="verificationCard">
