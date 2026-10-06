@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 import '../../css/mathematics.css';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -625,6 +626,32 @@ return ( <Layout
         modified or replaced without changing the complete rotational
         simulation architecture.
       </p>
+    </section>
+
+    <hr />
+
+    {/* ========================================================= */}
+    {/* VERIFICATION LINK */}
+    {/* ========================================================= */}
+
+    <section className="mathSection">
+      <h2>Model Verification</h2>
+
+      <p>
+        The rotational dynamics model is connected to dedicated verification
+        cases that compare the implemented rigid-body propagation path against
+        independent analytical reference solutions.
+      </p>
+
+      <p>
+        <strong>VER-ROT-001 — Constant Principal-Axis Torque</strong> verifies
+        angular acceleration, angular velocity, quaternion attitude propagation,
+        and quaternion normalization for a controlled principal-axis torque case.
+      </p>
+
+      <Link className="button button--primary" to="/verification/ver-rot-001">
+        View VER-ROT-001
+      </Link>
     </section>
 
     <hr />
