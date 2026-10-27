@@ -408,6 +408,91 @@ export default function CoordinateSystems() {
         <hr />
 
         <section className="mathSection">
+          <h2>MCI / MCMF Variables and Parameters</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Description</th>
+                <th>Unit</th>
+                <th>Frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><InlineMath math={'t'} /></td>
+                <td>Simulation time measured from the reference epoch</td>
+                <td>s</td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\omega_M'} /></td>
+                <td>Lunar sidereal rotation rate</td>
+                <td>rad/s</td>
+                <td>MCI +Z axis</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\boldsymbol{\\omega}_M'} /></td>
+                <td>Lunar angular velocity vector</td>
+                <td>rad/s</td>
+                <td>MCI / MCMF aligned +Z axis</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\theta(t)'} /></td>
+                <td>Lunar rotation angle defined by <InlineMath math={'\\theta=\\omega_M t'} /></td>
+                <td>rad</td>
+                <td>Rotation about +Z</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'q_M(t)'} /></td>
+                <td>Quaternion representing the active rotation <InlineMath math={'R_z(+\\theta)'} /></td>
+                <td>–</td>
+                <td>MCMF → MCI</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'q_M^{-1}(t)'} /></td>
+                <td>Inverse lunar-rotation quaternion representing <InlineMath math={'R_z(-\\theta)'} /></td>
+                <td>–</td>
+                <td>MCI → MCMF</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\mathbf{r}_{MCI}'} /></td>
+                <td>Position expressed in the Moon-Centered Inertial frame</td>
+                <td>m</td>
+                <td>MCI</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\mathbf{v}_{MCI}'} /></td>
+                <td>Velocity expressed in the Moon-Centered Inertial frame</td>
+                <td>m/s</td>
+                <td>MCI</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\mathbf{r}_{MCMF}'} /></td>
+                <td>Position expressed in the Moon-Centered Moon-Fixed frame</td>
+                <td>m</td>
+                <td>MCMF</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\mathbf{v}_{MCMF}'} /></td>
+                <td>Velocity expressed in the Moon-fixed rotating frame</td>
+                <td>m/s</td>
+                <td>MCMF</td>
+              </tr>
+              <tr>
+                <td><InlineMath math={'\\boldsymbol{\\omega}_M \\times \\mathbf{r}'} /></td>
+                <td>Transport velocity contribution caused by lunar rotation</td>
+                <td>m/s</td>
+                <td>Source Cartesian frame</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <hr />
+
+        <section className="mathSection">
           <h2>MCMF to Moon Surface Coordinates</h2>
 
           <p>
