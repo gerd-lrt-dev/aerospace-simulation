@@ -253,7 +253,8 @@ export default function CoordinateSystems() {
 
           <p>
             The MCMF frame rotates with the Moon relative to the inertial MCI
-            frame. The lunar rotation angle is computed as:
+            frame. In SDF, positive lunar rotation is defined about the
+            positive MCI Z-axis. The lunar rotation angle is computed as:
           </p>
 
           <BlockMath
@@ -273,7 +274,8 @@ export default function CoordinateSystems() {
           </p>
 
           <p>
-            The corresponding rotation quaternion is:
+            The corresponding quaternion represents the active positive
+            rotation <InlineMath math={'R_z(+\\theta)'} /> from MCMF into MCI:
           </p>
 
           <BlockMath
@@ -290,18 +292,20 @@ export default function CoordinateSystems() {
           />
 
           <p>
-            The position transformation is:
+            Because MCI to MCMF is a coordinate transformation into the
+            rotating frame, it uses the inverse rotation
+            <InlineMath math={'R_z(-\\theta)'} />:
           </p>
 
           <BlockMath
             math={`
               \\mathbf{r}_{MCMF}
               =
-              q_M
+              q_M^{-1}
               \\,
               \\mathbf{r}_{MCI}
               \\,
-              q_M^{-1}
+              q_M
             `}
           />
 
@@ -314,7 +318,7 @@ export default function CoordinateSystems() {
             math={`
               \\mathbf{v}_{MCMF}
               =
-              q_M
+              q_M^{-1}
               \\left(
               \\mathbf{v}_{MCI}
               -
@@ -322,7 +326,7 @@ export default function CoordinateSystems() {
               \\times
               \\mathbf{r}_{MCI}
               \\right)
-              q_M^{-1}
+              q_M
             `}
           />
 
@@ -349,20 +353,21 @@ export default function CoordinateSystems() {
           <h2>MCMF to MCI Transformation</h2>
 
           <p>
-            The inverse transformation rotates a Moon-fixed state back into the
-            inertial frame. The inverse quaternion is used for the position
-            mapping:
+            The inverse transformation maps a Moon-fixed state back into the
+            inertial frame. Since <InlineMath math={'q_M'} /> represents the
+            active positive lunar rotation, MCMF to MCI uses
+            <InlineMath math={'R_z(+\\theta)'} /> directly:
           </p>
 
           <BlockMath
             math={`
               \\mathbf{r}_{MCI}
               =
-              q_M^{-1}
+              q_M
               \\,
               \\mathbf{r}_{MCMF}
               \\,
-              q_M
+              q_M^{-1}
             `}
           />
 
@@ -375,7 +380,7 @@ export default function CoordinateSystems() {
             math={`
               \\mathbf{v}_{MCI}
               =
-              q_M^{-1}
+              q_M
               \\left(
               \\mathbf{v}_{MCMF}
               +
@@ -383,9 +388,21 @@ export default function CoordinateSystems() {
               \\times
               \\mathbf{r}_{MCMF}
               \\right)
-              q_M
+              q_M^{-1}
             `}
           />
+
+          <p>
+            This sign convention is physically constrained by the motion of a
+            Moon-fixed point. For
+            <InlineMath math={'\\mathbf{r}_{MCMF}=[R,0,0]^T'} /> and
+            <InlineMath math={'\\mathbf{v}_{MCMF}=0'} />, positive lunar
+            rotation gives
+            <InlineMath math={'\\mathbf{v}_{MCI}=\\boldsymbol{\\omega}_M\\times\\mathbf{r}_{MCI}'} />.
+            Therefore the point initially moves toward positive MCI Y, and at
+            <InlineMath math={'\\theta=\\pi/2'} /> its inertial position is
+            <InlineMath math={'[0,R,0]^T'} />.
+          </p>
         </section>
 
         <hr />
