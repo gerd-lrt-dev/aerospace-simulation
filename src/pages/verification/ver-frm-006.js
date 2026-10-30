@@ -48,6 +48,21 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Nominal case 1</span><code>{'r={1000,0,0}, v={0,100,0}'}</code></div>
+            <div><span>Nominal case 2</span><code>{'r={0,1500,0}, v={-80,0,0}'}</code></div>
+            <div><span>Arbitrary case</span><code>{'r={2,3,4}, v={-1,5,2}'}</code></div>
+            <div><span>Radial fallback</span><code>{'r={1000,0,0}, v={25,0,0}'}</code></div>
+            <div><span>Pole-aligned fallback</span><code>{'r={0,0,1000}, v={0,0,-10}'}</code></div>
+            <div><span>Local projection</span><code>{'rLVLH={10,20,30}, vLVLH={1,2,3}'}</code></div>
+            <div><span>Basis tolerance</span><code>1e-12</code></div>
+            <div><span>State tolerance</span><code>1e-9</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
