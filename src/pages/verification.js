@@ -280,7 +280,10 @@ export default function VerificationOverview() {
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
               <div className="verificationLinks">
-                <Link className="verificationButton secondary" to="/mathematics/thrust">
+                <Link className="verificationButton" to="/verification/ver-prop-001">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/thrust">
                   Open thrust model
                 </Link>
                 <Link className="verificationTextLink" to="/mathematics/RCSBasicModel">
