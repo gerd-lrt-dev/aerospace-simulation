@@ -51,6 +51,28 @@ export default function VerificationOverview() {
         </section>
 
         <section className="verificationSection">
+          <h2>SDF Light Verification Progress</h2>
+          <p>
+            Release verification progress is tracked against the planned T03–T15 verification
+            workstream. Eight of thirteen tasks are currently complete.
+          </p>
+
+          <div className="verificationProgress" aria-label="SDF Light verification progress: 62 percent">
+            <div className="verificationProgressHeader">
+              <strong>8 / 13 tasks complete</strong>
+              <span>62%</span>
+            </div>
+            <div className="verificationProgressTrack">
+              <div className="verificationProgressFill" style={{width: '61.5%'}} />
+            </div>
+            <div className="verificationProgressFooter">
+              <span>Completed: T03, T04, T05, T06, T07, T13, T14, T15</span>
+              <span>Open: T08–T12</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="verificationSection">
           <h2>Dynamics</h2>
 
           <div className="verificationGrid">
