@@ -47,6 +47,21 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Lunar rotation rate</span><code>2.6617e-6 rad/s</code></div>
+            <div><span>Time-zero state</span><code>{'r={1000,2000,3000}, v={10,20,30}'}</code></div>
+            <div><span>Principal-axis cases</span><code>quarter turn and half turn</code></div>
+            <div><span>Physical sign check</span><code>Moon-fixed +X point moves toward +Y in MCI</code></div>
+            <div><span>Arbitrary-state case</span><code>{'r={1e6,-2e5,3e5} m'}</code></div>
+            <div><span>Roundtrip epochs</span><code>123456.789 s, 345678.9 s, 765432.1 s</code></div>
+            <div><span>Position tolerance</span><code>1e-6 m</code></div>
+            <div><span>Velocity tolerance</span><code>1e-9 m/s</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
