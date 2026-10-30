@@ -49,6 +49,23 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>MCI/MCMF roundtrip epoch</span><code>456789.123 s</code></div>
+            <div><span>Chained-frame epoch</span><code>250000 s</code></div>
+            <div><span>Repeated-cycle case</span><code>1000 MCI ↔ MCMF cycles at 987654.321 s</code></div>
+            <div><span>High-altitude case</span><code>lat 12.5°, lon -170°, alt 500 km</code></div>
+            <div><span>Near-zero altitude</span><code>1e-6 m</code></div>
+            <div><span>Near-pole case</span><code>lat 89.999°, lon -135°, alt 50 m</code></div>
+            <div><span>Position tolerance</span><code>1e-6 m</code></div>
+            <div><span>Velocity tolerance</span><code>1e-9 m/s</code></div>
+            <div><span>Angular tolerance</span><code>1e-10 rad</code></div>
+            <div><span>Repeated-drift tolerance</span><code>1e-5 m</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
