@@ -47,6 +47,21 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Equator / prime meridian</span><code>{'{ Rmoon, 0, 0 } → lat 0, lon 0, alt 0'}</code></div>
+            <div><span>Equator / +90° longitude</span><code>{'{ 0, Rmoon, 0 } → lon +π/2'}</code></div>
+            <div><span>North / south pole</span><code>lat ±π/2</code></div>
+            <div><span>Altitude reference</span><code>Rmoon + 1000 m → alt 1000 m</code></div>
+            <div><span>Longitude wraparound</span><code>+π ≡ -π physically</code></div>
+            <div><span>Angular tolerance</span><code>1e-12 rad</code></div>
+            <div><span>Near-pole angular tolerance</span><code>1e-10 rad</code></div>
+            <div><span>Cartesian / altitude tolerance</span><code>1e-6 m</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
