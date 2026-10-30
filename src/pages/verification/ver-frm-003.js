@@ -48,6 +48,23 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Basis case 1</span><code>Equator / prime meridian</code></div>
+            <div><span>Basis case 2</span><code>Equator / longitude +90°</code></div>
+            <div><span>General basis case</span><code>non-zero latitude / longitude</code></div>
+            <div><span>Near-pole case</span><code>fallback basis verified</code></div>
+            <div><span>Local test position</span><code>{'{ 100, 200, 300 } m'}</code></div>
+            <div><span>Local test velocity</span><code>{'{ 4, -5, 6 } m/s'}</code></div>
+            <div><span>Basis tolerance</span><code>1e-12</code></div>
+            <div><span>Cartesian tolerance</span><code>1e-6 m</code></div>
+            <div><span>Velocity tolerance</span><code>1e-12 m/s</code></div>
+            <div><span>Near-pole tolerance</span><code>1e-10</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
