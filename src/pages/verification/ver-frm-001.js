@@ -47,6 +47,27 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Lunar radius</span><code>1,737,400 m</code></div>
+            <div><span>Lunar rotation rate</span><code>2.6617e-6 rad/s</code></div>
+            <div><span>Initial ENU position</span><code>{'{ 0, 0, 300 } m'}</code></div>
+            <div><span>Initial ENU velocity</span><code>{'{ 0, 0, -20 } m/s'}</code></div>
+            <div><span>Landing site</span><code>lat 0, lon 0, alt 0</code></div>
+            <div><span>Time step</span><code>0.1 s</code></div>
+            <div><span>Expected initial MCI position</span><code>{'{ 1737700, 0, 0 } m'}</code></div>
+            <div><span>Expected initial MCI velocity</span><code>{'{ -20, 4.62523609, 0 } m/s'}</code></div>
+            <div><span>Expected post-step MCI position</span><code>{'{ 1737697.9918278225, 0.462523609, 0 } m'}</code></div>
+            <div><span>Expected post-step MCI velocity</span><code>{'{ -20.1634435509398, 4.62523609, 0 } m/s'}</code></div>
+            <div><span>Position tolerance</span><code>1e-6 m</code></div>
+            <div><span>Velocity tolerance</span><code>1e-9 m/s</code></div>
+            <div><span>Basis / angular tolerance</span><code>1e-12</code></div>
+            <div><span>Local lateral tolerance</span><code>1e-4</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
