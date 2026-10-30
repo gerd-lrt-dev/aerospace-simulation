@@ -126,9 +126,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical + consistency</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-001">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -146,9 +151,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical geometry</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-002">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -167,9 +177,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical basis construction</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-003">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -188,9 +203,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical rotation</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-004">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -209,9 +229,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical quaternion rotation</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-005">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -230,9 +255,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Analytical basis construction</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-006">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
 
             <article className="verificationCard verificationCardPass">
@@ -251,9 +281,14 @@ export default function VerificationOverview() {
                 <div><dt>Reference</dt><dd>Roundtrip + invariants</dd></div>
                 <div><dt>Execution</dt><dd>Automated / CTest</dd></div>
               </dl>
-              <Link className="verificationButton secondary" to="/mathematics/coordinateTransformation">
-                Open coordinate transformation model
-              </Link>
+              <div className="verificationLinks">
+                <Link className="verificationButton" to="/verification/ver-frm-007">
+                  View verification case
+                </Link>
+                <Link className="verificationTextLink" to="/mathematics/coordinateTransformation">
+                  Open mathematical model
+                </Link>
+              </div>
             </article>
           </div>
         </section>
