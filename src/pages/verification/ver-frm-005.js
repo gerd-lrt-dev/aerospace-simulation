@@ -48,6 +48,21 @@ export default function VerificationCase() {
           </ul>
         </section>
 
+
+        <section className="verificationSection">
+          <h2>Reference Data and Tolerances</h2>
+          <div className="verificationDataGrid">
+            <div><span>Quaternion cases</span><code>identity, +90° about X/Y/Z</code></div>
+            <div><span>Additional attitude case</span><code>arbitrary normalized quaternion</code></div>
+            <div><span>Sign equivalence</span><code>q and -q produce identical rotation</code></div>
+            <div><span>State test position</span><code>{'{ 100, 200, 300 } m'}</code></div>
+            <div><span>State test velocity</span><code>{'{ 4, 5, 6 } m/s'}</code></div>
+            <div><span>Inverse / roundtrip</span><code>SBF → MCI → SBF</code></div>
+            <div><span>Vector tolerance</span><code>1e-12</code></div>
+            <div><span>State tolerance</span><code>1e-9</code></div>
+          </div>
+        </section>
+
         <section className="verificationSection">
           <h2>Result</h2>
           <div className="verificationResultPass">
